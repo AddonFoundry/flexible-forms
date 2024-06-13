@@ -1,8 +1,10 @@
 @extends('statamic::layout')
-@section('title', __('Create Flexible Form'))
+@section('title', __('Forms'))
 
 @section('content')
+
     <create-flexible-form
-        route="{{ cp_route('forms.store') }}">
+        route="{{ cp_route('forms.store') }}"> <!-- this.route used in the vue component -->
     </create-flexible-form
-@stop
+
+@endsection

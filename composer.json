@@ -1,19 +1,19 @@
 {
-  "name": "addonfoundry/flexible-forms",
-  "autoload": {
-      "psr-4": {
-          "AddonFoundry\\FlexibleForms\\": "src"
-      }
-  },
-  "extra": {
-      "statamic": {
-          "name": "Flexible Forms",
-          "description": "AddonFoundry Flexible Forms"
-      },
-      "laravel": {
-          "providers": [
-              "AddonFoundry\\FlexibleForms\\ServiceProvider"
-          ]
-      }
-  }
+    "name": "addonfoundry/flexible-forms",
+    "autoload": {
+        "psr-4": {
+            "AddonFoundry\\FlexibleForms\\": "src"
+        }
+    },
+    "extra": {
+        "statamic": {
+            "name": "Flexible Forms",
+            "description": "Flexible Forms addon"
+        },
+        "laravel": {
+            "providers": [
+                "AddonFoundry\\FlexibleForms\\ServiceProvider"
+            ]
+        }
+    }
 }

@@ -1,6 +1,14 @@
 # Flexible Forms
 
-> Flexible Forms is a form builder for Statamic that allows you to build forms right in the control panel. No more messing around with Blueprints and templates to get the forms you or your client want.
+> Flexible Forms is a Statamic addon that does something pretty neat.
+
+## Features
+
+This addon does:
+
+- This
+- And this
+- And even this
 
 ## How to Install
 
@@ -9,3 +17,7 @@ You can search for this addon in the `Tools > Addons` section of the Statamic co
 ``` bash
 composer require addonfoundry/flexible-forms
 ```
+
+## How to Use
+
+Here's where you can explain how to use this wonderful addon.

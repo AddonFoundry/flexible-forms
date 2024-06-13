@@ -4,9 +4,9 @@
       <div class="rounded p-6 lg:px-20 lg:py-10 shadow bg-white">
           <header class="text-center mb-16">
               <h1 class="mb-6">{{ __('Create Flexible Form') }}</h1>
-              <p class="text-gray" v-text="__('messages.form_configure_intro')" />
+              <p class="text-gray" v-text="__('Flexible Forms are used to collect information from visitors and dispatch events and notifications when there are new submissions.')" />
           </header>
-          <div class="mb-10">
+          <div class="mb-10"> 
               <label class="font-bold text-base mb-1" for="name">{{ __('Title') }}</label>
               <input type="text" v-model="title" class="input-text" autofocus tabindex="1">
               <div class="text-2xs text-gray-600 mt-2 flex items-center">
@@ -24,7 +24,7 @@
 
       <div class="flex justify-center mt-8">
           <button tabindex="4" class="btn-primary mx-auto btn-lg" :disabled="! canSubmit" @click="submit">
-              {{ __('Create Form')}}
+              {{ __('Create Flexible Form')}}
           </button>
       </div>
   </div>
@@ -39,33 +39,31 @@ export default {
           type: String
       }
   },
-
   data() {
       return {
           title: null,
-          handle: null
+          handle: null,
       }
   },
-
   watch: {
       'title': function(val) {
           this.handle = this.$slugify(val, '_');
       }
   },
-
   computed: {
       canSubmit() {
           return Boolean(this.title && this.handle);
       },
   },
-
   methods: {
       submit() {
-          this.$axios.post(this.route, {title: this.title, handle: this.handle}).then(response => {
-              window.location = response.data.redirect;
-          }).catch(error => {
-              this.$toast.error(error.response.data.message);
-          });
+
+        this.$axios.post('/cp/flexible-forms/create', {title: this.title, handle: this.handle}).then(response => {
+          window.location = response.data.redirect;
+        }).catch(error => {
+          this.$toast.error(error.response.data.message);
+        });
+          
       }
   },
 

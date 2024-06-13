@@ -1,6 +1,18 @@
 {
+  "resources/css/cp.css": {
+    "file": "assets/cp-f2d5d5bb.css",
+    "isEntry": true,
+    "src": "resources/css/cp.css"
+  },
+  "resources/js/cp.css": {
+    "file": "assets/cp-3d2b6f18.css",
+    "src": "resources/js/cp.css"
+  },
   "resources/js/cp.js": {
-    "file": "assets/cp-2dd55db1.js",
+    "css": [
+      "assets/cp-3d2b6f18.css"
+    ],
+    "file": "assets/cp-93a1cf8e.js",
     "isEntry": true,
     "src": "resources/js/cp.js"
   }
