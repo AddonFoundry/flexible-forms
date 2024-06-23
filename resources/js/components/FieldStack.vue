@@ -152,7 +152,7 @@
 									fill="#0E2B73" />
 							</svg>
 						</template>
-						{{ currentField.config.type }}
+						{{ dirtyField.config.type }}
 					</small>
 				</h1>
 				<button
@@ -160,7 +160,7 @@
 					class="text-gray-700 hover:text-gray-800 mr-6 text-sm">
 					Cancel
 				</button>
-				<button @click.prevent="commit" class="btn-primary">Apply</button>
+				<button @click.prevent="applyChanges()" class="btn-primary">Apply</button>
 			</header>
 
 			<div class="p-0 m-4 card">
@@ -184,7 +184,7 @@
             </div>
             <div class="flex items-center">
               <div class="input-group">
-                <input id="field_display" name="display" type="text" class="input-text" v-model="currentField.config.display">
+                <input id="field_display" name="display" type="text" class="input-text" v-model="dirtyField.config.display">
                 <button class="input-group-append flex items-center v-popper--has-tooltip">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 text-gray-500"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M.91 12.59a1 1 0 0 1 0-1.18C2.11 9.8 5.9 5.5 12 5.5s9.89 4.3 11.09 5.91a1 1 0 0 1 0 1.18c-1.2 1.61-5 5.91-11.09 5.91S2.11 14.2.91 12.59Z"></path><path d="M7.76 13.5A4.38 4.38 0 0 1 7.5 12 4.49 4.49 0 0 1 12 7.5a4.38 4.38 0 0 1 1.5.26M15.18 8.82a4.5 4.5 0 1 1-6.36 6.36M17 7 6.75 17.25"></path></g></svg>
                 </button>
@@ -216,7 +216,7 @@
             <div>
               <div class="flex items-center">
                   <div class="input-group">
-                    <input id="field_handle" name="text_field" type="text" class="input-text font-mono text-xs" v-model="currentField.handle">
+                    <input id="field_handle" name="text_field" type="text" class="input-text font-mono text-xs" v-model="dirtyField.handle">
                     <button class="input-group-append items-center flex v-popper--has-tooltip">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                           <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
@@ -249,22 +249,34 @@ export default {
   data() {
       return {
           //isEditing: false,
+          dirtyField: null,
         }
   },
   props: ['blueprint', 'currentField', 'isEditing'],
   mixins: [Fieldtype],
   created() {
     //this.fields = this.blueprint.tabs[0].sections[0].fields;
-  },
 
+  },
+  watch: {
+    currentField() {
+
+      this.dirtyField = JSON.parse(JSON.stringify(this.currentField));
+
+    },
+  },
   methods: {
 
       applyChanges() {
+        //this.currentField = JSON.parse(JSON.stringify(this.dirtyField)); 
+        //this.currentField = { ...this.dirtyField };
+        this.$emit('fieldModified', { ...this.dirtyField });
         this.$events.$emit('event.close-stack');
       },
 
       editorClosed() {
-          this.$events.$emit('event.close-stack');
+        //this.dirtyField = JSON.parse(JSON.stringify(this.currentField)); 
+        this.$events.$emit('event.close-stack');
       },
 
       commit() {

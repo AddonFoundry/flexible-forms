@@ -249,7 +249,57 @@ class FormController extends CpController
     }
 
 
+    // return single submission
+    public function submission(Request $request, $form, $submission)
+    {
+        
+      if (! $submission = $form->submission($submission)) {
+        return $this->pageNotFound();
+      }
 
+      $this->authorize('view', $submission);
+
+      $blueprint = $submission->blueprint();
+      $fields = $blueprint->fields()->addValues($submission->data()->all())->preProcess();
+
+      return view('flexible-forms::submission', [
+        'form' => $form,
+        'submission' => $submission,
+        'blueprint' => $blueprint->toPublishArray(),
+        'values' => $fields->values(),
+        'meta' => $fields->meta(),
+        'title' => $submission->formattedDate(),
+      ]);
+
+      /*
+
+      return view('statamic::forms.submission', [
+        'form' => $form,
+        'submission' => $submission,
+        'blueprint' => $blueprint->toPublishArray(),
+        'values' => $fields->values(),
+        'meta' => $fields->meta(),
+        'title' => $submission->formattedDate(),
+      ]);
+
+      */
+
+      /*
+
+        if ($form) {
+
+           $submissions = $form->submissions();
+
+           return view('flexible-forms::submission', [
+              'form' => $form,
+              'submissions' => $submissions,
+          ]);
+
+        }
+
+        */
+
+    }
 
 
     protected function editFormBlueprint($form)

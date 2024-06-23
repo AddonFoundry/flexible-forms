@@ -29,8 +29,15 @@ Route::prefix('flexible-forms')->name('flexible-forms.')->group(function () {
   // return form submissions
   Route::get('{formHandle}/submissions', [FormController::class, 'submissions'])->name('submissions');
 
+  // return single form submission
+  Route::get('{form}/submissions/{submission}', [FormController::class, 'submission'])->name('submission');
+
   // form listing page
   Route::get('{form}/test', [FormController::class, 'tests'])->name('tests');
 
+  // delete form submission
+
+  Route::post('{form}/submissions/{submission}/delete', [FormController::class, 'submissionDelete'])->name('submissionDelete');
+    
 
 });

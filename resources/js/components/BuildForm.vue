@@ -213,6 +213,7 @@
               </div>
             </div>
   
+            <!--
             <div class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="toggle">
               <div class="blueprint-section-field-inner custom-background-grey">
                 <div class="flex flex-1 items-center justify-between">
@@ -227,6 +228,7 @@
                 <div class="blueprint-drag-handle w-6"></div>
               </div>
             </div>
+            -->
   
             <div class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="integer">
               <div class="blueprint-section-field-inner custom-background-grey">
@@ -266,7 +268,7 @@
   
     </publish-container>
 
-    <field-stack :blueprint="blueprint" :currentField="currentField" :isEditing="isEditing"></field-stack>
+    <field-stack :blueprint="blueprint" :currentField="currentField" :isEditing="isEditing" @fieldModified="updateField"></field-stack>
 
 
     </div>
@@ -367,10 +369,17 @@
       editorClosed() {
         this.isEditing = false;
       },
+
+      updateField(updatedField) {
+
+        let index = this.blueprint.tabs[0].sections[0].fields.findIndex(field => field._id === updatedField._id);
+        this.blueprint.tabs[0].sections[0].fields[index] = updatedField;
+
+      },
   
       editField(index) {
 
-        let fieldId = this.blueprint.tabs[0].sections[0].fields[index]._id;
+        //let fieldId = this.blueprint.tabs[0].sections[0].fields[index]._id;
 
         //this.$events.$emit('field-editing', fieldId)
           

@@ -9,7 +9,8 @@
 
     <submissions-flexible-form
         initial-title="{{ $form->title() }}"
-        :submissions="{{ json_encode($submissions) }}">
+        :submissions="{{ json_encode($submissions) }}"
+        form="{{ $form->handle() }}">
     </submissions-flexible-form>
 
 @endsection
