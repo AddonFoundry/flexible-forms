@@ -3,6 +3,11 @@
 
 @section('content')
 
+  @include('statamic::partials.breadcrumb', [
+      'url' => '/cp/flexible-forms',
+      'title' => 'Flexible Forms'
+  ])
+
     <div class="flex items-center mb-6">
         <h1 class="flex-1">{{ __('Submissions') }}</h1>
     </div>

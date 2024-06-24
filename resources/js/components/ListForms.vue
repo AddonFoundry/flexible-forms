@@ -49,7 +49,7 @@
     <confirmation-modal
       v-if="deleting"
       title="Delete"
-      bodyText="Are you sure you want to delete this form? This action cannot be undone."
+      bodyText="Are you sure you want to delete this form? Form submssions will also be deleted. This action cannot be undone."
       danger="true"
       @confirm="deleteForm"
       @cancel="deleting = false"

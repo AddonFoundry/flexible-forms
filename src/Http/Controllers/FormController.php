@@ -204,22 +204,22 @@ class FormController extends CpController
     // delete a form by handle
     public function delete(Request $request, $formHandle)
     {
-        // Retrieve the form by handle
+
         $forms = Form::all();
 
         $form = $forms->first(function ($form) use ($formHandle) {
           return $form->handle() === $formHandle;
         });
-
+      
         // Check if the form exists
         if ($form) {
-            // Delete the form
+            // Delete associated submissions
+            $form->submissions()->each->delete();
+    
+            // Now delete the form itself
             $form->delete();
-
-            // Optionally, you can delete associated submissions if needed
-            // $form->submissions()->delete();
-
-            return response()->json(['message' => 'Form deleted successfully'], 200);
+    
+            return response()->json(['message' => 'Form and associated data deleted successfully'], 200);
         } else {
             return response()->json(['error' => 'Form not found'], 404);
         }

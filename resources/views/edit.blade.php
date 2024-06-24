@@ -3,7 +3,12 @@
 
 @section('content')
 
-<edit-flexible-form
+  @include('statamic::partials.breadcrumb', [
+      'url' => '/cp/flexible-forms',
+      'title' => 'Flexible Forms'
+  ])
+
+  <edit-flexible-form
       initial-title="{{ $form->title() }}"
       edit-title="Edit Form"
       :blueprint="{{ json_encode($blueprint) }}"
