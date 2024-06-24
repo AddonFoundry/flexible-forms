@@ -164,6 +164,9 @@
 			</header>
 
 			<div class="p-0 m-4 card">
+
+        <header class="publish-section-header @container"><div class="publish-section-header-inner"><label class="text-base font-semibold">Common</label></div></header>
+
 				<div class="publish-fields @container">
 
 
@@ -185,9 +188,14 @@
             <div class="flex items-center">
               <div class="input-group">
                 <input id="field_display" name="display" type="text" class="input-text" v-model="dirtyField.config.display">
-                <button class="input-group-append flex items-center v-popper--has-tooltip">
+                
+                <button v-if="dirtyField.config.hide_display" @click="dirtyField.config.hide_display = false" v-tooltip="'Hidden'" class="input-group-append flex items-center v-popper--has-tooltip">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 text-gray-100"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M.91 12.59a1 1 0 0 1 0-1.18C2.11 9.8 5.9 5.5 12 5.5s9.89 4.3 11.09 5.91a1 1 0 0 1 0 1.18c-1.2 1.61-5 5.91-11.09 5.91S2.11 14.2.91 12.59Z"></path><path d="M7.76 13.5A4.38 4.38 0 0 1 7.5 12 4.49 4.49 0 0 1 12 7.5a4.38 4.38 0 0 1 1.5.26M15.18 8.82a4.5 4.5 0 1 1-6.36 6.36M17 7 6.75 17.25"></path></g></svg>
+                </button>
+                <button v-else @click="dirtyField.config.hide_display = true" v-tooltip="'Visible'" class="input-group-append flex items-center v-popper--has-tooltip">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 text-gray-500"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M.91 12.59a1 1 0 0 1 0-1.18C2.11 9.8 5.9 5.5 12 5.5s9.89 4.3 11.09 5.91a1 1 0 0 1 0 1.18c-1.2 1.61-5 5.91-11.09 5.91S2.11 14.2.91 12.59Z"></path><path d="M7.76 13.5A4.38 4.38 0 0 1 7.5 12 4.49 4.49 0 0 1 12 7.5a4.38 4.38 0 0 1 1.5.26M15.18 8.82a4.5 4.5 0 1 1-6.36 6.36M17 7 6.75 17.25"></path></g></svg>
                 </button>
+              
               </div>
             </div>
           </div>
@@ -217,7 +225,7 @@
               <div class="flex items-center">
                   <div class="input-group">
                     <input id="field_handle" name="text_field" type="text" class="input-text font-mono text-xs" v-model="dirtyField.handle">
-                    <button class="input-group-append items-center flex v-popper--has-tooltip">
+                    <button @click="updateHandle()" class="input-group-append items-center flex v-popper--has-tooltip">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                           <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                               <path d="M.713 10.34 3.5 14.49l3.205-3.838"></path>
@@ -235,6 +243,35 @@
 
 				</div>
 			</div>
+
+
+      <!--
+
+      <div class="publish-sections-section">
+        <div class="p-0 m-4 card">
+
+          <header class="publish-section-header @container"><div class="publish-section-header-inner"><label class="text-base font-semibold">Input Behavior</label></div></header>
+
+          <div class="publish-fields @container">
+
+            <div class="form-group publish-field publish-field__input_type select-fieldtype config-field"><div class="field-inner"><label for="field_input_type" class="publish-field-label"><span class="rtl:ml-1 ltr:mr-1 v-popper--has-tooltip">Input Type</span><button class="outline-none" style="display: none;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4 rtl:ml-1.5 ltr:mr-1.5 mb-1 text-gray-600 v-popper--has-tooltip"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.082 9.5A4.47 4.47 0 0 0 6.75 8h-1.5a4.5 4.5 0 0 0 0 9h1.5a4.474 4.474 0 0 0 3.332-1.5m3.836-6A4.469 4.469 0 0 1 17.25 8h1.5a4.5 4.5 0 1 1 0 9h-1.5a4.472 4.472 0 0 1-3.332-1.5M6.75 12.499h10.5"></path></svg></button><button class="outline-none" style="display: none;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4 rtl:ml-1.5 ltr:mr-1.5 mb-1 text-gray-600 v-popper--has-tooltip"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16.5 15.749h1.875A3.963 3.963 0 0 0 22.5 12h0a3.962 3.962 0 0 0-4.125-3.75H16.5m-9 7.499H5.625A3.963 3.963 0 0 1 1.5 12h0a3.963 3.963 0 0 1 4.125-3.75H7.5M12 5.249v-4.5m-3 4.5-1.5-1.5m7.5 1.5 1.5-1.5m-4.5 15v4.5m-3-4.5-1.5 1.5m7.5-1.5 1.5 1.5"></path></svg></button></label><div class="help-block -mt-2"><p>Set the HTML5 input type.</p>
+</div></div><div data-v-288ded3d="" class="flex"><div data-v-288ded3d="" dir="auto" class="v-select flex-1 vs--single vs--searchable" name="input_type"> <div id="vs4__combobox" role="combobox" aria-expanded="false" aria-owns="vs4__listbox" aria-label="Search for option" class="vs__dropdown-toggle"><div class="vs__selected-options"><span class="vs__selected">
+            text
+           </span> <input id="field_input_type" aria-autocomplete="list" aria-labelledby="vs4__combobox" aria-controls="vs4__listbox" type="search" autocomplete="off" class="vs__search"></div> <div class="vs__actions"><button type="button" title="Clear Selected" aria-label="Clear Selected" class="vs__clear" style="display: none;"><span>×</span></button> <span class="toggle vs__open-indicator" role="presentation"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 20 20"><path fill="currentColor" d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"></path></svg></span> <div class="vs__spinner" style="display: none;">Loading...</div></div></div> <ul id="vs4__listbox" role="listbox" style="display: none; visibility: hidden;"></ul> </div></div></div>
+
+           <div class="form-group publish-field publish-field__placeholder text-fieldtype config-field"><div class="field-inner"><label for="field_placeholder" class="publish-field-label"><span class="rtl:ml-1 ltr:mr-1 v-popper--has-tooltip">Placeholder</span><button class="outline-none" style="display: none;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4 rtl:ml-1.5 ltr:mr-1.5 mb-1 text-gray-600 v-popper--has-tooltip"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.082 9.5A4.47 4.47 0 0 0 6.75 8h-1.5a4.5 4.5 0 0 0 0 9h1.5a4.474 4.474 0 0 0 3.332-1.5m3.836-6A4.469 4.469 0 0 1 17.25 8h1.5a4.5 4.5 0 1 1 0 9h-1.5a4.472 4.472 0 0 1-3.332-1.5M6.75 12.499h10.5"></path></svg></button><button class="outline-none" style="display: none;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4 rtl:ml-1.5 ltr:mr-1.5 mb-1 text-gray-600 v-popper--has-tooltip"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16.5 15.749h1.875A3.963 3.963 0 0 0 22.5 12h0a3.962 3.962 0 0 0-4.125-3.75H16.5m-9 7.499H5.625A3.963 3.963 0 0 1 1.5 12h0a3.963 3.963 0 0 1 4.125-3.75H7.5M12 5.249v-4.5m-3 4.5-1.5-1.5m7.5 1.5 1.5-1.5m-4.5 15v4.5m-3-4.5-1.5 1.5m7.5-1.5 1.5 1.5"></path></svg></button></label><div class="help-block -mt-2"><p>Set placeholder text.</p>
+</div></div><div class="flex items-center"><div class="input-group"><input id="field_placeholder" name="placeholder" type="text" class="input-text"></div></div></div>
+
+          
+
+          </div>
+
+        </div>
+      </div>
+
+      -->
+
+
 		</div>
 	</stack>
 </template>
@@ -279,19 +316,9 @@ export default {
         this.$events.$emit('event.close-stack');
       },
 
-      commit() {
-          //this.clearErrors();
-
-          this.$axios.post(cp_url('fields/update'), {
-              id: this.id,
-              type: this.type,
-              values: this.values,
-              fields: this.fields
-          }).then(response => {
-              this.$emit('committed', response.data, this.editedFields);
-              this.close();
-          }).catch(e => this.handleAxiosError(e));
-      },
+      updateHandle() {
+        this.dirtyField.handle = this.dirtyField.config.display.toLowerCase().replace(/[^a-z0-9_]/gi, '_');
+      }
 
   }
 

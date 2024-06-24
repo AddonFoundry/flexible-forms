@@ -143,7 +143,7 @@ class FormController extends CpController
 
         //return ['redirect' => $form->editUrl()];
 
-        return ['redirect' => '/cp/flexible-forms/' . $handle . '/edit' ];
+        return ['redirect' => '/cp/flexible-forms/' . $handle . '/build' ];
 
     } 
 

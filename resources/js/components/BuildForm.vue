@@ -14,8 +14,8 @@
         </header>
   
         <section class="card inline-flex mt-5 mb-2 p-0 rounded-md px-1">
-          <span class="inline-flex items-center py-3 px-4 text-sm font-semibold rounded-md opacity-50">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.33333 2H3C2.44772 2 2 2.44772 2 3V13C2 13.5523 2.44772 14 3 14H13C13.5523 14 14 13.5523 14 13V8.35294" stroke="black" stroke-linecap="round"></path><path d="M8.067 10.1593L13.8605 4.36403C13.946 4.27851 14 4.15248 14 4.02195C14 3.90742 13.9585 3.7889 13.86 3.69088L12.3025 2.13853C12.21 2.04601 12.088 2 11.9665 2C11.845 2 11.7235 2.04601 11.6305 2.13853L5.8275 7.92282C5.543 8.80451 5.05 10.3349 5.0145 10.4639C5.0045 10.5014 5 10.5389 5 10.5759C5 10.8065 5.1745 11 5.3825 11C5.638 11 5.878 10.9055 8.067 10.1593ZM6.432 8.48794L7.5005 9.55668L5.9165 10.0798L6.432 8.48794ZM6.9095 7.90481L11.9665 2.86419L13.134 4.02795L8.0845 9.07957L6.9095 7.90481Z" fill="black"></path></svg>
+          <span class="inline-flex items-center py-3 px-4 text-sm font-semibold rounded-md" style="color:#2995ef;">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.33333 2H3C2.44772 2 2 2.44772 2 3V13C2 13.5523 2.44772 14 3 14H13C13.5523 14 14 13.5523 14 13V8.35294" stroke="#2995ef" stroke-linecap="round"></path><path d="M8.067 10.1593L13.8605 4.36403C13.946 4.27851 14 4.15248 14 4.02195C14 3.90742 13.9585 3.7889 13.86 3.69088L12.3025 2.13853C12.21 2.04601 12.088 2 11.9665 2C11.845 2 11.7235 2.04601 11.6305 2.13853L5.8275 7.92282C5.543 8.80451 5.05 10.3349 5.0145 10.4639C5.0045 10.5014 5 10.5389 5 10.5759C5 10.8065 5.1745 11 5.3825 11C5.638 11 5.878 10.9055 8.067 10.1593ZM6.432 8.48794L7.5005 9.55668L5.9165 10.0798L6.432 8.48794ZM6.9095 7.90481L11.9665 2.86419L13.134 4.02795L8.0845 9.07957L6.9095 7.90481Z" fill="#2995ef"></path></svg>
             <span class="ml-2">Form Builder</span>
           </span>
           <a :href="pageUrl + '/submissions'" class="inline-flex items-center py-3 px-4 text-sm font-semibold rounded-md">
@@ -31,7 +31,7 @@
         <section class="flex justify-between">
           <div class="card w-63 bg-white pt-8 pb-6 px-8 rounded-md">
             <p class="text-lg font-semibold">{{ slugToTitleCase(blueprint.handle) }}</p>
-            <p class="text-12 text-gray-600 mt-0.5 mb-5">Drag fields to reorder them or click on a field to edit it.</p>
+            <p class="text-12 text-gray-600 mt-0.5 mb-5">Drag form fields to reorder them or click on a field to edit it.</p>
   
             <!-- errors -->
             <div v-if="errors" v-for="(error, index) in errors.tabs" class="form-errors">
@@ -47,59 +47,49 @@
                   <div class="flex flex-1 items-center justify-between">
                     <div class="flex items-center flex-1 pr-4 py-1 pl-1">
                       <template v-if="field.config.type == 'text'">
-                        <!--
-                        <svg class="mr-1 h-4 flex-none v-popper--has-tooltip" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg" v-tooltip="field.handle">
+                        <svg class="mr-1 h-3 flex-none v-popper--has-tooltip" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg" v-tooltip="field.handle">
                           <path d="M0.351464 0.115555V0H5.99163H11.6485V0.115555L11.8326 2.56148C11.9331 4.16642 11.9888 4.98173 12 5.00741V5.12296H11.3975C10.9958 5.12296 10.795 5.11654 10.795 5.1037C10.795 4.84691 10.7671 4.51309 10.7113 4.10222C10.6444 3.52444 10.5495 3.04938 10.4268 2.67704C10.2594 2.22765 9.97489 1.89383 9.57322 1.67556C9.40586 1.57284 9.18271 1.4958 8.90376 1.44444C8.80335 1.41876 8.51883 1.39951 8.05021 1.38667H7.39749V6.49037V11.6133H8.68619H9.95816V12.3067V13H9.69038L7.71548 12.9615C6.56625 12.9486 5.42259 12.9486 4.28452 12.9615L2.30962 13H2.04184V12.3067V11.6133H3.33054H4.60251V6.49037V1.38667H3.94979C3.48117 1.39951 3.19665 1.41876 3.09623 1.44444C2.57183 1.56 2.17015 1.78469 1.89121 2.11852C1.71269 2.32395 1.56764 2.6321 1.45607 3.04296C1.36681 3.41531 1.29428 3.98667 1.23849 4.75704C1.21618 4.97531 1.20502 5.09086 1.20502 5.1037C1.20502 5.11654 1.00418 5.12296 0.60251 5.12296H0V5.00741L0.1841 2.56148C0.284519 0.956542 0.340307 0.141234 0.351464 0.115555Z" fill="#19292f"/>
                         </svg>
-                        -->
-                        <svg class="mr-1 h-4 flex-none v-popper--has-tooltip" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg" v-tooltip="field.handle">
-                          <path d="M0.351464 0.115555V0H5.99163H11.6485V0.115555L11.8326 2.56148C11.9331 4.16642 11.9888 4.98173 12 5.00741V5.12296H11.3975C10.9958 5.12296 10.795 5.11654 10.795 5.1037C10.795 4.84691 10.7671 4.51309 10.7113 4.10222C10.6444 3.52444 10.5495 3.04938 10.4268 2.67704C10.2594 2.22765 9.97489 1.89383 9.57322 1.67556C9.40586 1.57284 9.18271 1.4958 8.90376 1.44444C8.80335 1.41876 8.51883 1.39951 8.05021 1.38667H7.39749V6.49037V11.6133H8.68619H9.95816V12.3067V13H9.69038L7.71548 12.9615C6.56625 12.9486 5.42259 12.9486 4.28452 12.9615L2.30962 13H2.04184V12.3067V11.6133H3.33054H4.60251V6.49037V1.38667H3.94979C3.48117 1.39951 3.19665 1.41876 3.09623 1.44444C2.57183 1.56 2.17015 1.78469 1.89121 2.11852C1.71269 2.32395 1.56764 2.6321 1.45607 3.04296C1.36681 3.41531 1.29428 3.98667 1.23849 4.75704C1.21618 4.97531 1.20502 5.09086 1.20502 5.1037C1.20502 5.11654 1.00418 5.12296 0.60251 5.12296H0V5.00741L0.1841 2.56148C0.284519 0.956542 0.340307 0.141234 0.351464 0.115555Z" fill="#19292f"/>
-                        </svg>
-
                       </template>
                       <template v-else-if="field.config.type == 'textarea'">
-                        <svg class="mr-1 h-4 flex-none v-popper--has-tooltip" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg" v-tooltip="field.handle">
-                          <rect x="1" y="1" width="16" height="15" rx="1" stroke="#19292f" stroke-width="2"/>
-                          <rect x="4" y="4" width="10" height="2" fill="#19292f"/>
-                          <rect x="4" y="7" width="10" height="2" fill="#19292f"/>
-                          <rect x="4" y="10" width="7" height="2" fill="#19292f"/>
+                        <svg class="mr-1 h-3 flex-none v-popper--has-tooltip" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M16 16L2 16C1.44771 16 1 15.5523 1 15L0.999999 2C0.999999 1.44772 1.44771 1 2 1L16 1C16.5523 1 17 1.44771 17 2L17 15C17 15.5523 16.5523 16 16 16Z" stroke="#1C2E36" stroke-width="2"/>
+                          <path d="M9.4248 13.9698L14.6973 8.69739" stroke="#1C2E36" stroke-width="1.6" stroke-linecap="round"/>
+                          <path d="M12.6973 13.7577L14.6973 11.7577" stroke="#1C2E36" stroke-width="1.6" stroke-linecap="round"/>
                         </svg>
                       </template>
-
-                      
-
                       <template v-else-if="field.config.type == 'select'">
-                        <svg class="mr-1 h-4 flex-none v-popper--has-tooltip" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg" v-tooltip="field.handle">
+                        <svg class="mr-1 h-3 flex-none v-popper--has-tooltip" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg" v-tooltip="field.handle">
                           <path d="M0 1H16C17.1046 1 18 1.89543 18 3V16C18 17.1046 17.1046 18 16 18H0" stroke="#19292f" stroke-width="2"/>
                           <path d="M9.07106 12.0208L12.0208 9.07106C12.6508 8.44109 12.2046 7.36395 11.3137 7.36395H5.41421C4.52331 7.36395 4.07714 8.44109 4.70711 9.07106L7.65684 12.0208C8.04737 12.4113 8.68053 12.4113 9.07106 12.0208Z" fill="#19292f"/>
                         </svg>
                       </template>
                       <template v-else-if="field.config.type == 'checkboxes'">
-                        <svg class="mr-1 w-4 flex-none v-popper--has-tooltip" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg" v-tooltip="field.handle">
+                        <svg class="mr-1 w-3 flex-none v-popper--has-tooltip" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg" v-tooltip="field.handle">
                           <rect x="1" y="1" width="16" height="15" rx="1" fill="#19292f" stroke="#19292f" stroke-width="2"/>
                           <path fill-rule="evenodd" clip-rule="evenodd" d="M13.928 5.36935L7.59309 12.1129L4 8.59968L5.39824 7.16967L7.53242 9.25642L12.4703 4L13.928 5.36935Z" fill="#F1F1F1"/>
                         </svg>
                       </template>
                       <template v-else-if="field.config.type == 'radio'">
-                        <svg class="mr-1 w-4 flex-none v-popper--has-tooltip" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg" v-tooltip="field.handle">
+                        <svg class="mr-1 w-3 flex-none v-popper--has-tooltip" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg" v-tooltip="field.handle">
                           <rect x="1" y="1" width="15" height="15" rx="7.5" stroke="#19292f" stroke-width="2"/>
                           <rect x="4" y="4" width="9" height="9" rx="4.5" fill="#19292f"/>
                         </svg>
                       </template>
                       <template v-else-if="field.config.type == 'toggle'">
-                        <svg class="mr-1 w-4 flex-none v-popper--has-tooltip" viewBox="0 0 16 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="mr-1 w-3 flex-none v-popper--has-tooltip" viewBox="0 0 16 9" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <rect width="16" height="8.8" rx="4.4" fill="#19292f"/>
                           <rect x="8" y="0.799988" width="7.2" height="7.2" rx="3.6" fill="white"/>
                         </svg>
                       </template>
                       <template v-else-if="field.config.type == 'integer'">
-                        <svg class="mr-1 w-4 flex-none v-popper--has-tooltip" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="mr-1 w-3 flex-none v-popper--has-tooltip" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M12.8799 0.960022V11.197C12.8799 11.4091 12.8865 11.5846 12.8996 11.7238C12.9194 11.8563 12.972 11.9623 13.0576 12.0418C13.1432 12.1213 13.2715 12.1777 13.4426 12.2108C13.6138 12.2373 13.8573 12.2505 14.1733 12.2505H14.8545V13.96C14.6044 13.96 14.3608 13.96 14.1239 13.96C13.8869 13.96 13.6401 13.96 13.3834 13.96C13.1333 13.9534 12.8667 13.9501 12.5837 13.9501C12.3072 13.9435 12.0045 13.9401 11.6754 13.9401C11.287 13.9401 10.9349 13.9435 10.6189 13.9501C10.3096 13.9501 10.0167 13.9501 9.74025 13.9501C9.4638 13.9501 9.19394 13.9534 8.93066 13.96C8.66737 13.96 8.39422 13.96 8.11119 13.96V12.2505H9.03926C9.31571 12.2505 9.52633 12.2307 9.67114 12.1909C9.82252 12.1445 9.93442 12.0783 10.0068 11.9921C10.0792 11.906 10.122 11.7967 10.1352 11.6642C10.1483 11.525 10.1549 11.3627 10.1549 11.1771V3.68326C9.96404 3.78928 9.76328 3.88867 9.55266 3.98143C9.34862 4.07419 9.14457 4.16033 8.94053 4.23984C8.74307 4.31272 8.5489 4.37898 8.35802 4.43862C8.17372 4.49162 8.00588 4.53138 7.85449 4.55788V2.56017C8.5127 2.45416 9.10508 2.2587 9.63164 1.97378C10.1648 1.68887 10.6189 1.35095 10.9941 0.960022H12.8799Z" fill="#19292f"/>
                           <rect x="0.187988" y="12.2696" width="6.6665" height="1.69043" fill="#19292f"/>
                         </svg>
                       </template>
                       <template v-else-if="field.config.type == 'assets'">
-                        <svg class="mr-1 w-4 flex-none v-popper--has-tooltip" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="mr-1 w-3 flex-none v-popper--has-tooltip" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path fill-rule="evenodd" clip-rule="evenodd" d="M16 2H2L2 15H16V2ZM2 0C0.895431 0 0 0.89543 0 2V15C0 16.1046 0.89543 17 2 17H16C17.1046 17 18 16.1046 18 15V2C18 0.895431 17.1046 0 16 0H2Z" fill="#19292f"/>
                           <path fill-rule="evenodd" clip-rule="evenodd" d="M12.2171 5.71655L17.3976 14.4462L15.6776 15.4669L12.2007 9.60781L7.83258 16.8287L4.79721 12.2231L2.24808 15.5632L0.658203 14.3498L4.91669 8.77002L7.76014 13.0844L12.2171 5.71655Z" fill="#19292f"/>
                           <path fill-rule="evenodd" clip-rule="evenodd" d="M6.25781 6.66217C7.05442 6.66217 7.7002 6.01639 7.7002 5.21979C7.7002 4.42318 7.05442 3.7774 6.25781 3.7774C5.46121 3.7774 4.81543 4.42318 4.81543 5.21979C4.81543 6.01639 5.46121 6.66217 6.25781 6.66217ZM6.25781 7.66217C7.6067 7.66217 8.7002 6.56868 8.7002 5.21979C8.7002 3.8709 7.6067 2.7774 6.25781 2.7774C4.90892 2.7774 3.81543 3.8709 3.81543 5.21979C3.81543 6.56868 4.90892 7.66217 6.25781 7.66217Z" fill="#19292f"/>
@@ -141,10 +131,10 @@
               <div class="blueprint-section-field-inner custom-background-grey">
                 <div class="flex flex-1 items-center justify-between">
                   <div class="flex items-center flex-1 pr-4 py-1 pl-1">
-                      <svg class="mr-1 h-4 flex-none v-popper--has-tooltip" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <svg class="mr-1 h-3 flex-none v-popper--has-tooltip" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M0.351464 0.115555V0H5.99163H11.6485V0.115555L11.8326 2.56148C11.9331 4.16642 11.9888 4.98173 12 5.00741V5.12296H11.3975C10.9958 5.12296 10.795 5.11654 10.795 5.1037C10.795 4.84691 10.7671 4.51309 10.7113 4.10222C10.6444 3.52444 10.5495 3.04938 10.4268 2.67704C10.2594 2.22765 9.97489 1.89383 9.57322 1.67556C9.40586 1.57284 9.18271 1.4958 8.90376 1.44444C8.80335 1.41876 8.51883 1.39951 8.05021 1.38667H7.39749V6.49037V11.6133H8.68619H9.95816V12.3067V13H9.69038L7.71548 12.9615C6.56625 12.9486 5.42259 12.9486 4.28452 12.9615L2.30962 13H2.04184V12.3067V11.6133H3.33054H4.60251V6.49037V1.38667H3.94979C3.48117 1.39951 3.19665 1.41876 3.09623 1.44444C2.57183 1.56 2.17015 1.78469 1.89121 2.11852C1.71269 2.32395 1.56764 2.6321 1.45607 3.04296C1.36681 3.41531 1.29428 3.98667 1.23849 4.75704C1.21618 4.97531 1.20502 5.09086 1.20502 5.1037C1.20502 5.11654 1.00418 5.12296 0.60251 5.12296H0V5.00741L0.1841 2.56148C0.284519 0.956542 0.340307 0.141234 0.351464 0.115555Z" fill="#19292f"/>
                       </svg>
-                    <p class="break-all text-12 font-semibold ml-2 hover:text-black">Text Field</p>
+                    <p class="break-all text-12 font-semibold ml-1 hover:text-black">Text Field</p>
                   </div>
                 </div>
                 <div class="blueprint-drag-handle w-6"></div>
@@ -155,13 +145,12 @@
               <div class="blueprint-section-field-inner custom-background-grey">
                 <div class="flex flex-1 items-center justify-between">
                   <div class="flex items-center flex-1 pr-4 py-1 pl-1">
-                    <svg class="mr-1 h-4 flex-none v-popper--has-tooltip" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <rect x="1" y="1" width="16" height="15" rx="1" stroke="#19292f" stroke-width="2"/>
-                      <rect x="4" y="4" width="10" height="2" fill="#19292f"/>
-                      <rect x="4" y="7" width="10" height="2" fill="#19292f"/>
-                      <rect x="4" y="10" width="7" height="2" fill="#19292f"/>
+                    <svg class="mr-1 h-3 flex-none v-popper--has-tooltip" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M16 16L2 16C1.44771 16 1 15.5523 1 15L0.999999 2C0.999999 1.44772 1.44771 1 2 1L16 1C16.5523 1 17 1.44771 17 2L17 15C17 15.5523 16.5523 16 16 16Z" stroke="#1C2E36" stroke-width="2"/>
+                      <path d="M9.4248 13.9698L14.6973 8.69739" stroke="#1C2E36" stroke-width="1.6" stroke-linecap="round"/>
+                      <path d="M12.6973 13.7577L14.6973 11.7577" stroke="#1C2E36" stroke-width="1.6" stroke-linecap="round"/>
                     </svg>
-                    <p class="break-all text-12 font-semibold ml-2 hover:text-black">Textarea</p>
+                    <p class="break-all text-12 font-semibold ml-1 hover:text-black">Textarea</p>
                   </div>
                 </div>
                 <div class="blueprint-drag-handle w-6"></div>
@@ -172,11 +161,11 @@
               <div class="blueprint-section-field-inner custom-background-grey">
                 <div class="flex flex-1 items-center justify-between">
                   <div class="flex items-center flex-1 pr-4 py-1 pl-1">
-                    <svg class="mr-1 h-4 flex-none v-popper--has-tooltip" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg class="mr-1 h-3 flex-none v-popper--has-tooltip" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M0 1H16C17.1046 1 18 1.89543 18 3V16C18 17.1046 17.1046 18 16 18H0" stroke="#19292f" stroke-width="2"/>
                       <path d="M9.07106 12.0208L12.0208 9.07106C12.6508 8.44109 12.2046 7.36395 11.3137 7.36395H5.41421C4.52331 7.36395 4.07714 8.44109 4.70711 9.07106L7.65684 12.0208C8.04737 12.4113 8.68053 12.4113 9.07106 12.0208Z" fill="#19292f"/>
                     </svg>
-                    <p class="break-all text-12 font-semibold ml-2 hover:text-black">Select</p>
+                    <p class="break-all text-12 font-semibold ml-1 hover:text-black">Select</p>
                   </div>
                 </div>
                 <div class="blueprint-drag-handle w-6"></div>
@@ -187,11 +176,11 @@
               <div class="blueprint-section-field-inner custom-background-grey">
                 <div class="flex flex-1 items-center justify-between">
                   <div class="flex items-center flex-1 pr-4 py-1 pl-1">
-                      <svg class="mr-1 w-4 flex-none v-popper--has-tooltip" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <svg class="mr-1 w-3 flex-none v-popper--has-tooltip" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <rect x="1" y="1" width="16" height="15" rx="1" fill="#19292f" stroke="#19292f" stroke-width="2"/>
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M13.928 5.36935L7.59309 12.1129L4 8.59968L5.39824 7.16967L7.53242 9.25642L12.4703 4L13.928 5.36935Z" fill="#F1F1F1"/>
                       </svg>
-                    <p class="break-all text-12 font-semibold ml-2 hover:text-black">Checkboxes</p>
+                    <p class="break-all text-12 font-semibold ml-1 hover:text-black">Checkboxes</p>
                   </div>
                 </div>
                 <div class="blueprint-drag-handle w-6"></div>
@@ -202,11 +191,11 @@
               <div class="blueprint-section-field-inner custom-background-grey">
                 <div class="flex flex-1 items-center justify-between">
                   <div class="flex items-center flex-1 pr-4 py-1 pl-1">
-                    <svg class="mr-1 w-4 flex-none v-popper--has-tooltip" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg class="mr-1 w-3 flex-none v-popper--has-tooltip" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <rect x="1" y="1" width="15" height="15" rx="7.5" stroke="#19292f" stroke-width="2"/>
                       <rect x="4" y="4" width="9" height="9" rx="4.5" fill="#19292f"/>
                     </svg>
-                    <p class="break-all text-12 font-semibold ml-2 hover:text-black">Radio</p>
+                    <p class="break-all text-12 font-semibold ml-1 hover:text-black">Radio</p>
                   </div>
                 </div>
                 <div class="blueprint-drag-handle w-6"></div>
@@ -234,11 +223,11 @@
               <div class="blueprint-section-field-inner custom-background-grey">
                 <div class="flex flex-1 items-center justify-between">
                   <div class="flex items-center flex-1 pr-4 py-1 pl-1">
-                    <svg class="mr-1 w-4 flex-none v-popper--has-tooltip" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg class="mr-1 w-3 flex-none v-popper--has-tooltip" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M12.8799 0.960022V11.197C12.8799 11.4091 12.8865 11.5846 12.8996 11.7238C12.9194 11.8563 12.972 11.9623 13.0576 12.0418C13.1432 12.1213 13.2715 12.1777 13.4426 12.2108C13.6138 12.2373 13.8573 12.2505 14.1733 12.2505H14.8545V13.96C14.6044 13.96 14.3608 13.96 14.1239 13.96C13.8869 13.96 13.6401 13.96 13.3834 13.96C13.1333 13.9534 12.8667 13.9501 12.5837 13.9501C12.3072 13.9435 12.0045 13.9401 11.6754 13.9401C11.287 13.9401 10.9349 13.9435 10.6189 13.9501C10.3096 13.9501 10.0167 13.9501 9.74025 13.9501C9.4638 13.9501 9.19394 13.9534 8.93066 13.96C8.66737 13.96 8.39422 13.96 8.11119 13.96V12.2505H9.03926C9.31571 12.2505 9.52633 12.2307 9.67114 12.1909C9.82252 12.1445 9.93442 12.0783 10.0068 11.9921C10.0792 11.906 10.122 11.7967 10.1352 11.6642C10.1483 11.525 10.1549 11.3627 10.1549 11.1771V3.68326C9.96404 3.78928 9.76328 3.88867 9.55266 3.98143C9.34862 4.07419 9.14457 4.16033 8.94053 4.23984C8.74307 4.31272 8.5489 4.37898 8.35802 4.43862C8.17372 4.49162 8.00588 4.53138 7.85449 4.55788V2.56017C8.5127 2.45416 9.10508 2.2587 9.63164 1.97378C10.1648 1.68887 10.6189 1.35095 10.9941 0.960022H12.8799Z" fill="#19292f"/>
                       <rect x="0.187988" y="12.2696" width="6.6665" height="1.69043" fill="#19292f"/>
                     </svg>
-                    <p class="break-all text-12 font-semibold ml-2 hover:text-black">Integer</p>
+                    <p class="break-all text-12 font-semibold ml-1 hover:text-black">Integer</p>
                   </div>
                 </div>
                 <div class="blueprint-drag-handle w-6"></div>
@@ -249,12 +238,12 @@
               <div class="blueprint-section-field-inner custom-background-grey">
                 <div class="flex flex-1 items-center justify-between">
                   <div class="flex items-center flex-1 pr-4 py-1 pl-1">
-                    <svg class="mr-1 w-4 flex-none v-popper--has-tooltip" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg class="mr-1 w-3 flex-none v-popper--has-tooltip" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path fill-rule="evenodd" clip-rule="evenodd" d="M16 2H2L2 15H16V2ZM2 0C0.895431 0 0 0.89543 0 2V15C0 16.1046 0.89543 17 2 17H16C17.1046 17 18 16.1046 18 15V2C18 0.895431 17.1046 0 16 0H2Z" fill="#19292f"/>
                       <path fill-rule="evenodd" clip-rule="evenodd" d="M12.2171 5.71655L17.3976 14.4462L15.6776 15.4669L12.2007 9.60781L7.83258 16.8287L4.79721 12.2231L2.24808 15.5632L0.658203 14.3498L4.91669 8.77002L7.76014 13.0844L12.2171 5.71655Z" fill="#19292f"/>
                       <path fill-rule="evenodd" clip-rule="evenodd" d="M6.25781 6.66217C7.05442 6.66217 7.7002 6.01639 7.7002 5.21979C7.7002 4.42318 7.05442 3.7774 6.25781 3.7774C5.46121 3.7774 4.81543 4.42318 4.81543 5.21979C4.81543 6.01639 5.46121 6.66217 6.25781 6.66217ZM6.25781 7.66217C7.6067 7.66217 8.7002 6.56868 8.7002 5.21979C8.7002 3.8709 7.6067 2.7774 6.25781 2.7774C4.90892 2.7774 3.81543 3.8709 3.81543 5.21979C3.81543 6.56868 4.90892 7.66217 6.25781 7.66217Z" fill="#19292f"/>
                     </svg>
-                    <p class="break-all text-12 font-semibold ml-2 hover:text-black">Assets</p>
+                    <p class="break-all text-12 font-semibold ml-1 hover:text-black">Assets</p>
                   </div>
                 </div>
                 <div class="blueprint-drag-handle w-6"></div>

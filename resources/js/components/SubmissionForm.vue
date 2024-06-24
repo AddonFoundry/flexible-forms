@@ -6,8 +6,8 @@
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.33333 2H3C2.44772 2 2 2.44772 2 3V13C2 13.5523 2.44772 14 3 14H13C13.5523 14 14 13.5523 14 13V8.35294" stroke="black" stroke-linecap="round"></path><path d="M8.067 10.1593L13.8605 4.36403C13.946 4.27851 14 4.15248 14 4.02195C14 3.90742 13.9585 3.7889 13.86 3.69088L12.3025 2.13853C12.21 2.04601 12.088 2 11.9665 2C11.845 2 11.7235 2.04601 11.6305 2.13853L5.8275 7.92282C5.543 8.80451 5.05 10.3349 5.0145 10.4639C5.0045 10.5014 5 10.5389 5 10.5759C5 10.8065 5.1745 11 5.3825 11C5.638 11 5.878 10.9055 8.067 10.1593ZM6.432 8.48794L7.5005 9.55668L5.9165 10.0798L6.432 8.48794ZM6.9095 7.90481L11.9665 2.86419L13.134 4.02795L8.0845 9.07957L6.9095 7.90481Z" fill="black"></path></svg>
           <span class="ml-2">Form Builder</span>
         </a>
-        <span class="inline-flex items-center py-3 px-4 text-sm font-semibold rounded-md opacity-50">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 13L10 13" stroke="black" stroke-linecap="round"></path><path d="M2 9.66663L14 9.66663" stroke="black" stroke-linecap="round"></path><path d="M2 6.33337L14 6.33338" stroke="black" stroke-linecap="round"></path><path d="M2 3L14 3" stroke="black" stroke-linecap="round"></path></svg>
+        <span class="inline-flex items-center py-3 px-4 text-sm font-semibold rounded-md" style="color:#2995ef;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 13L10 13" stroke="#2995ef" stroke-linecap="round"></path><path d="M2 9.66663L14 9.66663" stroke="#2995ef" stroke-linecap="round"></path><path d="M2 6.33337L14 6.33338" stroke="#2995ef" stroke-linecap="round"></path><path d="M2 3L14 3" stroke="#2995ef" stroke-linecap="round"></path></svg>
           <span class="ml-2">Submissions</span>
         </span>
         <a :href="pageUrl + '/edit'" class="inline-flex items-center py-3 px-4 text-sm font-semibold rounded-md">
@@ -110,8 +110,8 @@ export default {
       return {
         pageUrl: '',
         listingKey: 'submissions',
-        preferencesPrefix: `forms.contact_us`,
-        requestUrl: cp_url(`forms/contact_us/submissions`),
+        preferencesPrefix: `forms.${this.form}`,
+        requestUrl: cp_url(`forms/${this.form}/submissions`),
         //actionUrl: cp_url(`forms/${this.form}/submissions/actions`),
       }
   },

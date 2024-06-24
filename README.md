@@ -1,14 +1,14 @@
 # Flexible Forms
 
-> Flexible Forms is a Statamic addon that does something pretty neat.
+> Flexible Forms is a revamped form UI that allows you to easily build drag and drop forms directly in the control panel - without touching Blueprints.
 
 ## Features
 
-This addon does:
+This addon lets you:
 
-- This
-- And this
-- And even this
+- Easily create custom drag and drop forms right in the Control Panel
+- Give users access to build custom forms - without touching site Blueprints
+- Simplified UI so that clients can easily manage forms themselves
 
 ## How to Install
 
@@ -20,4 +20,12 @@ composer require addonfoundry/flexible-forms
 
 ## How to Use
 
-Here's where you can explain how to use this wonderful addon.
+Once installed Flexible Forms will be available in the control panel.
+
+This addon leverages Statamic's underlying form functionaltiy so any existing forms will already be available in Flexible Forms.
+
+Any forms created in Flexible Forms are also available in your site Blueprints and Statamic Forms.
+
+## License
+
+TBC

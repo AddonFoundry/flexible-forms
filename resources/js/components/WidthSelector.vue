@@ -33,7 +33,7 @@ export default {
       return {
           isHovering: false,
           hoveringOver: null,
-          widths: this.initialWidths ?? [33, 50, 66, 100]
+          widths: this.initialWidths ?? [25, 33, 50, 66, 75, 100]
       }
   },
 
