@@ -491,15 +491,18 @@
           const dataUpper = data.charAt(0).toUpperCase() + data.slice(1);
   
           let extraData = '';
+          let inputType = null;
+
           if(dataUpper == 'Text') {
             extraData = ' Field';
+            inputType = 'text';
           }
   
           const newData = {
             handle: data + "_field",
             type: "inline",
             config: {
-              //input_type: "text",
+              input_type: inputType,
               //antlers: false,
               type: data,
               display: dataUpper + extraData,

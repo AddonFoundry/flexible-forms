@@ -183,10 +183,10 @@
                 </div>
               </div>
               <div class="btn-group flex">
-                <button @click="setInputType('text')" class="btn btn-sm flex w-full justify-center items-center" :class="{ 'active': dirtyField.config.input_type == 'text' }">text</button>
-                <button @click="setInputType('email')" class="btn btn-sm flex w-full justify-center items-center" :class="{ 'active': dirtyField.config.input_type == 'email' }">email</button>
-                <button @click="setInputType('tel')" class="btn btn-sm flex w-full justify-center items-center" :class="{ 'active': dirtyField.config.input_type == 'tel' }">tel</button>
-                <button @click="setInputType('date')" class="btn btn-sm flex w-full justify-center items-center" :class="{ 'active': dirtyField.config.input_type == 'date' }">date</button>
+                <button @click="setInputType('text')" class="btn btn-sm flex w-full justify-center items-center" :class="{ 'active': dirtyField.config.input_type === 'text' }">text</button>
+                <button @click="setInputType('email')" class="btn btn-sm flex w-full justify-center items-center" :class="{ 'active': dirtyField.config.input_type === 'email' }">email</button>
+                <button @click="setInputType('tel')" class="btn btn-sm flex w-full justify-center items-center" :class="{ 'active': dirtyField.config.input_type === 'tel' }">tel</button>
+                <button @click="setInputType('date')" class="btn btn-sm flex w-full justify-center items-center" :class="{ 'active': dirtyField.config.input_type === 'date' }">date</button>
               </div>
             </div>
 
