@@ -52,7 +52,7 @@
                         </svg>
                       </template>
                       <template v-else-if="field.config.type == 'textarea'">
-                        <svg class="mr-1 h-3 flex-none v-popper--has-tooltip" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="mr-1 h-3 flex-none v-popper--has-tooltip" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg" v-tooltip="field.handle">
                           <path d="M16 16L2 16C1.44771 16 1 15.5523 1 15L0.999999 2C0.999999 1.44772 1.44771 1 2 1L16 1C16.5523 1 17 1.44771 17 2L17 15C17 15.5523 16.5523 16 16 16Z" stroke="#1C2E36" stroke-width="2"/>
                           <path d="M9.4248 13.9698L14.6973 8.69739" stroke="#1C2E36" stroke-width="1.6" stroke-linecap="round"/>
                           <path d="M12.6973 13.7577L14.6973 11.7577" stroke="#1C2E36" stroke-width="1.6" stroke-linecap="round"/>
@@ -201,24 +201,22 @@
                 <div class="blueprint-drag-handle w-6"></div>
               </div>
             </div>
-  
-            <!--
+
             <div class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="toggle">
               <div class="blueprint-section-field-inner custom-background-grey">
                 <div class="flex flex-1 items-center justify-between">
                   <div class="flex items-center flex-1 pr-4 py-1 pl-1">
-                    <svg class="mr-1 w-4 flex-none v-popper--has-tooltip" viewBox="0 0 16 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg class="mr-1 w-3 flex-none v-popper--has-tooltip" viewBox="0 0 16 9" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <rect width="16" height="8.8" rx="4.4" fill="#19292f"/>
                       <rect x="8" y="0.799988" width="7.2" height="7.2" rx="3.6" fill="white"/>
                     </svg>
-                    <p class="break-all text-12 font-semibold ml-2 hover:text-black">Toggle</p>
+                    <p class="break-all text-12 font-semibold ml-1 hover:text-black">Toggle</p>
                   </div>
                 </div>
                 <div class="blueprint-drag-handle w-6"></div>
               </div>
             </div>
-            -->
-  
+
             <div class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="integer">
               <div class="blueprint-section-field-inner custom-background-grey">
                 <div class="flex flex-1 items-center justify-between">
@@ -361,6 +359,8 @@
 
       updateField(updatedField) {
 
+        //console.log(updatedField);
+
         let index = this.blueprint.tabs[0].sections[0].fields.findIndex(field => field._id === updatedField._id);
         this.blueprint.tabs[0].sections[0].fields[index] = updatedField;
 
@@ -479,6 +479,8 @@
           //event.target.appendChild(draggedElement);
           // Add any necessary drop logic
           // alert(data); 
+
+          const newId = this.fields.length;
   
           const dataUpper = data.charAt(0).toUpperCase() + data.slice(1);
   
@@ -505,7 +507,7 @@
             },
             fieldtype: data,
             icon: "text",
-            _id: "main-0-0"
+            _id: "main-0-" + newId // this is the issue
           };
   
           this.fields.push(newData);
