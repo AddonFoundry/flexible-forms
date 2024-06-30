@@ -1,18 +1,13 @@
 <template>
-
-  <div>
-
-  <publish-container>
-  
-    <div class="blueprint-builder @container">
-
+  <section>
+    <publish-container>
+      <div class="blueprint-builder @container">
         <header class="mb-6">
-            <div class="flex items-center justify-between">
-                <h1 v-text="__('Form Builder')" />
-                <button type="submit" class="btn-primary" @click.prevent="save" v-text="__('Save')" />
-            </div>
+          <div class="flex items-center justify-between">
+            <h1 v-text="__('Form Builder')" />
+            <button type="submit" class="btn-primary" @click.prevent="save" v-text="__('Save')" />
+          </div>
         </header>
-  
         <section class="card inline-flex mt-5 mb-2 p-0 rounded-md px-1">
           <span class="inline-flex items-center py-3 px-4 text-sm font-semibold rounded-md" style="color:#2995ef;">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.33333 2H3C2.44772 2 2 2.44772 2 3V13C2 13.5523 2.44772 14 3 14H13C13.5523 14 14 13.5523 14 13V8.35294" stroke="#2995ef" stroke-linecap="round"></path><path d="M8.067 10.1593L13.8605 4.36403C13.946 4.27851 14 4.15248 14 4.02195C14 3.90742 13.9585 3.7889 13.86 3.69088L12.3025 2.13853C12.21 2.04601 12.088 2 11.9665 2C11.845 2 11.7235 2.04601 11.6305 2.13853L5.8275 7.92282C5.543 8.80451 5.05 10.3349 5.0145 10.4639C5.0045 10.5014 5 10.5389 5 10.5759C5 10.8065 5.1745 11 5.3825 11C5.638 11 5.878 10.9055 8.067 10.1593ZM6.432 8.48794L7.5005 9.55668L5.9165 10.0798L6.432 8.48794ZM6.9095 7.90481L11.9665 2.86419L13.134 4.02795L8.0845 9.07957L6.9095 7.90481Z" fill="#2995ef"></path></svg>
@@ -27,21 +22,15 @@
             <span class="ml-2">Form Settings</span>
           </a>
         </section>
-  
         <section class="flex justify-between">
           <div class="card w-63 bg-white pt-8 pb-6 px-8 rounded-md">
             <p class="text-lg font-semibold">{{ slugToTitleCase(blueprint.handle) }}</p>
             <p class="text-12 text-gray-600 mt-0.5 mb-5">Drag form fields to reorder them or click on a field to edit it.</p>
-  
             <!-- errors -->
             <div v-if="errors" v-for="(error, index) in errors.tabs" class="form-errors">
               <p>{{ error }}</p>
             </div>
-  
-            
             <div class="blueprint-section-draggable-zone -mx-1 flex flex-wrap flex-1">
-            
-  
               <div v-if="fields" v-for="(field, index) in fields" class="blueprint-section-field orderable mb-3" :class="widthClass(field)" :key="field._id">
                 <div class="blueprint-section-field-inner custom-background-grey">
                   <div class="flex flex-1 items-center justify-between">
@@ -88,7 +77,6 @@
                           <rect x="0.187988" y="12.2696" width="6.6665" height="1.69043" fill="#19292f"/>
                         </svg>
                       </template>
-                      <!--
                       <template v-else-if="field.config.type == 'assets'">
                         <svg class="mr-1 w-3 flex-none v-popper--has-tooltip" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path fill-rule="evenodd" clip-rule="evenodd" d="M16 2H2L2 15H16V2ZM2 0C0.895431 0 0 0.89543 0 2V15C0 16.1046 0.89543 17 2 17H16C17.1046 17 18 16.1046 18 15V2C18 0.895431 17.1046 0 16 0H2Z" fill="#19292f"/>
@@ -96,39 +84,22 @@
                           <path fill-rule="evenodd" clip-rule="evenodd" d="M6.25781 6.66217C7.05442 6.66217 7.7002 6.01639 7.7002 5.21979C7.7002 4.42318 7.05442 3.7774 6.25781 3.7774C5.46121 3.7774 4.81543 4.42318 4.81543 5.21979C4.81543 6.01639 5.46121 6.66217 6.25781 6.66217ZM6.25781 7.66217C7.6067 7.66217 8.7002 6.56868 8.7002 5.21979C8.7002 3.8709 7.6067 2.7774 6.25781 2.7774C4.90892 2.7774 3.81543 3.8709 3.81543 5.21979C3.81543 6.56868 4.90892 7.66217 6.25781 7.66217Z" fill="#19292f"/>
                         </svg>
                       </template>
-                      -->
-                      
-
                       <a @click="editField(index, $event)" class="break-all text-12 font-semibold ml-1">{{ field.config.display }}</a>
                     </div>
                   </div>
-                  
                   <width-selector v-if="!isHidden" v-model="field.config.width" class="rtl:ml-2 ltr:mr-2" />
-  
                   <div class="blueprint-drag-handle w-5"></div>
                   <button class="text-gray-600 hover:text-gray-950 flex items-center v-popper--has-tooltip ml-2" @click="removeField(index)"><svg viewBox="0 0 16 16" class="h-3.5 w-3.5"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M1 3h14M9.5 1h-3a1 1 0 0 0-1 1v1h5V2a1 1 0 0 0-1-1zm-3 10.5v-5m3 5v-5m3.077 7.583a1 1 0 0 1-.997.917H4.42a1 1 0 0 1-.996-.917L2.5 3h11l-.923 11.083z"></path></svg></button>
-  
-  
-              
-  
                 </div>
-              </div>
-  
-    
-  
-          </div>
-  
-  
+              </div>  
+            </div>  
             <div data-tab="main" data-section="main-0" class="-mx-1 mt-2 mb-10" tabindex="0" @dragover="dragOver" @drop="drop">
               <div class="text-2xs text-gray-600 text-center border border-dashed rounded mb-2 p-6">Drag form fields here</div>
             </div>
-  
           </div>
           <div class="card w-35 bg-white p-6 rounded-md">
-            
             <p class="text-lg font-semibold">Available Fields</p>
             <p class="text-12 text-gray-600 mt-0.5 mb-5">Drag form fields into the form to start building.</p>
-  
             <div class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="text">
               <div class="blueprint-section-field-inner custom-background-grey">
                 <div class="flex flex-1 items-center justify-between">
@@ -142,7 +113,6 @@
                 <div class="blueprint-drag-handle w-6"></div>
               </div>
             </div>
-  
             <div class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="textarea">
               <div class="blueprint-section-field-inner custom-background-grey">
                 <div class="flex flex-1 items-center justify-between">
@@ -158,7 +128,6 @@
                 <div class="blueprint-drag-handle w-6"></div>
               </div>
             </div>
-  
             <div class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="select">
               <div class="blueprint-section-field-inner custom-background-grey">
                 <div class="flex flex-1 items-center justify-between">
@@ -173,7 +142,6 @@
                 <div class="blueprint-drag-handle w-6"></div>
               </div>
             </div>
-  
             <div class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="checkboxes">
               <div class="blueprint-section-field-inner custom-background-grey">
                 <div class="flex flex-1 items-center justify-between">
@@ -188,7 +156,6 @@
                 <div class="blueprint-drag-handle w-6"></div>
               </div>
             </div>
-  
             <div class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="radio">
               <div class="blueprint-section-field-inner custom-background-grey">
                 <div class="flex flex-1 items-center justify-between">
@@ -203,7 +170,6 @@
                 <div class="blueprint-drag-handle w-6"></div>
               </div>
             </div>
-
             <div class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="toggle">
               <div class="blueprint-section-field-inner custom-background-grey">
                 <div class="flex flex-1 items-center justify-between">
@@ -218,7 +184,6 @@
                 <div class="blueprint-drag-handle w-6"></div>
               </div>
             </div>
-
             <div class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="integer">
               <div class="blueprint-section-field-inner custom-background-grey">
                 <div class="flex flex-1 items-center justify-between">
@@ -233,9 +198,6 @@
                 <div class="blueprint-drag-handle w-6"></div>
               </div>
             </div>
-  
-            <!--
-            
             <div class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="assets">
               <div class="blueprint-section-field-inner custom-background-grey">
                 <div class="flex flex-1 items-center justify-between">
@@ -251,85 +213,62 @@
                 <div class="blueprint-drag-handle w-6"></div>
               </div>
             </div>
-
-            -->
-  
           </div>
         </section>
-  
       </div>
-  
     </publish-container>
-
     <field-stack :blueprint="blueprint" :currentField="currentField" :isEditing="isEditing" @fieldModified="updateField"></field-stack>
+  </section>  
+</template>
 
-
-    </div>
-  
-  </template>
-  
-  <script>
+<script>
   
   import {Sortable, Plugins} from '@shopify/draggable';
   import WidthSelector from './WidthSelector.vue';
   import FieldStack from './FieldStack.vue';
 
   export default {
-
     props: {
-        action: String,
-        initialBlueprint: Object,
-        showTitle: Boolean,
-        isFormBlueprint: { type: Boolean, default: false },
-        showHidden: { type: Boolean, default: true },
+      action: String,
+      initialBlueprint: Object,
+      showTitle: Boolean,
+      isFormBlueprint: { type: Boolean, default: false },
+      showHidden: { type: Boolean, default: true },
     },
-
     components: {
-          FieldStack,
-          WidthSelector,
-      },
-  
+      FieldStack,
+      WidthSelector,
+    },
     data() {
-        return {
-            blueprint: this.initializeBlueprint(),
-            errors: {},
-            fields: [],
-            sortableFields: null,
-            isSelectingNewFieldtype: false,
-            pendingCreatedField: null,
-            pageUrl: null,
-            isEditing: false,
-            currentField: null,     
+      return {
+        blueprint: this.initializeBlueprint(),
+        errors: {},
+        fields: [],
+        sortableFields: null,
+        isSelectingNewFieldtype: false,
+        pendingCreatedField: null,
+        pageUrl: null,
+        isEditing: false,
+        currentField: null,     
       }
     },
-  
     created() {
-        this.$keys.bindGlobal(['mod+s'], e => {
-            e.preventDefault();
-            this.save();
-        });
-  
-        if (this.isFormBlueprint) {
-            Statamic.$config.set('isFormBlueprint', true);
-        }
-  
-        this.fields = this.blueprint.tabs[0].sections[0].fields;
-  
-        this.$events.$on('event.close-stack', this.editorClosed);
-
+      this.$keys.bindGlobal(['mod+s'], e => {
+        e.preventDefault();
+        this.save();
+      });
+      if (this.isFormBlueprint) {
+        Statamic.$config.set('isFormBlueprint', true);
+      }
+      this.fields = this.blueprint.tabs[0].sections[0].fields;
+      this.$events.$on('event.close-stack', this.editorClosed);
     },
-  
+
     mounted() {
-      //this.fields = this.blueprint.tabs[0].sections[0].fields;
-      this.makeFieldsSortable();
-  
+      this.makeFieldsSortable();  
       this.pageUrl = window.location.href.replace(/\/[^/]*$/, '');
-
     },
-  
     computed: {
-    
-  
       widthClass() {
         return (field) => {
           if (field && field.config && field.config.width) {
@@ -339,191 +278,119 @@
           return 'blueprint-section-field-w-full';
         };
       },
-  
     },
-  
     destroyed() {
       if (this.sortableFields) this.sortableFields.destroy();
     },
-  
     watch: {
-  
-        blueprint: {
-            deep: true,
-            handler() {
-                this.$dirty.add('blueprints');
-            }
-        },
-  
+      blueprint: {
+        deep: true,
+        handler() {
+            this.$dirty.add('blueprints');
+        }
+      },
     },
-  
     methods: {
-
       editorClosed() {
         this.isEditing = false;
       },
-
       updateField(updatedField) {
-
-        //console.log(updatedField);
-
         let index = this.blueprint.tabs[0].sections[0].fields.findIndex(field => field._id === updatedField._id);
         this.blueprint.tabs[0].sections[0].fields[index] = updatedField;
-
       },
   
       editField(index) {
-
-        //let fieldId = this.blueprint.tabs[0].sections[0].fields[index]._id;
-
-        //this.$events.$emit('field-editing', fieldId)
-          
-          // TBC
-  
-          //let fieldId = this.blueprint.tabs[0].sections[0].fields[index]._id;
-
-          //console.log(fieldId);
-  
-          this.currentField = this.blueprint.tabs[0].sections[0].fields[index]; // make this dirty
-  
-          this.isEditing = true;
-          
-
-          //console.log(fieldId + ' - ' + this.isEditing);
-  
-          
-  
-          //this.$emit('field-editing', fieldId);
-  
-          // @edit="$emit('field-editing', field._id)"
-  
-        },
-  
-  
-        makeFieldsSortable() {
-            if (this.sortableFields) this.sortableFields.destroy();
-            
-  
-            this.sortableFields = new Sortable(this.$el.querySelectorAll('.blueprint-section-draggable-zone'), {
-                draggable: '.blueprint-section-field',
-                handle: '.blueprint-drag-handle',
-                mirror: { constrainDimensions: true, appendTo: 'body' },
-            })
-            //.on('drag:start', e => this.lastInteractedTab = this.currentTab)
-            //.on('drag:stop', e => this.lastInteractedTab = null)
-            .on('sortable:stop', e => this.fieldHasBeenDropped(e));
-        },
-  
-         fieldHasBeenDropped(e) {
-  
-            let newIndex = e.newIndex;  
-  
-            const field = this.fields.splice(e.oldIndex, 1)[0];
-            this.fields.splice(newIndex, 0, field);
-  
-            //this.$forceUpdate();
-          
-            this.$nextTick(() => this.makeFieldsSortable());
-            
-        },
-  
-  
-  
-        initializeBlueprint() {
-            let blueprint = clone(this.initialBlueprint);
-  
-            if (! this.showTitle) delete blueprint.title;
-  
-            return blueprint;
-        },
-  
-        tabsUpdated(tabs) {
-            this.blueprint.tabs = tabs;
-        },
-  
-        save() {
-            // this.$axios[this.method](this.action, this.fieldset)
-            this.$axios['patch'](this.action, this.blueprint)
-                .then(response => this.saved(response))
-                .catch(e => {
-                    this.$toast.error(e.response.data.message);
-                    this.errors = e.response.data.errors;
-                })
-        },
-  
-        saved(response) {
-            this.$toast.success(__('Saved'));
-            this.errors = {};
-            this.$dirty.remove('blueprints');
-        },
-  
-        removeField(index) {
-            this.blueprint.tabs[0].sections[0].fields.splice(index, 1);
-            this.$toast.success(__('Field removed'));
-            this.errors = {};
-        },
-        
-        slugToTitleCase(slug) {
-          let words = slug.replace(/[-_]/g, ' ').split(' ');
-          words = words.map(word => word.charAt(0).toUpperCase() + word.slice(1));
-          return words.join(' ');
-        },
-  
-        dragStart(event) {
-          event.dataTransfer.setData('text/plain', event.target.dataset.field);
-        // Add any other necessary drag start logic
-        },
-  
-        dragOver(event) {
-          event.preventDefault();
-        },
-  
-        drop(event) {
-          event.preventDefault(); // Prevent default behavior to allow drop
-          const data = event.dataTransfer.getData('text/plain');
-          //const draggedElement = document.getElementById(data);
-          //event.target.appendChild(draggedElement);
-          // Add any necessary drop logic
-          // alert(data); 
-
-          const newId = this.fields.length;
-  
-          const dataUpper = data.charAt(0).toUpperCase() + data.slice(1);
-  
-          let extraData = '';
-          let inputType = null;
-
-          if(dataUpper == 'Text') {
-            extraData = ' Field';
-            inputType = 'text';
-          }
-  
-          const newData = {
-            handle: data + "_field",
-            type: "inline",
-            config: {
-              input_type: inputType,
-              //antlers: false,
-              type: data,
-              display: dataUpper + extraData,
-              //listable: "hidden",
-              //instructions_position: "above",
-              //visibility: "visible",
-              //replicator_preview: true,
-              //hide_display: false,
-              width: 100,
-              //localizable: false
-            },
-            fieldtype: data,
-            icon: "text",
-            _id: "main-0-" + newId // this is the issue
-          };
-  
-          this.fields.push(newData);
-  
-          this.$toast.success(__('Field added'));
-  
+        this.currentField = this.blueprint.tabs[0].sections[0].fields[index];
+        this.isEditing = true;
+      },
+      makeFieldsSortable() {
+        if (this.sortableFields) this.sortableFields.destroy();
+        this.sortableFields = new Sortable(this.$el.querySelectorAll('.blueprint-section-draggable-zone'), {
+            draggable: '.blueprint-section-field',
+            handle: '.blueprint-drag-handle',
+            mirror: { constrainDimensions: true, appendTo: 'body' },
+        })
+        //.on('drag:start', e => this.lastInteractedTab = this.currentTab)
+        //.on('drag:stop', e => this.lastInteractedTab = null)
+        .on('sortable:stop', e => this.fieldHasBeenDropped(e));
+      },
+      fieldHasBeenDropped(e) {
+        let newIndex = e.newIndex;  
+        const field = this.fields.splice(e.oldIndex, 1)[0];
+        this.fields.splice(newIndex, 0, field);
+        this.$nextTick(() => this.makeFieldsSortable());
+      },
+      initializeBlueprint() {
+        let blueprint = clone(this.initialBlueprint);
+        if (! this.showTitle) delete blueprint.title;
+        return blueprint;
+      },
+      tabsUpdated(tabs) {
+        this.blueprint.tabs = tabs;
+      },
+      save() {
+        this.$axios['patch'](this.action, this.blueprint)
+        .then(response => this.saved(response))
+        .catch(e => {
+          this.$toast.error(e.response.data.message);
+          this.errors = e.response.data.errors;
+        })
+      },
+      saved(response) {
+        this.$toast.success(__('Saved'));
+        this.errors = {};
+        this.$dirty.remove('blueprints');
+      },
+      removeField(index) {
+          this.blueprint.tabs[0].sections[0].fields.splice(index, 1);
+          this.$toast.success(__('Field removed'));
+          this.errors = {};
+      },
+      slugToTitleCase(slug) {
+        let words = slug.replace(/[-_]/g, ' ').split(' ');
+        words = words.map(word => word.charAt(0).toUpperCase() + word.slice(1));
+        return words.join(' ');
+      },
+      dragStart(event) {
+        event.dataTransfer.setData('text/plain', event.target.dataset.field);
+      },
+      dragOver(event) {
+        event.preventDefault();
+      },
+      drop(event) {
+        event.preventDefault();
+        const data = event.dataTransfer.getData('text/plain');
+        const newId = this.fields.length;
+        const dataUpper = data.charAt(0).toUpperCase() + data.slice(1);
+        let extraData = '';
+        let inputType = null;
+        if(dataUpper == 'Text') {
+          extraData = ' Field';
+          inputType = 'text';
         }
+        const newData = {
+          handle: data + "_field",
+          type: "inline",
+          config: {
+            input_type: inputType,
+            //antlers: false,
+            type: data,
+            display: dataUpper + extraData,
+            //listable: "hidden",
+            //instructions_position: "above",
+            //visibility: "visible",
+            //replicator_preview: true,
+            //hide_display: false,
+            width: 100,
+            //localizable: false
+          },
+          fieldtype: data,
+          icon: "text",
+          _id: "main-0-" + newId
+        };
+        this.fields.push(newData);
+        this.$toast.success(__('Field added'));
+      }
   
     }
   

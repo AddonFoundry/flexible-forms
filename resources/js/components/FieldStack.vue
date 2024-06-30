@@ -49,7 +49,6 @@
                 <rect x="0.187988" y="12.2696" width="6.6665" height="1.69043" fill="#19292f"/>
               </svg>
 						</template>
-						<!--
             <template v-else-if="currentField.config.type == 'assets'">
 							<svg class="mr-2 w-3 flex-none v-popper--has-tooltip" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg" v-tooltip="currentField.handle">
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M16 2H2L2 15H16V2ZM2 0C0.895431 0 0 0.89543 0 2V15C0 16.1046 0.89543 17 2 17H16C17.1046 17 18 16.1046 18 15V2C18 0.895431 17.1046 0 16 0H2Z" fill="#19292f"/>
@@ -57,7 +56,6 @@
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M6.25781 6.66217C7.05442 6.66217 7.7002 6.01639 7.7002 5.21979C7.7002 4.42318 7.05442 3.7774 6.25781 3.7774C5.46121 3.7774 4.81543 4.42318 4.81543 5.21979C4.81543 6.01639 5.46121 6.66217 6.25781 6.66217ZM6.25781 7.66217C7.6067 7.66217 8.7002 6.56868 8.7002 5.21979C8.7002 3.8709 7.6067 2.7774 6.25781 2.7774C4.90892 2.7774 3.81543 3.8709 3.81543 5.21979C3.81543 6.56868 4.90892 7.66217 6.25781 7.66217Z" fill="#19292f"/>
               </svg>
 						</template>
-            -->
 						{{ dirtyField.config.type }}
 					</small>
 				</h1>
@@ -68,16 +66,12 @@
 				</button>
 				<button @click.prevent="applyChanges()" class="btn-primary">Apply</button>
 			</header>
-
+      <!-- Common -->
       <div class="publish-sections-section mt-6 mb-6">
-
         <div class="p-0 m-4 card">
-
           <header class="publish-section-header @container"><div class="publish-section-header-inner"><label class="text-base font-semibold">Common</label></div></header>
-
           <div class="publish-fields @container">
-
-
+            <!-- Display Label -->
             <div class="form-group publish-field publish-field__display field_display-fieldtype config-field">
               <div class="field-inner">
                 <label for="field_display" class="publish-field-label">
@@ -96,20 +90,16 @@
               <div class="flex items-center">
                 <div class="input-group">
                   <input id="field_display" name="display" type="text" class="input-text" v-model="dirtyField.config.display">
-                  
                   <button v-if="dirtyField.config.hide_display" @click="dirtyField.config.hide_display = false" v-tooltip="'Hidden'" class="input-group-append flex items-center v-popper--has-tooltip">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 text-gray-100"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M.91 12.59a1 1 0 0 1 0-1.18C2.11 9.8 5.9 5.5 12 5.5s9.89 4.3 11.09 5.91a1 1 0 0 1 0 1.18c-1.2 1.61-5 5.91-11.09 5.91S2.11 14.2.91 12.59Z"></path><path d="M7.76 13.5A4.38 4.38 0 0 1 7.5 12 4.49 4.49 0 0 1 12 7.5a4.38 4.38 0 0 1 1.5.26M15.18 8.82a4.5 4.5 0 1 1-6.36 6.36M17 7 6.75 17.25"></path></g></svg>
                   </button>
                   <button v-else @click="dirtyField.config.hide_display = true" v-tooltip="'Visible'" class="input-group-append flex items-center v-popper--has-tooltip">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 text-gray-500"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M.91 12.59a1 1 0 0 1 0-1.18C2.11 9.8 5.9 5.5 12 5.5s9.89 4.3 11.09 5.91a1 1 0 0 1 0 1.18c-1.2 1.61-5 5.91-11.09 5.91S2.11 14.2.91 12.59Z"></path><path d="M7.76 13.5A4.38 4.38 0 0 1 7.5 12 4.49 4.49 0 0 1 12 7.5a4.38 4.38 0 0 1 1.5.26M15.18 8.82a4.5 4.5 0 1 1-6.36 6.36M17 7 6.75 17.25"></path></g></svg>
                   </button>
-                
                 </div>
               </div>
             </div>
-
-            
-
+            <!-- Handle -->
             <div class="form-group publish-field publish-field__handle slug-fieldtype config-field">
               <div class="field-inner">
                 <label for="field_handle" class="publish-field-label">
@@ -147,21 +137,14 @@
                 </div>
               </div>
             </div>
-
-
           </div>
         </div>
-
       </div>
-
-
+      <!-- Input Behaviour -->
       <div class="publish-sections-section mb-6">
         <div class="p-0 m-4 card">
-
           <header class="publish-section-header @container"><div class="publish-section-header-inner"><label class="text-base font-semibold">Input Behavior</label></div></header>
-
           <div class="publish-fields @container">
-
             <!-- Input Type -->
             <div v-if="currentField.fieldtype == 'text'" class="form-group publish-field publish-field__input_type select-fieldtype config-field">
               <div class="field-inner">
@@ -189,7 +172,6 @@
                 <button @click="setInputType('date')" class="btn btn-sm flex w-full justify-center items-center" :class="{ 'active': dirtyField.config.input_type === 'date' }">date</button>
               </div>
             </div>
-
             <!-- Placeholder -->
             <div class="form-group publish-field publish-field__placeholder text-fieldtype config-field">
               <div class="field-inner">
@@ -216,7 +198,6 @@
                 </div>
               </div>
             </div>
-
             <!-- Default Value -->
             <div class="form-group publish-field publish-field__default text-fieldtype config-field">
               <div class="field-inner">
@@ -243,29 +224,15 @@
                 </div>
               </div>
             </div>
-
           </div>
-
         </div>
       </div>
-
-
-
-      <!-- 
-        
-        TODO: condtional fields here for adding:
-      
-        - Assets
-
-      -->
-
+      <!-- Options -->
       <div v-if="dirtyField.fieldtype === 'select' || dirtyField.fieldtype === 'checkboxes' || dirtyField.fieldtype === 'radio'" class="publish-sections-section mb-6">
         <div class="p-0 m-4 card">
-
           <header class="publish-section-header @container"><div class="publish-section-header-inner"><label class="text-base font-semibold">Options</label></div></header>
-
           <div class="publish-fields @container">
-
+            <!-- Options -->
             <div class="form-group publish-field publish-field__options array-fieldtype config-field">
               <div class="field-inner">
                 <label for="field_options" class="publish-field-label">
@@ -296,7 +263,6 @@
                         <th class="row-controls"></th>
                       </tr>
                     </thead>
-
                     <tbody tabindex="0" class="blueprint-section-draggable-zone">
                       <tr v-for="(option, index) in options" :key="index" class="blueprint-section-field orderable">
                         <td><input type="text" class="input-text font-bold" v-model="option.key"></td>
@@ -306,38 +272,113 @@
                         </td>
                       </tr>
                     </tbody>
-
-
                   </table>
                   <button @click="addOption()" class="btn">Add Option</button>
-
-                  
-
                 </div>
-
               </div>
-
               <p v-if="errorMessage" class="help-block text-red-500 mt-2 mb-0">{{ errorMessage }}</p>
-
             </div>
-
-
           </div>
-
         </div>
       </div>
-
-
-
-
-
+      <!-- Asset Field -->
+      <div v-if="dirtyField.fieldtype === 'assets'" class="publish-sections-section mb-6 relative z-1">
+        <div class="p-0 m-4 card">
+          <header class="publish-section-header @container"><div class="publish-section-header-inner"><label class="text-base font-semibold">Assets Field</label></div></header>
+          <div class="publish-fields @container">
+            <!-- Max Files -->
+            <div class="form-group publish-field publish-field__max_files integer-fieldtype config-field">
+              <div class="field-inner">
+                  <label for="field_max_files" class="publish-field-label">
+                      <span class="rtl:ml-1 ltr:mr-1 v-popper--has-tooltip">Max Files</span>
+                      <button class="outline-none" style="display: none;">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4 rtl:ml-1.5 ltr:mr-1.5 mb-1 text-gray-600 v-popper--has-tooltip">
+                              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.082 9.5A4.47 4.47 0 0 0 6.75 8h-1.5a4.5 4.5 0 0 0 0 9h1.5a4.474 4.474 0 0 0 3.332-1.5m3.836-6A4.469 4.469 0 0 1 17.25 8h1.5a4.5 4.5 0 1 1 0 9h-1.5a4.472 4.472 0 0 1-3.332-1.5M6.75 12.499h10.5"></path>
+                          </svg>
+                      </button>
+                      <button class="outline-none" style="display: none;">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4 rtl:ml-1.5 ltr:mr-1.5 mb-1 text-gray-600 v-popper--has-tooltip">
+                              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16.5 15.749h1.875A3.963 3.963 0 0 0 22.5 12h0a3.962 3.962 0 0 0-4.125-3.75H16.5m-9 7.499H5.625A3.963 3.963 0 0 1 1.5 12h0a3.963 3.963 0 0 1 4.125-3.75H7.5M12 5.249v-4.5m-3 4.5-1.5-1.5m7.5 1.5 1.5-1.5m-4.5 15v4.5m-3-4.5-1.5 1.5m7.5-1.5 1.5 1.5"></path>
+                          </svg>
+                      </button>
+                  </label>
+                  <div class="help-block -mt-2">
+                      <p>Set a maximum number of selectable assets.</p>
+                  </div>
+              </div>
+              <div class="flex items-center">
+                  <div class="input-group">
+                      <input id="field_max_files" name="max_files" type="number" min="1" class="input-text" v-model="dirtyField.config.max_files">
+                  </div>
+              </div>
+            </div>
+            <!-- Container -->
+            <div class="form-group publish-field publish-field__container relationship-fieldtype config-field">
+              <div class="field-inner">
+                  <label for="field_container" class="publish-field-label">
+                      <span class="rtl:ml-1 ltr:mr-1 v-popper--has-tooltip">Container</span>
+                      <i class="required rtl:ml-1 ltr:mr-1">*</i>
+                      <button class="outline-none" style="display: none;">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4 rtl:ml-1.5 ltr:mr-1.5 mb-1 text-gray-600 v-popper--has-tooltip">
+                              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.082 9.5A4.47 4.47 0 0 0 6.75 8h-1.5a4.5 4.5 0 0 0 0 9h1.5a4.474 4.474 0 0 0 3.332-1.5m3.836-6A4.469 4.469 0 0 1 17.25 8h1.5a4.5 4.5 0 1 1 0 9h-1.5a4.472 4.472 0 0 1-3.332-1.5M6.75 12.499h10.5"></path>
+                          </svg>
+                      </button>
+                      <button class="outline-none" style="display: none;">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4 rtl:ml-1.5 ltr:mr-1.5 mb-1 text-gray-600 v-popper--has-tooltip">
+                              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16.5 15.749h1.875A3.963 3.963 0 0 0 22.5 12h0a3.962 3.962 0 0 0-4.125-3.75H16.5m-9 7.499H5.625A3.963 3.963 0 0 1 1.5 12h0a3.963 3.963 0 0 1 4.125-3.75H7.5M12 5.249v-4.5m-3 4.5-1.5-1.5m7.5 1.5 1.5-1.5m-4.5 15v4.5m-3-4.5-1.5 1.5m7.5-1.5 1.5 1.5"></path>
+                          </svg>
+                      </button>
+                  </label>
+                  <div class="help-block -mt-2">
+                      <p>Choose which asset container to use for this field.</p>
+                  </div>
+              </div>
+              <div class="relationship-input">
+                <div data-v-c80a132c="">
+                  <div data-v-c80a132c="" dir="auto" class="v-select vs--single vs--searchable" :class="{ 'vs--open': toggleContainer }">
+                    <div id="vs14__combobox" role="combobox" aria-expanded="false" aria-owns="vs14__listbox" aria-label="Search for option" class="vs__dropdown-toggle">
+                      <div class="vs__selected-options" @click="toggleContainer = !toggleContainer">
+                        <!-- Placeholder for selected option (if any) -->
+                        <input aria-autocomplete="list" aria-labelledby="vs14__combobox" aria-controls="vs14__listbox" type="search" autocomplete="off" class="vs__search" :value="captilize(dirtyField.config.container)" placeholder="Choose..." readonly>
+                      </div>
+                      <div class="vs__actions">
+                        <button v-if="dirtyField.config.container" @click="clearContainer()" type="button" title="Clear Selected" aria-label="Clear Selected" class="vs__clear"><span>×</span></button>
+                        <span class="toggle vs__open-indicator" role="presentation" @click="toggleContainer = !toggleContainer">
+                          <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 20 20">
+                            <path fill="currentColor" d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"></path>
+                          </svg>
+                        </span>
+                        <div class="vs__spinner" style="display: none;">Loading...</div>
+                      </div>
+                      <ul v-if="containers && containers.length > 0 && toggleContainer" role="listbox" tabindex="-1" class="vs__dropdown-menu">
+                        <li 
+                          v-for="(container, index) in containers" 
+                          :key="container.id" 
+                          @click="setContainer(container.id)" 
+                          class="vs__dropdown-option"
+                          :class="{
+                            'vs__dropdown-option--highlight': highlightedIndex === index,
+                            'vs__dropdown-option--selected': container.id == dirtyField.config.container
+                          }"
+                          @mouseover="highlightedIndex = index"
+                          @mouseleave="highlightedIndex = null"
+                        >
+                          {{ captilize(container.title) }}
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+           </div>
+          </div>
+        </div>
+      </div>
+      <!-- Validation -->
       <div class="publish-sections-section">
         <div class="p-0 m-4 card">
-
           <header class="publish-section-header @container"><div class="publish-section-header-inner"><label class="text-base font-semibold">Validation</label></div></header>
-
           <div class="publish-fields @container">
-
             <!-- Required Validation Toggle -->
             <div class="form-group publish-field publish-field__default text-fieldtype config-field">
               <div class="field-inner">
@@ -367,172 +408,163 @@
                 </div>
               </div>
             </div>
-
           </div>
-
         </div>
       </div>
-
-
 		</div>
 	</stack>
 </template>
 
-
-
 <script>
 
-import {Sortable, Plugins} from '@shopify/draggable';
+//import {Sortable, Plugins} from '@shopify/draggable';
 
 export default {
-
   data() {
-      return {
-          //isEditing: false,
-          dirtyField: null,
-          options: [],
-          errorMessage: '',
-          sortableFields: null,
-        }
+    return {
+      dirtyField: null,
+      options: [],
+      errorMessage: '',
+      sortableFields: null,
+      fieldValue: {},
+      containers: {},
+      toggleContainer: false,
+      highlightedIndex: null,
+    }
   },
   props: ['blueprint', 'currentField', 'isEditing'],
-  mixins: [Fieldtype],
-  mounted() {
-    //this.fields = this.blueprint.tabs[0].sections[0].fields;
-
-    //this.makeFieldsSortable();
-
-  },
   watch: {
     currentField() {
-
       this.dirtyField = JSON.parse(JSON.stringify(this.currentField));
-
       console.log(this.dirtyField);
-
       this.setupOptions();
-
+      if(this.dirtyField.fieldtype == 'assets') {
+        this.assetData();  
+      }
     },
   },
   methods: {
-
-      applyChanges() {
-        //this.currentField = JSON.parse(JSON.stringify(this.dirtyField)); 
-        //this.currentField = { ...this.dirtyField };
-
-        if(this.options && this.options.length > 0) {
-
-          // Check for empty keys
-          for (let option of this.options) {
-            if (!option.key.trim()) {
-              this.errorMessage = "All options must have keys.";
-              this.$toast.error(__('The given data was invalid.'));
-              return;
-            }
-          }
-          
-          // Check for duplicate keys
-          const keys = this.options.map(option => option.key);
-          const uniqueKeys = new Set(keys);
-          if (uniqueKeys.size !== keys.length) {
-            this.errorMessage = "All keys must be unique.";
+    applyChanges() {
+      if(this.options && this.options.length > 0) {
+        // Check for empty keys
+        for (let option of this.options) {
+          if (!option.key.trim()) {
+            this.errorMessage = "All options must have keys.";
             this.$toast.error(__('The given data was invalid.'));
             return;
           }
-
-          this.dirtyField.config.options = this.arrayToObject(this.options);
-
-        } else {
-          this.dirtyField.config.options = null;
+        }          
+        // Check for duplicate keys
+        const keys = this.options.map(option => option.key);
+        const uniqueKeys = new Set(keys);
+        if (uniqueKeys.size !== keys.length) {
+          this.errorMessage = "All keys must be unique.";
+          this.$toast.error(__('The given data was invalid.'));
+          return;
         }
-
-        this.$emit('fieldModified', { ...this.dirtyField });
-        this.$events.$emit('event.close-stack');
-      },
-
-      editorClosed() {
-        //this.dirtyField = JSON.parse(JSON.stringify(this.currentField)); 
-        this.$events.$emit('event.close-stack');
-      },
-
-      updateHandle() {
-        this.dirtyField.handle = this.dirtyField.config.display.toLowerCase().replace(/[^a-z0-9_]/gi, '_');
-      },
-
-      setInputType(type) {
-        this.dirtyField.config.input_type = type;
-      },
-
-      hasRequired() {
-        if (this.dirtyField && this.dirtyField.config && Array.isArray(this.dirtyField.config.validate)) {
-          return this.dirtyField.config.validate.includes('required');
+        this.dirtyField.config.options = this.arrayToObject(this.options);
+      } else {
+        this.dirtyField.config.options = null;
+      }
+      this.$emit('fieldModified', { ...this.dirtyField });
+      this.$events.$emit('event.close-stack');
+    },
+    editorClosed() {
+      this.$events.$emit('event.close-stack');
+    },
+    updateHandle() {
+      this.dirtyField.handle = this.dirtyField.config.display.toLowerCase().replace(/[^a-z0-9_]/gi, '_');
+    },
+    setInputType(type) {
+      this.dirtyField.config.input_type = type;
+    },
+    hasRequired() {
+      if (this.dirtyField && this.dirtyField.config && Array.isArray(this.dirtyField.config.validate)) {
+        return this.dirtyField.config.validate.includes('required');
+      }
+      return false;
+    },
+    toggleRequired() {
+      if(this.hasRequired()) {
+        this.dirtyField.config.validate = this.dirtyField.config.validate.filter(item => item !== 'required');
+      } else {
+        if (!Array.isArray(this.dirtyField.config.validate)) {
+          this.$set(this.dirtyField.config, 'validate', []);
         }
-        return false;
-      },
+        this.dirtyField.config.validate.push('required');
+      }
+      this.hasRequired();
+    },
+    setupOptions() {
+      if (this.dirtyField.config.options) {
+        this.options = this.objectToArray(this.dirtyField.config.options);
+      }
+    },
 
-      toggleRequired() {
-        if(this.hasRequired()) {
-          this.dirtyField.config.validate = this.dirtyField.config.validate.filter(item => item !== 'required');
-        } else {
-          if (!Array.isArray(this.dirtyField.config.validate)) {
-            this.$set(this.dirtyField.config, 'validate', []);
+    objectToArray(obj) {
+      return Object.keys(obj).map(key => ({ key, label: obj[key] }));
+    },
+    arrayToObject(arr) {
+      return arr.reduce((obj, item) => {
+        obj[item.key] = item.label;
+        return obj;
+      }, {});
+    },
+    addOption() {
+      this.options.push({ key: "", label: "" });
+    },
+    removeOption(index) {
+      this.options.splice(index, 1);
+    },
+    captilize(handle) {
+      if(handle) {
+        return handle.charAt(0).toUpperCase() + handle.slice(1);
+      }
+    },
+    setContainer(container) {
+      this.toggleContainer = false;
+      this.dirtyField.config.container = container;
+      this.dirtyField = { ...this.dirtyField }; 
+    },
+    clearContainer() {
+      this.dirtyField.config.container = null;
+      this.dirtyField = { ...this.dirtyField }; 
+    },
+    assetData() {
+      const postData = {
+          type: this.dirtyField.fieldtype,
+          values: this.dirtyField.config,
+      };
+      this.$axios.post('/cp/fields/edit', postData)
+      .then(response => {
+        this.fieldValue = response.data.fieldtype.config[3];
+        this.getContainers();
+      })
+      .catch(error => {
+          if (error.response) {
+              this.$toast.error(error.response.data.message);
+              this.errors = error.response.data.errors;
+          } else {
+              console.error('Error', error.message);
           }
-          this.dirtyField.config.validate.push('required');
+      });
+    },
+    getContainers() {
+      const configParam = utf8btoa(JSON.stringify(this.fieldValue));
+      const url = `/cp/fieldtypes/relationship?config=${configParam}&site=default&paginate=false&columns=title,id`;
+      this.$axios.get(url)
+      .then(response => {
+        this.containers = response.data.data;
+      })
+      .catch(error => {
+        if (error.response) {
+          this.$toast.error(error.response.data.message);
+          this.errors = error.response.data.errors;
+        } else {
+          console.error('Error', error.message);
         }
-        this.hasRequired();
-      },
-
-      // options
-
-      setupOptions() {
-        if (this.dirtyField.config.options) {
-          this.options = this.objectToArray(this.dirtyField.config.options);
-        }
-      },
-
-      objectToArray(obj) {
-        return Object.keys(obj).map(key => ({ key, label: obj[key] }));
-      },
-
-      arrayToObject(arr) {
-        return arr.reduce((obj, item) => {
-          obj[item.key] = item.label;
-          return obj;
-        }, {});
-      },
-
-      addOption() {
-        this.options.push({ key: "", label: "" });
-      },
-
-      removeOption(index) {
-        this.options.splice(index, 1);
-      },
-
-
-      /*
-
-      makeFieldsSortable() {        
-            
-            const draggableZones = this.$refs.draggableZones;
-
-            console.log(draggableZones);
-
-            if (!draggableZones) alert('no draggableZones'); return;
-
-            if (this.sortableFields) this.sortableFields.destroy();
-            
-            this.sortableFields = new Sortable(draggableZones, {
-                draggable: '.blueprint-section-field',
-                handle: '.blueprint-drag-handle',
-                mirror: { constrainDimensions: true, appendTo: 'body' },
-            })
-            .on('sortable:stop', e => this.fieldHasBeenDropped(e));
-        },
-
-      */
-
+      });
+    },
   }
-
 }
 </script>
