@@ -50,10 +50,16 @@
               </svg>
 						</template>
             <template v-else-if="currentField.config.type == 'assets'">
-							<svg class="mr-2 w-3 flex-none v-popper--has-tooltip" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg" v-tooltip="currentField.handle">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M16 2H2L2 15H16V2ZM2 0C0.895431 0 0 0.89543 0 2V15C0 16.1046 0.89543 17 2 17H16C17.1046 17 18 16.1046 18 15V2C18 0.895431 17.1046 0 16 0H2Z" fill="#19292f"/>
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M12.2171 5.71655L17.3976 14.4462L15.6776 15.4669L12.2007 9.60781L7.83258 16.8287L4.79721 12.2231L2.24808 15.5632L0.658203 14.3498L4.91669 8.77002L7.76014 13.0844L12.2171 5.71655Z" fill="#19292f"/>
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M6.25781 6.66217C7.05442 6.66217 7.7002 6.01639 7.7002 5.21979C7.7002 4.42318 7.05442 3.7774 6.25781 3.7774C5.46121 3.7774 4.81543 4.42318 4.81543 5.21979C4.81543 6.01639 5.46121 6.66217 6.25781 6.66217ZM6.25781 7.66217C7.6067 7.66217 8.7002 6.56868 8.7002 5.21979C8.7002 3.8709 7.6067 2.7774 6.25781 2.7774C4.90892 2.7774 3.81543 3.8709 3.81543 5.21979C3.81543 6.56868 4.90892 7.66217 6.25781 7.66217Z" fill="#19292f"/>
+							<svg class="mr-2 w-3 flex-none v-popper--has-tooltip" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg" v-tooltip="currentField.handle">
+                <rect width="17" height="2.61538" fill="#1C2E36"/>
+                <path d="M6.10249 17H10.8974V10.4616H15.6922L8.49992 3.9231L1.30762 10.4616H6.10249V17Z" fill="#1C2E36"/>
+              </svg>
+						</template>
+            <template v-else-if="currentField.config.type == 'spacer'">
+							<svg class="mr-2 w-3 flex-none v-popper--has-tooltip" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect y="15" width="15" height="2" transform="rotate(-90 0 15)" fill="#1C2E36"/>
+                <rect x="14" y="15" width="15" height="2" transform="rotate(-90 14 15)" fill="#1C2E36"/>
+                <path d="M5.85714 11L3 7L5.85714 3V5H10.1429V3L13 7L10.1429 11V9H8.71429H5.85714V11Z" fill="#1C2E36"/>
               </svg>
 						</template>
 						{{ dirtyField.config.type }}
