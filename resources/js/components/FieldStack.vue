@@ -263,14 +263,15 @@
                   <table v-if="options && options.length > 0" class="table-fieldtype-table">
                     <thead>
                       <tr>
-                        <!--<th class="grid-drag-handle-header"></th>-->
+                        <th class="grid-drag-handle-header"></th>
                         <th class="w-1/4">Key</th>
                         <th>Label (Optional)</th>
                         <th class="row-controls"></th>
                       </tr>
                     </thead>
-                    <tbody tabindex="0" class="blueprint-section-draggable-zone">
-                      <tr v-for="(option, index) in options" :key="index" class="blueprint-section-field orderable">
+                    <tbody tabindex="0" class="sortable-options" ref="sortableContainer">
+                      <tr v-for="(option, index) in options" :key="option.sortOrder" class="sortable-row">
+                        <td class="sortable-handle table-drag-handle"></td>
                         <td><input type="text" class="input-text font-bold" v-model="option.key"></td>
                         <td><input type="text" class="input-text" v-model="option.label"></td>
                         <td class="row-controls">
@@ -423,7 +424,7 @@
 
 <script>
 
-//import {Sortable, Plugins} from '@shopify/draggable';
+import {Sortable, Plugins} from '@shopify/draggable';
 
 export default {
   data() {
@@ -443,10 +444,12 @@ export default {
     currentField() {
       this.dirtyField = JSON.parse(JSON.stringify(this.currentField));
       console.log(this.dirtyField);
-      this.setupOptions();
       if(this.dirtyField.fieldtype == 'assets') {
         this.assetData();  
       }
+
+      this.setupOptions();
+
     },
   },
   methods: {
@@ -505,10 +508,23 @@ export default {
       if (this.dirtyField.config.options) {
         this.options = this.objectToArray(this.dirtyField.config.options);
       }
+
+      this.$nextTick(() => {
+        this.$nextTick(() => {
+          if (this.options && this.options.length > 0) {
+            this.makeFieldsSortable();
+          }
+        });
+      });
+
     },
 
     objectToArray(obj) {
-      return Object.keys(obj).map(key => ({ key, label: obj[key] }));
+      return Object.keys(obj).map((key, index) => ({
+        key,
+        label: obj[key],
+        sortOrder: index + 1,
+      }));
     },
     arrayToObject(arr) {
       return arr.reduce((obj, item) => {
@@ -517,7 +533,17 @@ export default {
       }, {});
     },
     addOption() {
-      this.options.push({ key: "", label: "" });
+      const newOption = {
+        key: "",
+        label: "",
+        sortOrder: this.options.length + 1,
+      };
+      this.options.push(newOption);
+
+      this.$nextTick(() => {
+        this.makeFieldsSortable();
+      });
+
     },
     removeOption(index) {
       this.options.splice(index, 1);
@@ -571,6 +597,40 @@ export default {
         }
       });
     },
+
+    makeFieldsSortable() {
+      if (this.sortableFields) this.sortableFields.destroy();
+
+      const sortableContainer = this.$refs.sortableContainer;
+
+      if (sortableContainer) {
+
+      this.sortableFields = new Sortable(sortableContainer, {
+          draggable: '.sortable-row',
+          handle: '.table-drag-handle',
+          mirror: { constrainDimensions: true, appendTo: 'tbody' },
+      })
+      //.on('sortable:start', () => console.log('sortable:start'))
+      //.on('sortable:sort', () => console.log('sortable:sort'))
+      //.on('sortable:sorted', () => console.log('sortable:sorted'))
+      .on('sortable:stop', event => this.fieldHasBeenDropped(event));
+
+    } else {
+      console.warn('Sortable container not found or not ready.');
+    }
+
+      //.on('sortable:stop', e => this.fieldHasBeenDropped(e));
+    },
+
+    fieldHasBeenDropped(event) {
+      const movedItem = this.options.splice(event.oldIndex, 1)[0];
+      this.options.splice(event.newIndex, 0, movedItem);
+      this.$nextTick(() => this.makeFieldsSortable());
+    },
+
+
+
+
   }
 }
 </script>

@@ -113,7 +113,7 @@
                       <svg class="mr-1 h-3 flex-none v-popper--has-tooltip" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M0.351464 0.115555V0H5.99163H11.6485V0.115555L11.8326 2.56148C11.9331 4.16642 11.9888 4.98173 12 5.00741V5.12296H11.3975C10.9958 5.12296 10.795 5.11654 10.795 5.1037C10.795 4.84691 10.7671 4.51309 10.7113 4.10222C10.6444 3.52444 10.5495 3.04938 10.4268 2.67704C10.2594 2.22765 9.97489 1.89383 9.57322 1.67556C9.40586 1.57284 9.18271 1.4958 8.90376 1.44444C8.80335 1.41876 8.51883 1.39951 8.05021 1.38667H7.39749V6.49037V11.6133H8.68619H9.95816V12.3067V13H9.69038L7.71548 12.9615C6.56625 12.9486 5.42259 12.9486 4.28452 12.9615L2.30962 13H2.04184V12.3067V11.6133H3.33054H4.60251V6.49037V1.38667H3.94979C3.48117 1.39951 3.19665 1.41876 3.09623 1.44444C2.57183 1.56 2.17015 1.78469 1.89121 2.11852C1.71269 2.32395 1.56764 2.6321 1.45607 3.04296C1.36681 3.41531 1.29428 3.98667 1.23849 4.75704C1.21618 4.97531 1.20502 5.09086 1.20502 5.1037C1.20502 5.11654 1.00418 5.12296 0.60251 5.12296H0V5.00741L0.1841 2.56148C0.284519 0.956542 0.340307 0.141234 0.351464 0.115555Z" fill="#19292f"/>
                       </svg>
-                    <p class="break-all text-12 font-semibold ml-1 hover:text-black">Text Field</p>
+                    <p class="break-all text-12 font-semibold ml-1 hover:text-black">Text</p>
                   </div>
                 </div>
                 <div class="blueprint-drag-handle w-6"></div>
@@ -382,10 +382,8 @@
         const data = event.dataTransfer.getData('text/plain');
         const newId = this.fields.length;
         const dataUpper = data.charAt(0).toUpperCase() + data.slice(1);
-        let extraData = '';
         let inputType = null;
         if(dataUpper == 'Text') {
-          extraData = ' Field';
           inputType = 'text';
         }
         const newData = {
@@ -395,7 +393,7 @@
             input_type: inputType,
             //antlers: false,
             type: data,
-            display: dataUpper + extraData,
+            display: dataUpper,
             //listable: "hidden",
             //instructions_position: "above",
             //visibility: "visible",
