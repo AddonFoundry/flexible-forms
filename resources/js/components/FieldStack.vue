@@ -505,6 +505,9 @@ export default {
       this.hasRequired();
     },
     setupOptions() {
+
+      this.options = [];
+
       if (this.dirtyField.config.options) {
         this.options = this.objectToArray(this.dirtyField.config.options);
       }

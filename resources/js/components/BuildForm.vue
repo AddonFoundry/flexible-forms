@@ -283,7 +283,6 @@
       this.fields = this.blueprint.tabs[0].sections[0].fields;
       this.$events.$on('event.close-stack', this.editorClosed);
     },
-
     mounted() {
       this.makeFieldsSortable();  
       this.pageUrl = window.location.href.replace(/\/[^/]*$/, '');
@@ -330,8 +329,6 @@
             handle: '.blueprint-drag-handle',
             mirror: { constrainDimensions: true, appendTo: 'body' },
         })
-        //.on('drag:start', e => this.lastInteractedTab = this.currentTab)
-        //.on('drag:stop', e => this.lastInteractedTab = null)
         .on('sortable:stop', e => this.fieldHasBeenDropped(e));
       },
       fieldHasBeenDropped(e) {
@@ -409,8 +406,6 @@
         this.fields.push(newData);
         this.$toast.success(__('Field added'));
       }
-  
     }
-  
   }
   </script>
