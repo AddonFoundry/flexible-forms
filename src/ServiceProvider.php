@@ -15,7 +15,7 @@ class ServiceProvider extends AddonServiceProvider
           'resources/css/cp.css',
       ],
       'publicDirectory' => 'resources/dist',
-    ]; 
+    ];
 
     protected $routes = [
       'cp' => __DIR__.'/../routes/cp.php',
@@ -31,15 +31,15 @@ class ServiceProvider extends AddonServiceProvider
     {
       
       $this->bootNavigation();
-      $this->bootAddonConfig();
+      $this->registerAddonConfig();
 
     }
 
-    protected function bootAddonConfig() {
+    protected function registerAddonConfig() {
 
       $this->publishes([
         __DIR__.'/../config/flexible_forms.php' => config_path('flexible_forms.php'),
-      ], 'config');
+      ], 'flexible-forms-config');
 
       return $this;
 

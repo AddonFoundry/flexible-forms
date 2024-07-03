@@ -106,7 +106,7 @@
           <div class="card w-35 bg-white p-6 rounded-md">
             <p class="text-lg font-semibold">Available Fields</p>
             <p class="text-12 text-gray-600 mt-0.5 mb-5">Drag form fields into the form to start building.</p>
-            <div v-if="!excludeFields.includes('text')" class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="text">
+            <div v-if="!excludeFields || !excludeFields.length > 0 || !excludeFields.includes('text')" class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="text">
               <div class="blueprint-section-field-inner custom-background-grey">
                 <div class="flex flex-1 items-center justify-between">
                   <div class="flex items-center flex-1 pr-4 py-1 pl-1">
@@ -119,7 +119,7 @@
                 <div class="blueprint-drag-handle w-6"></div>
               </div>
             </div>
-            <div v-if="!excludeFields.includes('textarea')" class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="textarea">
+            <div v-if="!excludeFields || !excludeFields.length > 0 || !excludeFields.includes('textarea')" class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="textarea">
               <div class="blueprint-section-field-inner custom-background-grey">
                 <div class="flex flex-1 items-center justify-between">
                   <div class="flex items-center flex-1 pr-4 py-1 pl-1">
@@ -134,7 +134,7 @@
                 <div class="blueprint-drag-handle w-6"></div>
               </div>
             </div>
-            <div v-if="!excludeFields.includes('select')" class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="select">
+            <div v-if="!excludeFields || !excludeFields.length > 0 || !excludeFields.includes('select')" class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="select">
               <div class="blueprint-section-field-inner custom-background-grey">
                 <div class="flex flex-1 items-center justify-between">
                   <div class="flex items-center flex-1 pr-4 py-1 pl-1">
@@ -148,7 +148,7 @@
                 <div class="blueprint-drag-handle w-6"></div>
               </div>
             </div>
-            <div v-if="!excludeFields.includes('checkboxes')" class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="checkboxes">
+            <div v-if="!excludeFields || !excludeFields.length > 0 || !excludeFields.includes('checkboxes')" class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="checkboxes">
               <div class="blueprint-section-field-inner custom-background-grey">
                 <div class="flex flex-1 items-center justify-between">
                   <div class="flex items-center flex-1 pr-4 py-1 pl-1">
@@ -162,7 +162,7 @@
                 <div class="blueprint-drag-handle w-6"></div>
               </div>
             </div>
-            <div class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="radio">
+            <div v-if="!excludeFields || !excludeFields.length > 0 || !excludeFields.includes('radio')" class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="radio">
               <div class="blueprint-section-field-inner custom-background-grey">
                 <div class="flex flex-1 items-center justify-between">
                   <div class="flex items-center flex-1 pr-4 py-1 pl-1">
@@ -176,7 +176,7 @@
                 <div class="blueprint-drag-handle w-6"></div>
               </div>
             </div>
-            <div v-if="!excludeFields.includes('toggle')" class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="toggle">
+            <div v-if="!excludeFields || !excludeFields.length > 0 || !excludeFields.includes('toggle')" class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="toggle">
               <div class="blueprint-section-field-inner custom-background-grey">
                 <div class="flex flex-1 items-center justify-between">
                   <div class="flex items-center flex-1 pr-4 py-1 pl-1">
@@ -190,7 +190,7 @@
                 <div class="blueprint-drag-handle w-6"></div>
               </div>
             </div>
-            <div v-if="!excludeFields.includes('integer')" class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="integer">
+            <div v-if="!excludeFields || !excludeFields.length > 0 || !excludeFields.includes('integer')" class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="integer">
               <div class="blueprint-section-field-inner custom-background-grey">
                 <div class="flex flex-1 items-center justify-between">
                   <div class="flex items-center flex-1 pr-4 py-1 pl-1">
@@ -204,7 +204,7 @@
                 <div class="blueprint-drag-handle w-6"></div>
               </div>
             </div>
-            <div v-if="!excludeFields.includes('assets')" class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="assets">
+            <div v-if="!excludeFields || !excludeFields.length > 0 || !excludeFields.includes('assets')" class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="assets">
               <div class="blueprint-section-field-inner custom-background-grey">
                 <div class="flex flex-1 items-center justify-between">
                   <div class="flex items-center flex-1 pr-4 py-1 pl-1">
@@ -218,7 +218,7 @@
                 <div class="blueprint-drag-handle w-6"></div>
               </div>
             </div>
-            <div v-if="!excludeFields.includes('spacer')" class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="spacer">
+            <div v-if="!excludeFields || !excludeFields.length > 0 || !excludeFields.includes('spacer')" class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="spacer">
               <div class="blueprint-section-field-inner custom-background-grey">
                 <div class="flex flex-1 items-center justify-between">
                   <div class="flex items-center flex-1 pr-4 py-1 pl-1">
