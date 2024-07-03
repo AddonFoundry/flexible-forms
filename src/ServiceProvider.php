@@ -25,6 +25,8 @@ class ServiceProvider extends AddonServiceProvider
       __DIR__.'/../resources/views/partials/form-builder.antlers.php' => '../../../resources/views/partials/form-builder.antlers.php',
     ];
 
+    protected $publishAfterInstall = false;
+
     public function bootAddon()
     {
       
