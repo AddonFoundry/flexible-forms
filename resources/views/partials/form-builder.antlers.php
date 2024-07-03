@@ -1,6 +1,6 @@
 <section class="w-full py-20">
   <div class="w-10/12 max-w-screen-lg mx-auto">
-    {{ form handle="contact_us" }}
+    {{ form handle="your_form_handle" }} <!-- Add or pass in the form handle here -->
       {{ if success }}
         <div class="bg-green-500 text-lg text-white py-3 px-6 rounded-md mx-1">
           {{ success }}
