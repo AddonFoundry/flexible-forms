@@ -23,7 +23,7 @@ class ServiceProvider extends AddonServiceProvider
 
     protected $publishables = [
       __DIR__.'/../resources/views/partials/form-builder.antlers.php' => '../../../resources/views/partials/form-builder.antlers.php',
-      __DIR__.'/../config/flexible_forms.php' => './../../config/flexible_forms.php',
+      __DIR__.'/../config/flexible_forms.php' => '../../../config/flexible_forms.php',
     ];
 
     // protected $publishAfterInstall = false;
