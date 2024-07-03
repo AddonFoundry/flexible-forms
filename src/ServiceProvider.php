@@ -23,25 +23,15 @@ class ServiceProvider extends AddonServiceProvider
 
     protected $publishables = [
       __DIR__.'/../resources/views/partials/form-builder.antlers.php' => '../../../resources/views/partials/form-builder.antlers.php',
+      __DIR__.'/../config/flexible_forms.php' => './../../config/flexible_forms.php',
     ];
 
-    protected $publishAfterInstall = false;
+    // protected $publishAfterInstall = false;
 
     public function bootAddon()
     {
       
       $this->bootNavigation();
-      $this->registerAddonConfig();
-
-    }
-
-    protected function registerAddonConfig() {
-
-      $this->publishes([
-        __DIR__.'/../config/flexible_forms.php' => config_path('flexible_forms.php'),
-      ], 'flexible-forms-config');
-
-      return $this;
 
     }
 
