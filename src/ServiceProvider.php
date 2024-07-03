@@ -17,25 +17,29 @@ class ServiceProvider extends AddonServiceProvider
       'publicDirectory' => 'resources/dist',
     ]; 
 
-    /*
-    protected $styles = [
-      __DIR__.'/../resources/dist/css/cp.css',
-    ];
-
-    protected $scripts = [
-      __DIR__.'/../resources/dist/js/cp.js',
-    ];
-    */
-
     protected $routes = [
       'cp' => __DIR__.'/../routes/cp.php',
     ];
 
+    protected $publishables = [
+      __DIR__.'/../resources/views/partials/form-builder.antlers.php' => '../../../resources/views/partials/form-builder.antlers.php',
+    ];
+
     public function bootAddon()
     {
-        
-      // boot navigation
+      
       $this->bootNavigation();
+      $this->bootAddonConfig();
+
+    }
+
+    protected function bootAddonConfig() {
+
+      $this->publishes([
+        __DIR__.'/../config/flexible_forms.php' => config_path('flexible_forms.php'),
+      ], 'config');
+
+      return $this;
 
     }
 

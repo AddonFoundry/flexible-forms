@@ -56,10 +56,10 @@
               </svg>
 						</template>
             <template v-else-if="currentField.config.type == 'spacer'">
-							<svg class="mr-2 w-3 flex-none v-popper--has-tooltip" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect y="15" width="15" height="2" transform="rotate(-90 0 15)" fill="#1C2E36"/>
-                <rect x="14" y="15" width="15" height="2" transform="rotate(-90 14 15)" fill="#1C2E36"/>
-                <path d="M5.85714 11L3 7L5.85714 3V5H10.1429V3L13 7L10.1429 11V9H8.71429H5.85714V11Z" fill="#1C2E36"/>
+							<svg class="mr-2 w-3 flex-none v-popper--has-tooltip" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" v-tooltip="currentField.handle">
+                <rect x="14.1538" y="14.3243" width="14" height="1.79054" transform="rotate(180 14.1538 14.3243)" fill="#1C2E36"/>
+                <rect x="14.1538" y="1.79053" width="14" height="1.79054" transform="rotate(180 14.1538 1.79053)" fill="#1C2E36"/>
+                <path d="M10.8871 9.08063L7.15374 11.6385L3.42041 9.08063L5.28708 9.08063L5.28708 5.24375L3.42041 5.24375L7.15374 2.68584L10.8871 5.24375L9.02041 5.24375L9.02041 6.52271L9.02041 9.08063L10.8871 9.08063Z" fill="#1C2E36"/>
               </svg>
 						</template>
 						{{ dirtyField.config.type }}
@@ -96,10 +96,10 @@
               <div class="flex items-center">
                 <div class="input-group">
                   <input id="field_display" name="display" type="text" class="input-text" v-model="dirtyField.config.display">
-                  <button v-if="dirtyField.config.hide_display" @click="dirtyField.config.hide_display = false" v-tooltip="'Hidden'" class="input-group-append flex items-center v-popper--has-tooltip">
+                  <button v-if="dirtyField.config.hide_display" @click="toggleVisibility('off')" v-tooltip="'Label hidden'" class="input-group-append flex items-center v-popper--has-tooltip">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 text-gray-100"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M.91 12.59a1 1 0 0 1 0-1.18C2.11 9.8 5.9 5.5 12 5.5s9.89 4.3 11.09 5.91a1 1 0 0 1 0 1.18c-1.2 1.61-5 5.91-11.09 5.91S2.11 14.2.91 12.59Z"></path><path d="M7.76 13.5A4.38 4.38 0 0 1 7.5 12 4.49 4.49 0 0 1 12 7.5a4.38 4.38 0 0 1 1.5.26M15.18 8.82a4.5 4.5 0 1 1-6.36 6.36M17 7 6.75 17.25"></path></g></svg>
                   </button>
-                  <button v-else @click="dirtyField.config.hide_display = true" v-tooltip="'Visible'" class="input-group-append flex items-center v-popper--has-tooltip">
+                  <button v-else @click="toggleVisibility('on')" v-tooltip="'Label visible'" class="input-group-append flex items-center v-popper--has-tooltip">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 text-gray-500"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M.91 12.59a1 1 0 0 1 0-1.18C2.11 9.8 5.9 5.5 12 5.5s9.89 4.3 11.09 5.91a1 1 0 0 1 0 1.18c-1.2 1.61-5 5.91-11.09 5.91S2.11 14.2.91 12.59Z"></path><path d="M7.76 13.5A4.38 4.38 0 0 1 7.5 12 4.49 4.49 0 0 1 12 7.5a4.38 4.38 0 0 1 1.5.26M15.18 8.82a4.5 4.5 0 1 1-6.36 6.36M17 7 6.75 17.25"></path></g></svg>
                   </button>
                 </div>
@@ -142,6 +142,7 @@
                     </div>
                 </div>
               </div>
+              <p v-if="handleErrorMessage" class="help-block text-red-500 mt-2 mb-0">{{ handleErrorMessage }}</p>
             </div>
           </div>
         </div>
@@ -285,6 +286,35 @@
               </div>
               <p v-if="errorMessage" class="help-block text-red-500 mt-2 mb-0">{{ errorMessage }}</p>
             </div>
+            <!-- Checkbox and radio inline toggle -->
+            <div v-if="dirtyField.fieldtype === 'checkboxes' || dirtyField.fieldtype === 'radio'" class="form-group publish-field publish-field__inline toggle-fieldtype config-field">
+              <div class="field-inner">
+                <label for="field_inline" class="publish-field-label">
+                  <span class="rtl:ml-1 ltr:mr-1 v-popper--has-tooltip">Inline</span>
+                  <button class="outline-none" style="display: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4 rtl:ml-1.5 ltr:mr-1.5 mb-1 text-gray-600 v-popper--has-tooltip">
+                      <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.082 9.5A4.47 4.47 0 0 0 6.75 8h-1.5a4.5 4.5 0 0 0 0 9h1.5a4.474 4.474 0 0 0 3.332-1.5m3.836-6A4.469 4.469 0 0 1 17.25 8h1.5a4.5 4.5 0 1 1 0 9h-1.5a4.472 4.472 0 0 1-3.332-1.5M6.75 12.499h10.5"></path>
+                    </svg>
+                  </button>
+                  <button class="outline-none" style="display: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4 rtl:ml-1.5 ltr:mr-1.5 mb-1 text-gray-600 v-popper--has-tooltip">
+                      <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16.5 15.749h1.875A3.963 3.963 0 0 0 22.5 12h0a3.962 3.962 0 0 0-4.125-3.75H16.5m-9 7.499H5.625A3.963 3.963 0 0 1 1.5 12h0a3.963 3.963 0 0 1 4.125-3.75H7.5M12 5.249v-4.5m-3 4.5-1.5-1.5m7.5 1.5 1.5-1.5m-4.5 15v4.5m-3-4.5-1.5 1.5m7.5-1.5 1.5 1.5"></path>
+                    </svg>
+                  </button>
+                </label>
+                <div class="help-block -mt-2">
+                  <p>Show the checkboxes in a row.</p>
+                </div>
+              </div>
+              <div class="toggle-fieldtype-wrapper">
+                <button @click="toggleInline()" type="button" :aria-pressed="hasInline()" aria-label="Toggle Button" class="toggle-container" :class="hasInline() ? 'on' : ''">
+                    <div class="toggle-slider"><div tabindex="0" class="toggle-knob"></div>
+                  </div>
+                </button>
+
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -432,11 +462,30 @@ export default {
       dirtyField: null,
       options: [],
       errorMessage: '',
+      handleErrorMessage: '',
       sortableFields: null,
       fieldValue: {},
       containers: {},
       toggleContainer: false,
       highlightedIndex: null,
+      reservedWords:[
+      'content_type',
+      'count',
+      'elseif',
+      'endif',
+      'endunless',
+      'id',
+      'if',
+      'length',
+      'reference',
+      'resource',
+      'save',
+      'status',
+      'unless',
+      'value',
+      'message',
+      'messages'
+      ]
     }
   },
   props: ['blueprint', 'currentField', 'isEditing'],
@@ -447,12 +496,21 @@ export default {
       if(this.dirtyField.fieldtype == 'assets') {
         this.assetData();  
       }
-
       this.setupOptions();
-
     },
   },
   methods: {
+    toggleVisibility(type) {
+      if(type == 'on') {
+        if(this.dirtyField.config.hide_display) {
+          this.dirtyField.config.hide_display = true;
+        } else {
+          this.$set(this.dirtyField.config, 'hide_display', true);
+        }
+      } else {
+        this.dirtyField.config.hide_display = false;
+      }
+    },
     applyChanges() {
       if(this.options && this.options.length > 0) {
         // Check for empty keys
@@ -474,6 +532,11 @@ export default {
         this.dirtyField.config.options = this.arrayToObject(this.options);
       } else {
         this.dirtyField.config.options = null;
+      }
+      if(this.reservedWords.includes(this.dirtyField.handle)) {
+        this.handleErrorMessage = "Field handle cannot be a reserved word.";
+        this.$toast.error(__('The given data was invalid.'));
+        return;
       }
       this.$emit('fieldModified', { ...this.dirtyField });
       this.$events.$emit('event.close-stack');
@@ -503,6 +566,24 @@ export default {
         this.dirtyField.config.validate.push('required');
       }
       this.hasRequired();
+    },
+    hasInline() {
+      if (this.dirtyField.config && this.dirtyField.config.inline == true) {
+        return true;
+      }
+      return false;
+    },
+    toggleInline() {
+      if(this.hasInline()) {
+        this.dirtyField.config.inline = false;
+      } else {
+        if (this.dirtyField.config.inline) {
+          this.dirtyField.config.inline = true;
+        } else {
+          this.$set(this.dirtyField.config, 'inline', true);
+        }
+      }
+      this.hasInline();
     },
     setupOptions() {
 

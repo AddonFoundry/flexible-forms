@@ -84,13 +84,13 @@
                       </svg>
                       </template>
                       <template v-else-if="field.config.type == 'spacer'">
-                        <svg class="mr-1 w-3 flex-none v-popper--has-tooltip" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg" v-tooltip="field.handle">
-                          <rect y="15" width="15" height="2" transform="rotate(-90 0 15)" fill="#1C2E36"/>
-                          <rect x="14" y="15" width="15" height="2" transform="rotate(-90 14 15)" fill="#1C2E36"/>
-                          <path d="M5.85714 11L3 7L5.85714 3V5H10.1429V3L13 7L10.1429 11V9H8.71429H5.85714V11Z" fill="#1C2E36"/>
+                        <svg class="mr-1 w-3 flex-none v-popper--has-tooltip" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" v-tooltip="field.handle">
+                          <rect x="14.1538" y="14.3243" width="14" height="1.79054" transform="rotate(180 14.1538 14.3243)" fill="#1C2E36"/>
+                          <rect x="14.1538" y="1.79053" width="14" height="1.79054" transform="rotate(180 14.1538 1.79053)" fill="#1C2E36"/>
+                          <path d="M10.8871 9.08063L7.15374 11.6385L3.42041 9.08063L5.28708 9.08063L5.28708 5.24375L3.42041 5.24375L7.15374 2.68584L10.8871 5.24375L9.02041 5.24375L9.02041 6.52271L9.02041 9.08063L10.8871 9.08063Z" fill="#1C2E36"/>
                         </svg>
                       </template>
-                      <a @click="editField(index, $event)" class="break-all text-12 font-semibold ml-1">{{ field.config.display }}</a>
+                      <a @click="editField(index, $event)" class="break-all text-12 font-semibold ml-1">{{ field.config.display }}<span v-if="field.config.validate && field.config.validate.includes('required')" class="required">*</span></a>
                     </div>
                   </div>
                   <width-selector v-if="!isHidden" v-model="field.config.width" class="rtl:ml-2 ltr:mr-2" />
@@ -106,7 +106,7 @@
           <div class="card w-35 bg-white p-6 rounded-md">
             <p class="text-lg font-semibold">Available Fields</p>
             <p class="text-12 text-gray-600 mt-0.5 mb-5">Drag form fields into the form to start building.</p>
-            <div class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="text">
+            <div v-if="!excludeFields.includes('text')" class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="text">
               <div class="blueprint-section-field-inner custom-background-grey">
                 <div class="flex flex-1 items-center justify-between">
                   <div class="flex items-center flex-1 pr-4 py-1 pl-1">
@@ -119,7 +119,7 @@
                 <div class="blueprint-drag-handle w-6"></div>
               </div>
             </div>
-            <div class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="textarea">
+            <div v-if="!excludeFields.includes('textarea')" class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="textarea">
               <div class="blueprint-section-field-inner custom-background-grey">
                 <div class="flex flex-1 items-center justify-between">
                   <div class="flex items-center flex-1 pr-4 py-1 pl-1">
@@ -134,7 +134,7 @@
                 <div class="blueprint-drag-handle w-6"></div>
               </div>
             </div>
-            <div class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="select">
+            <div v-if="!excludeFields.includes('select')" class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="select">
               <div class="blueprint-section-field-inner custom-background-grey">
                 <div class="flex flex-1 items-center justify-between">
                   <div class="flex items-center flex-1 pr-4 py-1 pl-1">
@@ -148,7 +148,7 @@
                 <div class="blueprint-drag-handle w-6"></div>
               </div>
             </div>
-            <div class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="checkboxes">
+            <div v-if="!excludeFields.includes('checkboxes')" class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="checkboxes">
               <div class="blueprint-section-field-inner custom-background-grey">
                 <div class="flex flex-1 items-center justify-between">
                   <div class="flex items-center flex-1 pr-4 py-1 pl-1">
@@ -176,7 +176,7 @@
                 <div class="blueprint-drag-handle w-6"></div>
               </div>
             </div>
-            <div class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="toggle">
+            <div v-if="!excludeFields.includes('toggle')" class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="toggle">
               <div class="blueprint-section-field-inner custom-background-grey">
                 <div class="flex flex-1 items-center justify-between">
                   <div class="flex items-center flex-1 pr-4 py-1 pl-1">
@@ -190,7 +190,7 @@
                 <div class="blueprint-drag-handle w-6"></div>
               </div>
             </div>
-            <div class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="integer">
+            <div v-if="!excludeFields.includes('integer')" class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="integer">
               <div class="blueprint-section-field-inner custom-background-grey">
                 <div class="flex flex-1 items-center justify-between">
                   <div class="flex items-center flex-1 pr-4 py-1 pl-1">
@@ -204,7 +204,7 @@
                 <div class="blueprint-drag-handle w-6"></div>
               </div>
             </div>
-            <div class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="assets">
+            <div v-if="!excludeFields.includes('assets')" class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="assets">
               <div class="blueprint-section-field-inner custom-background-grey">
                 <div class="flex flex-1 items-center justify-between">
                   <div class="flex items-center flex-1 pr-4 py-1 pl-1">
@@ -218,15 +218,15 @@
                 <div class="blueprint-drag-handle w-6"></div>
               </div>
             </div>
-            <div class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="spacer">
+            <div v-if="!excludeFields.includes('spacer')" class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" data-field="spacer">
               <div class="blueprint-section-field-inner custom-background-grey">
                 <div class="flex flex-1 items-center justify-between">
                   <div class="flex items-center flex-1 pr-4 py-1 pl-1">
-                    <svg class="mr-1 w-3 flex-none v-popper--has-tooltip" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <rect y="15" width="15" height="2" transform="rotate(-90 0 15)" fill="#1C2E36"/>
-                      <rect x="14" y="15" width="15" height="2" transform="rotate(-90 14 15)" fill="#1C2E36"/>
-                      <path d="M5.85714 11L3 7L5.85714 3V5H10.1429V3L13 7L10.1429 11V9H8.71429H5.85714V11Z" fill="#1C2E36"/>
-                    </svg>
+                    <svg class="mr-1 w-3 flex-none v-popper--has-tooltip" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <rect x="14.1538" y="14.3243" width="14" height="1.79054" transform="rotate(180 14.1538 14.3243)" fill="#1C2E36"/>
+                          <rect x="14.1538" y="1.79053" width="14" height="1.79054" transform="rotate(180 14.1538 1.79053)" fill="#1C2E36"/>
+                          <path d="M10.8871 9.08063L7.15374 11.6385L3.42041 9.08063L5.28708 9.08063L5.28708 5.24375L3.42041 5.24375L7.15374 2.68584L10.8871 5.24375L9.02041 5.24375L9.02041 6.52271L9.02041 9.08063L10.8871 9.08063Z" fill="#1C2E36"/>
+                        </svg>
                     <p class="break-all text-12 font-semibold ml-1 hover:text-black">Spacer</p>
                   </div>
                 </div>
@@ -254,6 +254,7 @@
       showTitle: Boolean,
       isFormBlueprint: { type: Boolean, default: false },
       showHidden: { type: Boolean, default: true },
+      excludeFields: Array,
     },
     components: {
       FieldStack,

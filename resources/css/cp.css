@@ -1,5 +1,9 @@
 /* form list*/
 
+.required {
+  color: #ed4343;
+}
+
 .form-row {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
