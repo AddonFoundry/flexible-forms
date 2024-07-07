@@ -538,10 +538,14 @@ export default {
         this.$toast.error(__('The given data was invalid.'));
         return;
       }
+      this.errorMessage = '';
+      this.handleErrorMessage = '';
       this.$emit('fieldModified', { ...this.dirtyField });
       this.$events.$emit('event.close-stack');
     },
     editorClosed() {
+      this.errorMessage = '';
+      this.handleErrorMessage = '';
       this.$events.$emit('event.close-stack');
     },
     updateHandle() {
