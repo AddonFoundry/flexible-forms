@@ -90,7 +90,7 @@
                   </button>
                 </label
                 ><div class="help-block -mt-2">
-                  <p>The field's label shown in the Control Panel.</p>
+                  <p>The form field's label shown above the input.</p>
                 </div>
               </div>
               <div class="flex items-center">
@@ -196,7 +196,7 @@
                   </button>
                 </label>
                 <div class="help-block -mt-2">
-                  <p>Set placeholder text.</p>
+                  <p>The placeholder text for this input.</p>
                 </div>
               </div>
               <div class="flex items-center">
