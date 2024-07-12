@@ -19,7 +19,7 @@
 
     @else
 
-      <div class="no-results md:mt-4 max-w-md mx-auto">
+      <div class="flexible-forms no-results md:mt-4 max-w-md mx-auto">
         <div class="card rounded-xl text-center p-6 lg:py-10">
             <h1 class="mb-8">Flexible Forms</h1>
             <div class="hidden md:block">

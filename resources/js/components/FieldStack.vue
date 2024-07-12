@@ -1,6 +1,6 @@
 <template>
 	<stack name="inline-editor" v-if="isEditing" @closed="editorClosed()" half>
-		<div class="h-full bg-gray-300 overflow-scroll">
+		<div class="flexible-forms h-full bg-gray-300 overflow-scroll">
 			<header
 				class="flex items-center sticky top-0 inset-x-0 bg-white shadow px-8 py-2 z-1 h-13">
 				<h1 class="flex-1 flex items-center text-xl">

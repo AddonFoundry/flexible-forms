@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-lg mt-4 mx-auto">
+  <div class="flexible-forms max-w-lg mt-4 mx-auto">
     <div class="rounded p-6 lg:px-20 lg:py-10 shadow bg-white">
       <header class="text-center mb-16">
         <h1 class="mb-6">{{ __('Create Flexible Form') }}</h1>
