@@ -72,12 +72,12 @@ export default {
   },
   methods: {
 
-    fetchForms() {
+    fetchForms(update) {
       this.$axios.get('/cp/flexible-forms/forms')
         .then(response => {
           this.forms = response.data;
 
-          if(this.forms.length === 0) {
+          if(this.forms.length === 0 && update == 'delete') {
             window.location.reload();
           }
 
@@ -90,15 +90,12 @@ export default {
     deletingForm(handle) {
       this.deleting = true;
       this.deleteHandle = handle;
-
-      this.fetchForms();
-
     },
 
     deleteForm() {
       this.$axios.post('/cp/flexible-forms/' + this.deleteHandle + '/delete')
         .then(response => {
-          this.fetchForms();
+          this.fetchForms('delete');
           this.$toast.success('Form deleted');
           this.deleting = false;
           this.deleteHandle = '';

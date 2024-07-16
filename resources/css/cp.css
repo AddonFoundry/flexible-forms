@@ -31,10 +31,6 @@
   filter: invert(0.8)
 }
 
-.dark .flexible-forms .blueprint-section-field .blueprint-section-field-inner .blueprint-drag-handle {
-  border-right: none !important;
-}
-
 .dark .flexible-forms.bg-gray-300 {
   background-color: rgb(43 45 48 / var(--tw-bg-opacity)) !important;
 }
@@ -60,8 +56,19 @@
   color: #EEE !important;
 }
 
+.flexible-forms .blueprint-section-field .blueprint-section-field-inner .blueprint-drag-handle {
+  border-right: none !important;
+}
 
 /* form list*/
+
+.bg-handle:hover {
+  cursor: pointer !important;
+}
+
+.top-sticky {
+  top: 62px;
+}
 
 .required {
   color: #ed4343;
