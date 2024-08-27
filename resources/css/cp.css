@@ -56,8 +56,14 @@
   color: #EEE !important;
 }
 
+.dark .flexible-forms .blueprint-section-field .blueprint-section-field-inner .blueprint-drag-handle {
+  background-color: #383b40;
+}
+
+
 .flexible-forms .blueprint-section-field .blueprint-section-field-inner .blueprint-drag-handle {
   border-right: none !important;
+  background-color: #eaf1f7;
 }
 
 /* form list*/
@@ -106,8 +112,8 @@
   font-size: 12px;
 }
 
-.field-width-selector {
-  margin-top: 6px;
+.flexible-forms .field-width-selector {
+  margin-top: 5px;
   margin-right: 5px;
 }
 
@@ -130,7 +136,7 @@
   border-radius: 3px;
 }
 
-.width-selector {
+.flexible-forms .width-selector {
   display: flex;
   align-items: center;
   padding: 3px 15px;
@@ -143,8 +149,9 @@
 }
 
 .custom-background-grey {
-  background-color: #F1F1F1 !important;
-  border: none !important;
+  /* background-color: #F1F1F1 !important; */
+  /* border: none !important; */
+  border: 1px solid #EEE;
   padding: 10px;
 }
 
@@ -165,10 +172,6 @@
 
 .draggable {
   cursor: move;
-}
-
-.orderable {
-
 }
 
 .drawer {
