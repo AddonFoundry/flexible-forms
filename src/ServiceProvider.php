@@ -42,13 +42,12 @@ class ServiceProvider extends AddonServiceProvider
 
       Nav::extend(function ($nav) use ($formSvg) {
 
-      $nav->create(__('Flexible Forms'))
-          ->section('Flexible Forms')
+      $nav->tools(__('Flexible Forms'))
           ->icon($formSvg)
           ->route('flexible-forms.index')
           ->children(function () use ($nav) {
             return [
-              $nav->create(__('Forms'))
+              $nav->create(__('All Forms'))
                   ->route('flexible-forms.index')
                   ->can('Configure Flexible Forms'),
             ];
