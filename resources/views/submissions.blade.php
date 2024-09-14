@@ -10,7 +10,12 @@
 
     <div class="flex items-center mb-6">
         <h1 class="flex-1">{{ __('Submissions') }}</h1>
+        <a class="btn" href="/cp/forms/{{ $form->handle() }}/export/csv?download=1">Export Submissions</a>
     </div>
+
+
+
+    
 
     <submissions-flexible-form
         initial-title="{{ $form->title() }}"

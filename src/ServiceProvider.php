@@ -49,7 +49,7 @@ class ServiceProvider extends AddonServiceProvider
             return [
               $nav->create(__('All Forms'))
                   ->route('flexible-forms.index')
-                  ->can('Configure Flexible Forms'),
+                  //->can('Configure Flexible Forms'),
             ];
           });
         });
