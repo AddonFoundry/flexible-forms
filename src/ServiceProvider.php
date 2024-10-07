@@ -89,13 +89,9 @@ class ServiceProvider extends AddonServiceProvider
 
        // php artisan vendor:publish --tag=flexible-forms-partial
 
-        // $this->publishes([
-        //     __DIR__.'/../resources/views/partials/form-builder.antlers.php' => resource_path('views/vendor/flexible-forms/partials/form-builder.antlers.php'),
-        // ], 'flexible-forms-partial');
-
         if ($this->app->runningInConsole()) {
           $this->publishes([
-              __DIR__.'/../resources/views/partials/_form-builder.antlers.php' => resource_path('views/vendor/flexible-forms/partials/_form-builder.antlers.php'),
+              __DIR__.'/../resources/views/partials/_form-builder.antlers.php' => resource_path('views/partials/_form-builder.antlers.php'),
           ], 'flexible-forms-partial');
         }
 
