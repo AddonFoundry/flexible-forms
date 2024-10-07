@@ -30,7 +30,7 @@ class ServiceProvider extends AddonServiceProvider
       DeleteSubmission::class,
     ];
 
-    protected $publishAfterInstall = false; // need to setup command for manual publishing
+    // protected $publishAfterInstall = false;
 
     public function bootAddon()
     {
