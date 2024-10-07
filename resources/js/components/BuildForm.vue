@@ -58,7 +58,7 @@
                         <p class="break-all text-12 font-semibold ml-1">{{ field.name }}</p>
                       </div>
                     </div>
-                    <div class="flex items-center mr-1 bg-handle px-0.5" @click="addField(field.fieldtype)" v-tooltip="'Add X Field'">
+                    <div class="flex items-center mr-1 bg-handle px-0.5" @click="addField(field.fieldtype)" v-tooltip="'Add ' + field.fieldtype + ' field'">
                       <svg class="h-3" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M5.75 11.5C5.33579 11.5 5 11.1642 5 10.75L5 0.75C5 0.335787 5.33579 -1.46777e-08 5.75 -3.27835e-08C6.16421 -5.08894e-08 6.5 0.335787 6.5 0.75L6.5 10.75C6.5 11.1642 6.16421 11.5 5.75 11.5Z" fill="#999"/>
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M-6.55671e-08 5.75C-2.93554e-08 5.33579 0.335786 5 0.75 5L10.75 5C11.1642 5 11.5 5.33579 11.5 5.75C11.5 6.16421 11.1642 6.5 10.75 6.5L0.75 6.5C0.335786 6.5 -1.01779e-07 6.16421 -6.55671e-08 5.75Z" fill="#999"/>
