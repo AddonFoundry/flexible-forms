@@ -9,7 +9,3 @@ Statamic.$components.register("edit-flexible-form", EditForm);
 Statamic.$components.register("list-flexible-forms", ListForms);
 Statamic.$components.register("submissions-flexible-form", SubmissionForm);
 Statamic.$components.register("build-flexible-form", BuildForm);
-
-// tests
-import StatamicTests from "./components/StatamicTests.vue";
-Statamic.$components.register("statamic-tests", StatamicTests);

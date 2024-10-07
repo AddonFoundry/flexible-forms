@@ -3,8 +3,9 @@
 namespace AddonFoundry\FlexibleForms;
 
 use Statamic\Providers\AddonServiceProvider;
-
 use Statamic\Facades\CP\Nav;
+use Statamic\Facades\Permission;
+use AddonFoundry\FlexibleForms\Actions\DeleteSubmission;
 
 class ServiceProvider extends AddonServiceProvider
 {
@@ -22,16 +23,21 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $publishables = [
-      __DIR__.'/../resources/views/partials/form-builder.antlers.php' => '../../../resources/views/partials/form-builder.antlers.php',
       __DIR__.'/../config/flexible_forms.php' => '../../../config/flexible_forms.php',
     ];
 
-    // protected $publishAfterInstall = false;
+    protected $actions = [
+      DeleteSubmission::class,
+    ];
+
+    protected $publishAfterInstall = false; // need to setup command for manual publishing
 
     public function bootAddon()
     {
       
       $this->bootNavigation();
+      $this->bootPermissions();
+      $this->publishPartial();
 
     }
 
@@ -49,10 +55,49 @@ class ServiceProvider extends AddonServiceProvider
             return [
               $nav->create(__('All Forms'))
                   ->route('flexible-forms.index')
-                  //->can('Configure Flexible Forms'),
+                  ->can('View Flexible Forms'),
             ];
           });
         });
+
+    }
+
+    protected function bootPermissions()
+    {
+
+      Permission::group('flexible forms', 'Flexible Forms', function () {
+        Permission::register('view flexible forms', function ($permission) {
+          $permission
+            ->label('View Flexible Forms')
+            ->children([
+              Permission::make('edit flexible forms')
+                ->label('Edit Flexible Forms')
+                ->children([
+                  Permission::make('create flexible forms')->label('Create Flexible Forms'),
+                  Permission::make('delete flexible forms')->label('Delete Flexible Forms'),
+                ]),
+              ]);
+        });
+      });
+
+      return $this;
+
+    }
+
+    protected function publishPartial()
+    {
+
+       // php artisan vendor:publish --tag=flexible-forms-partial
+
+        // $this->publishes([
+        //     __DIR__.'/../resources/views/partials/form-builder.antlers.php' => resource_path('views/vendor/flexible-forms/partials/form-builder.antlers.php'),
+        // ], 'flexible-forms-partial');
+
+        if ($this->app->runningInConsole()) {
+          $this->publishes([
+              __DIR__.'/../resources/views/partials/form-builder.antlers.php' => resource_path('views/vendor/flexible-forms/partials/form-builder.antlers.php'),
+          ], 'flexible-forms-partial');
+        }
 
     }
 

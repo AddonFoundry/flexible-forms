@@ -9,11 +9,11 @@
   ])
 
   <publish-form
-      title="{{ $title }}"
-      :blueprint='@json($blueprint)'
-      :meta='@json($meta)'
-      :values='@json($values)'
-      read-only
+    title="{{ $title }}"
+    :blueprint='@json($blueprint)'
+    :meta='@json($meta)'
+    :values='@json($values)'
+    read-only
   ></publish-form>
   
 @endsection

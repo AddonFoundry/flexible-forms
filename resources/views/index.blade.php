@@ -5,17 +5,13 @@
 
     @unless($forms->isEmpty())
 
-        <div class="flex items-center mb-6">
-            <h1 class="flex-1">{{ __('Flexible Forms') }}</h1>
-
-            @if (Statamic::pro() && $user->can('create', 'Statamic\Contracts\Forms\Form'))
-                <a href="/cp/flexible-forms/create" class="btn-primary">{{ __('Create Form') }}</a>
-            @endif
-        </div>
-
-      
-        <list-flexible-forms></list-flexible-forms>
-
+      <div class="flex items-center mb-6">
+        <h1 class="flex-1">{{ __('Flexible Forms') }}</h1>
+        @if (Statamic::pro() && $user->hasPermission('create flexible forms'))
+          <a href="/cp/flexible-forms/create" class="btn-primary">{{ __('Create Form') }}</a>
+        @endif
+      </div>
+      <list-flexible-forms></list-flexible-forms>
 
     @else
 

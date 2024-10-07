@@ -1,34 +1,31 @@
-/* dark mode */
-
+/* Dark Mode */
 .dark .flexible-forms.no-results svg {
   opacity: 0.5;
 }
 
 .dark .flexible-forms .form-options svg {
-  filter: invert(0.8)
+  filter: invert(0.8);
 }
 
 .dark .flexible-forms .form-options .delete svg {
-  filter: invert(0.2)
+  filter: invert(0.2);
 }
-
 
 .dark .flexible-forms .nav-card svg:not(.active) {
-  filter: invert(0.8)
+  filter: invert(0.8);
 }
 
-.dark .flexible-forms .bg-white {
-  background-color: rgb(43 45 48 / var(--tw-bg-opacity)) !important;
-  box-shadow: 0 20px 35px 0 rgba(22,22,22,.45), 0 10px 23px 0 rgba(23,23,23,.65), 0 0 0 1px rgba(85,87,89,.8);
-}
-
+.dark .flexible-forms .bg-white,
 .dark .flexible-forms .blueprint-section-field .blueprint-section-field-inner {
   background-color: rgb(43 45 48 / var(--tw-bg-opacity)) !important;
-  box-shadow: 0 20px 35px 0 rgba(22,22,22,.45), 0 10px 23px 0 rgba(23,23,23,.65), 0 0 0 1px rgba(85,87,89,.8);
+  box-shadow: 0 20px 35px 0 rgba(22,22,22,.45), 
+              0 10px 23px 0 rgba(23,23,23,.65), 
+              0 0 0 1px rgba(85,87,89,.8);
 }
 
-.dark .flexible-forms .blueprint-section-field .blueprint-section-field-inner svg {
-  filter: invert(0.8)
+.dark .flexible-forms .blueprint-section-field .blueprint-section-field-inner svg,
+.dark .flexible-forms header .badge-pill svg {
+  filter: invert(0.8);
 }
 
 .dark .flexible-forms.bg-gray-300 {
@@ -36,16 +33,12 @@
 }
 
 .dark .flexible-forms header.bg-white {
- background-color: rgb(59 63 65 / var(--tw-bg-opacity)) !important
+  background-color: rgb(59 63 65 / var(--tw-bg-opacity)) !important;
 }
 
 .dark .flexible-forms header .badge-pill {
   background-color: transparent !important;
   color: #c5bebb !important;
-}
-
-.dark .flexible-forms header .badge-pill svg {
-  filter: invert(0.8)
 }
 
 .dark .flexible-forms header button.text-gray-700 {
@@ -60,14 +53,13 @@
   background-color: #383b40;
 }
 
-
+/* Flexible Forms */
 .flexible-forms .blueprint-section-field .blueprint-section-field-inner .blueprint-drag-handle {
   border-right: none !important;
   background-color: #eaf1f7;
 }
 
-/* form list*/
-
+/* Form List */
 .bg-handle:hover {
   cursor: pointer !important;
 }
@@ -94,8 +86,7 @@
   height: 20px;
 }
 
-/* initial */
-
+/* Initial */
 .page-wrapper.max-w-xl {
   max-width: 70rem !important;
 }
@@ -149,8 +140,6 @@
 }
 
 .custom-background-grey {
-  /* background-color: #F1F1F1 !important; */
-  /* border: none !important; */
   border: 1px solid #EEE;
   padding: 10px;
 }

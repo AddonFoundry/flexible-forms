@@ -101,8 +101,11 @@ export default {
           this.deleteHandle = '';
         })
         .catch(error => {
-          console.error('Error deleting form:', error);
-          this.$toast.error('Error deleting form');
+          if(error.response.status == '403') {
+            this.$toast.error('You are not authorized to delete this form.');
+          } else {
+            this.$toast.error('Error deleting form.');
+          }
           this.deleting = false;
           this.deleteHandle = '';
         });

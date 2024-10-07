@@ -14,9 +14,8 @@
       :blueprint="{{ json_encode($blueprint) }}"
       :initial-values="{{ json_encode($values) }}"
       :meta="{{ json_encode($meta) }}"
-      url="{{ cp_route('forms.update', $form->handle()) }}"
-      listing-url="{{ cp_route('forms.index') }}"
+      url="{{ cp_route('flexible-forms.settings', $form->handle()) }}"
+      listing-url="{{ cp_route('flexible-forms.index') }}"
   ></edit-flexible-form>
-
 
 @endsection

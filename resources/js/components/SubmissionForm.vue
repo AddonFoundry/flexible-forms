@@ -29,6 +29,7 @@
           :sort-direction="sortDirection"
           @visible-columns-updated="visibleColumns = $event"
       >
+
           <div slot-scope="{ hasSelections }">
               <div class="card p-0 relative">
 
@@ -67,7 +68,10 @@
                               <a :href="rewriteUrl(submission.url)" class="text-blue">{{ value }}</a> <!-- change to flexible forms URL -->
                           </template>
                           <template slot="actions" slot-scope="{ row: submission, index }">
-                              <dropdown-list>
+
+                            <!-- {{ submission.actions }} -->
+
+                            <dropdown-list>
                                   <dropdown-item :text="__('View')" :redirect="rewriteUrl(submission.url)" />
                                   <data-list-inline-actions
                                       :item="submission.id"
@@ -103,21 +107,26 @@ export default {
   mixins: [Listing],
 
   props: {
-      form: String
+      form: String,
+      submissions: Array
   },
 
   data() {
       return {
         pageUrl: '',
         listingKey: 'submissions',
-        preferencesPrefix: `forms.${this.form}`,
-        requestUrl: cp_url(`forms/${this.form}/submissions`),
-        //actionUrl: cp_url(`forms/${this.form}/submissions/actions`),
+        preferencesPrefix: `flexible-forms.${this.form}`,
+        requestUrl: cp_url(`flexible-forms/${this.form}/submissions/data`),
+        items: [],
       }
   },
   created() {
 
       this.pageUrl = window.location.href.replace(/\/[^/]*$/, '');
+    
+      //this.items = this.submissions.data;
+
+      console.log(this.submissions)
 
   },
   computed: {
@@ -125,8 +134,9 @@ export default {
           return {form: this.form};
       },
       actionUrl() {
-          return cp_url(`forms/${this.form}/submissions/actions`);
-      }
+          return cp_url(`forms/${this.form}/submissions/actions`); // custom permissions not required here
+          //return cp_url(`flexible-forms/${this.form}/submissions/actions`);
+        }
   },
 
   methods: {

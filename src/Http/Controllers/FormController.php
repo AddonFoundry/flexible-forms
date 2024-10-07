@@ -4,127 +4,88 @@ namespace AddonFoundry\FlexibleForms\Http\Controllers;
 
 use Statamic\Facades\User;
 use Illuminate\Http\Request;
-use GertTimmerman\StatamicZapier\Webhooks;
-use Statamic\Http\Controllers\CP\CpController;
-use Statamic\Support\Arr;
-
 use Statamic\Facades\Form;
 use Statamic\Contracts\Forms\Form as FormContract;
-use Statamic\Http\Controllers\CP\Fields\ManagesBlueprints;
-
-use Statamic\Facades\Blueprint;
-use Statamic\Support\Str;
-use Statamic\Facades\Action;
+use Statamic\Http\Controllers\CP\CpController;
+use Statamic\Support\Arr;
 use Statamic\CP\Column;
+use Statamic\Http\Controllers\CP\Fields\ManagesBlueprints;
+use Statamic\Facades\Blueprint;
+use Statamic\Http\Requests\FilteredRequest;
+use Statamic\Http\Resources\CP\Submissions\Submissions;
+use Statamic\Query\Scopes\Filters\Concerns\QueriesFilters;
 
+
+use Statamic\Facades\Action;
 use Facades\Statamic\Fields\FieldtypeRepository;
+use Statamic\Exceptions\NotFoundHttpException;
 
-
+//use Statamic\Support\Str;
+// use Statamic\Facades\Scope;
+// use Statamic\Rules\Handle;
 
 class FormController extends CpController
 {
-
-  use ManagesBlueprints;
-
-  public function __construct()
-  {
-      $this->middleware(\Illuminate\Auth\Middleware\Authorize::class.':configure form fields');
-  }
-
-      // tests
-      public function tests($form)
-      {
-
-        $this->authorize('edit', $form);
-
-          $values = [
-            'handle' => $form->handle(),
-            'title' => __($form->title()),
-            'honeypot' => $form->honeypot(),
-            'store' => $form->store(),
-            'email' => $form->email(),
-        ];
-
-        $fields = ($blueprint = $this->editFormBlueprint($form))
-            ->fields()
-            ->addValues($values)
-            ->preProcess();
-
-        return view('flexible-forms::tests', [
-            'blueprint' => $blueprint->toPublishArray(),
-            'values' => $fields->values()->all(), // $fields->values()
-            'meta' => $fields->meta(),
-            'form' => $form,
-        ]);
-
-  
-      }
-
+    use ManagesBlueprints;
+    use QueriesFilters;
 
     public function index(Request $request)
     {
+        $user = User::current();
 
-      $user = User::current();
+        abort_unless($user->isSuper() || $user->hasPermission('view flexible forms'), 401);
 
-      $columns = [
-        Column::make('title')->label(__('Title')),
-        Column::make('submissions')->label(__('Submissions')),
-     ];
+        $columns = [
+            Column::make('title')->label(__('Title')),
+            Column::make('submissions')->label(__('Submissions')),
+        ];
 
-      $forms = Form::all()
-            ->filter(function ($form) {
-                return User::current()->can('view', $form);
-            })
+        $forms = Form::all()
             ->map(function ($form) {
                 return [
                     'id' => $form->handle(),
                     'title' => __($form->title()),
                     'submissions' => $form->submissions()->count(),
-                    //'show_url' => $form->showUrl(),
-                    //'edit_url' => $form->editUrl(),
-                    //'blueprint_url' => cp_route('forms.blueprint.edit', $form->handle()),
-                    'can_edit' => User::current()->can('edit', $form),
-                    //'can_edit_blueprint' => User::current()->can('configure form fields', $form),
-                    //'actions' => Action::for($form),
                 ];
             })
             ->values();
 
-            if ($request->wantsJson()) {
-              return [
-                  'meta' => [
-                      'columns' => $columns,
-                      'activeFilterBadges' => [],
-                  ],
-                  'data' => $forms,
-              ];
-          }
+        if ($request->wantsJson()) {
+            return [
+                'meta' => [
+                    'columns' => $columns,
+                    'activeFilterBadges' => [],
+                ],
+                'data' => $forms,
+            ];
+        }
 
         return view('flexible-forms::index', [
             'forms' => $forms,
-            //'initialColumns' => $columns,
             'title' => 'Flexible Forms',
-            //'actionUrl' => cp_route('flexible-forms.index'),
             'user' => $user,
         ]);
-
     }
 
     public function create()
     {
-       
-      return view('flexible-forms::create', [
-        'title' => 'Flexible Forms',
-        'action' => cp_route('flexible-forms.create'),
-      ]);
+        $user = User::current();
 
+        abort_unless($user->isSuper() || $user->hasPermission('create flexible forms'), 401);
+
+        return view('flexible-forms::create', [
+            'title' => 'Flexible Forms',
+            'action' => cp_route('flexible-forms.create'),
+        ]);
     }
 
     public function store(Request $request)
     {
         $this->authorizeProIf(Form::all()->count() >= 1);
 
-        $this->authorize('create', FormContract::class, __('You are not authorized to create forms.'));
+        $user = User::current();
+
+        abort_unless($user->isSuper() || $user->hasPermission('create flexible forms'), 401);
 
         $request->validate([
             'title' => 'required',
@@ -141,53 +102,81 @@ class FormController extends CpController
 
         session()->flash('success', __('Form created'));
 
-        //return ['redirect' => $form->editUrl()];
+        return ['redirect' => '/cp/flexible-forms/' . $handle . '/build'];
+    }
 
-        return ['redirect' => '/cp/flexible-forms/' . $handle . '/build' ];
+    public function build($form)
+    {
+        $this->authorize('edit flexible forms', $form);
 
-    } 
+        $blueprint = $form->blueprint();
 
-    public function build($form) {
+        return view('flexible-forms::build', [
+            'form' => $form,
+            'blueprint' => $blueprint,
+            'blueprintVueObject' => $this->toVueObject($blueprint),
+        ]);
+    }
 
-      $this->authorize('edit', $form);
+    public function update($form, Request $request)
+    {
+        $this->authorize('edit flexible forms', $form);
 
-      $blueprint = $form->blueprint();
+        $request->validate(['tabs' => 'array']);
 
-      return view('flexible-forms::build', [
-          'form' => $form,
-          'blueprint' => $blueprint,
-          'blueprintVueObject' => $this->toVueObject($blueprint),
-      ]);
+        $this->updateBlueprint($request, $form->blueprint());
 
     }
 
-    public function edit($form) {
+    public function settings($form, Request $request)
+    {
+        $this->authorize('edit flexible forms', $form);
 
-      $this->authorize('edit', $form);
+        $fields = $this->editFormBlueprint($form)->fields()->addValues($request->all());
 
-      $values = [
-          'handle' => $form->handle(),
-          'title' => __($form->title()),
-          'honeypot' => $form->honeypot(),
-          'store' => $form->store(),
-          'email' => $form->email(),
-      ];
+        $fields->validate();
 
-      $fields = ($blueprint = $this->editFormBlueprint($form))
-          ->fields()
-          ->addValues($values)
-          ->preProcess();
+        $values = $fields->process()->values()->all();
 
-      return view('flexible-forms::edit', [
-          'blueprint' => $blueprint->toPublishArray(),
-          'values' => $fields->values(),
-          'meta' => $fields->meta(),
-          'form' => $form,
-      ]);
+        $data = collect($values)->except(['title', 'honeypot', 'store', 'email']);
 
+        $form
+            ->title($values['title'])
+            ->honeypot($values['honeypot'])
+            ->store($values['store'])
+            ->email($values['email'])
+            ->merge($data);
+
+        $form->save();
+
+        $this->success(__('Saved'));
     }
 
-    // return list of all forms
+    public function edit($form)
+    {
+        $this->authorize('edit flexible forms', $form);
+        
+        $values = [
+            'handle' => $form->handle(),
+            'title' => __($form->title()),
+            'honeypot' => $form->honeypot(),
+            'store' => $form->store(),
+            'email' => $form->email(),
+        ];
+
+        $fields = ($blueprint = $this->editFormBlueprint($form))
+            ->fields()
+            ->addValues($values)
+            ->preProcess();
+
+        return view('flexible-forms::edit', [
+            'blueprint' => $blueprint->toPublishArray(),
+            'values' => $fields->values(),
+            'meta' => $fields->meta(),
+            'form' => $form,
+        ]);
+    }
+
     public function forms()
     {
         $forms = Form::all()->map(function ($form) {
@@ -201,110 +190,226 @@ class FormController extends CpController
         return response()->json($forms);
     }
 
-    // delete a form by handle
     public function delete(Request $request, $formHandle)
     {
+
+       try {
+
+        $this->authorize('delete flexible forms', $formHandle);
+
 
         $forms = Form::all();
 
         $form = $forms->first(function ($form) use ($formHandle) {
-          return $form->handle() === $formHandle;
+            return $form->handle() === $formHandle;
         });
       
-        // Check if the form exists
         if ($form) {
-            // Delete associated submissions
             $form->submissions()->each->delete();
-    
-            // Now delete the form itself
             $form->delete();
     
             return response()->json(['message' => 'Form and associated data deleted successfully'], 200);
         } else {
             return response()->json(['error' => 'Form not found'], 404);
         }
-    }
 
-    // return list of all forms
-    public function submissions(Request $request, $formHandle)
-    {
-        // Retrieve the form by handle
-        $forms = Form::all();
-
-        $form = $forms->first(function ($form) use ($formHandle) {
-          return $form->handle() === $formHandle;
-        });
-
-        if ($form) {
-
-           $submissions = $form->submissions();
-
-           return view('flexible-forms::submissions', [
-              'form' => $form,
-              'submissions' => $submissions,
-          ]);
-
-        }
-
-    }
-
-
-    // return single submission
-    public function submission(Request $request, $form, $submission)
-    {
-        
-      if (! $submission = $form->submission($submission)) {
-        return $this->pageNotFound();
+      } catch (\Illuminate\Auth\Access\AuthorizationException $e) {
+          return response()->json(['error' => 'You are not authorized to delete this form.'], 403);
       }
 
-      $this->authorize('view', $submission);
-
-      $blueprint = $submission->blueprint();
-      $fields = $blueprint->fields()->addValues($submission->data()->all())->preProcess();
-
-      return view('flexible-forms::submission', [
-        'form' => $form,
-        'submission' => $submission,
-        'blueprint' => $blueprint->toPublishArray(),
-        'values' => $fields->values(),
-        'meta' => $fields->meta(),
-        'title' => $submission->formattedDate(),
-      ]);
-
-      /*
-
-      return view('statamic::forms.submission', [
-        'form' => $form,
-        'submission' => $submission,
-        'blueprint' => $blueprint->toPublishArray(),
-        'values' => $fields->values(),
-        'meta' => $fields->meta(),
-        'title' => $submission->formattedDate(),
-      ]);
-
-      */
-
-      /*
-
-        if ($form) {
-
-           $submissions = $form->submissions();
-
-           return view('flexible-forms::submission', [
-              'form' => $form,
-              'submissions' => $submissions,
-          ]);
-
-        }
-
-        */
-
     }
 
+    public function submissions(Request $request, $form)
+    {
+        if (!$form->blueprint()) {
+            return ['data' => [], 'meta' => ['columns' => []]];
+        }
+
+        $query = $this->indexQuery($form);
+
+        $activeFilterBadges = $this->queryFilters($query, $request->filters, [
+            'form' => $form->handle(),
+        ]);
+
+        $sortField = request('sort', 'date');
+        $sortDirection = request('order', $sortField === 'date' ? 'desc' : 'asc');
+
+        if ($sortField) {
+            $query->orderBy($sortField, $sortDirection);
+        }
+
+        $submissions = $query->paginate(request('perPage'));
+
+        if ($request->wantsJson()) {
+            return (new Submissions($submissions))
+                ->blueprint($form->blueprint())
+                ->columnPreferenceKey("forms.{$form->handle()}.columns")
+                ->additional(['meta' => [
+                    'activeFilterBadges' => $activeFilterBadges,
+                ]]);
+        }
+
+        return view('flexible-forms::submissions', [
+            'form' => $form,
+            'submissions' => $submissions,
+        ]);
+    }
+
+    public function submission(Request $request, $form, $submission)
+    {
+        if (!$submission = $form->submission($submission)) {
+            return $this->pageNotFound();
+        }
+
+        $this->authorize('edit flexible forms', $form);
+
+        $blueprint = $submission->blueprint();
+        $fields = $blueprint->fields()->addValues($submission->data()->all())->preProcess();
+
+        return view('flexible-forms::submission', [
+            'form' => $form,
+            'submission' => $submission,
+            'blueprint' => $blueprint->toPublishArray(),
+            'values' => $fields->values(),
+            'meta' => $fields->meta(),
+            'title' => $submission->formattedDate(),
+        ]);
+    }
+
+    public function submissionData(FilteredRequest $request, $form)
+    {
+        if (!$form->blueprint()) {
+            return ['data' => [], 'meta' => ['columns' => []]];
+        }
+
+        $query = $this->indexQuery($form);
+
+        $activeFilterBadges = $this->queryFilters($query, $request->filters, [
+            'form' => $form->handle(),
+        ]);
+
+        $sortField = request('sort', 'date');
+        $sortDirection = request('order', $sortField === 'date' ? 'desc' : 'asc');
+
+        if ($sortField) {
+            $query->orderBy($sortField, $sortDirection);
+        }
+
+        $submissions = $query->paginate(request('perPage'));
+
+        return (new Submissions($submissions))
+            ->blueprint($form->blueprint())
+            ->columnPreferenceKey("forms.{$form->handle()}.columns")
+            ->additional(['meta' => [
+                'activeFilterBadges' => $activeFilterBadges,
+            ]]);
+    }
+
+//     public function submissionData(FilteredRequest $request, $form)
+// {
+//     if (!$form->blueprint()) {
+//         return ['data' => [], 'meta' => ['columns' => []]];
+//     }
+
+//     $query = $this->indexQuery($form);
+
+//     $activeFilterBadges = $this->queryFilters($query, $request->filters, [
+//         'form' => $form->handle(),
+//     ]);
+
+//     $sortField = request('sort', 'date');
+//     $sortDirection = request('order', $sortField === 'date' ? 'desc' : 'asc');
+
+//     if ($sortField) {
+//         $query->orderBy($sortField, $sortDirection);
+//     }
+
+//     $submissions = $query->paginate(request('perPage'));
+
+//     // Create a new collection with actions added to each submission
+//     $submissionsWithActions = $submissions->map(function ($submission) {
+//         // Get all registered actions
+//         $actions = Action::for($submission);
+        
+//         // Filter actions based on your addon's permissions
+//         $filteredActions = $actions->filter(function ($action) use ($submission) {
+//             // Check if the action class has a custom authorize method
+//             if (method_exists($action, 'authorizeForFlexibleForms')) {
+//                 return $action::authorizeForFlexibleForms(User::current(), $submission);
+//             }
+//             // Fallback to checking flexible forms permissions
+//             return User::current()->can('edit flexible forms');
+//         });
+        
+//         // Add the filtered actions to the submission
+//         $submission->actions = $filteredActions->values();
+        
+//         return $submission;
+//     });
+
+//     // Replace the original submissions with our modified collection
+//     $submissions->setCollection($submissionsWithActions);
+
+//     $response = (new Submissions($submissions))
+//         ->blueprint($form->blueprint())
+//         ->columnPreferenceKey("forms.{$form->handle()}.columns")
+//         ->additional(['meta' => [
+//             'activeFilterBadges' => $activeFilterBadges,
+//         ]]);
+
+//     // Add permissions meta data
+//     $response->additional(['meta' => [
+//         'permissions' => [
+//             'view' => User::current()->can('view flexible forms'),
+//             'edit' => User::current()->can('edit flexible forms'),
+//         ]
+//     ]]);
+
+//     return $response;
+// }
+
+    protected function indexQuery($form)
+    {
+        $query = $form->querySubmissions();
+
+        if ($search = request('search')) {
+            $query->where('date', 'like', '%'.$search.'%');
+
+            $form->blueprint()->fields()->all()
+                ->filter(function ($field) {
+                    return in_array($field->type(), ['text', 'textarea', 'integer']);
+                })
+                ->each(function ($field) use ($query, $search) {
+                    $query->orWhere($field->handle(), 'like', '%'.$search.'%');
+                });
+        }
+
+        return $query;
+    }
+
+    protected function getSelectedItems($items, $context)
+    {
+        $form = $this->request->route('form');
+
+        return $items->map(function ($item) use ($form) {
+            return $form->submission($item);
+        });
+    }
+
+    public function export($form, $type)
+    {
+        $this->authorize('view flexible forms', $form);
+
+        if (! $exporter = $form->exporter($type)) {
+            throw new NotFoundHttpException;
+        }
+
+        return $this->request->has('download') ? $exporter->download() : $exporter->response();
+    }
 
     protected function editFormBlueprint($form)
     {
-        return Blueprint::makeFromTabs([
+        $fields = [
             'name' => [
                 'display' => __('Name'),
                 'fields' => [
@@ -451,8 +556,171 @@ class FormController extends CpController
             ],
 
             // metrics
-        ]);
+            // ...
+
+        ];
+
+        // foreach (Form::extraConfigFor($form->handle()) as $handle => $config) {
+        //     $merged = false;
+        //     foreach ($fields as $sectionHandle => $section) {
+        //         if ($section['display'] == $config['display']) {
+        //             $fields[$sectionHandle]['fields'] += $config['fields'];
+        //             $merged = true;
+        //         }
+        //     }
+
+        //     if (! $merged) {
+        //         $fields[$handle] = $config;
+        //     }
+        // }
+
+        return Blueprint::makeFromTabs($fields);
     }
-    
+
+    // protected function editFormBlueprint($form)
+    // {
+    //     return Blueprint::makeFromTabs([
+    //         'name' => [
+    //             'display' => __('Name'),
+    //             'fields' => [
+    //                 'title' => [
+    //                     'type' => 'text',
+    //                     'validate' => 'required',
+    //                     'instructions' => __('statamic::messages.form_configure_title_instructions'),
+    //                 ],
+    //             ],
+    //         ],
+    //         'fields' => [
+    //             'display' => __('Fields'),
+    //             'fields' => [
+    //                 'blueprint' => [
+    //                     'type' => 'html',
+    //                     'instructions' => __('statamic::messages.form_configure_blueprint_instructions'),
+    //                     'html' => '<div class="text-xs"><a href="'.cp_route('forms.blueprint.edit', $form->handle()).'" class="text-blue">'.__('Edit').'</a></div>',
+    //                 ],
+    //                 'honeypot' => [
+    //                     'type' => 'text',
+    //                     'instructions' => __('statamic::messages.form_configure_honeypot_instructions'),
+    //                 ],
+    //             ],
+    //         ],
+    //         'submissions' => [
+    //             'display' => __('Submissions'),
+    //             'fields' => [
+    //                 'store' => [
+    //                     'display' => __('Store Submissions'),
+    //                     'type' => 'toggle',
+    //                     'instructions' => __('statamic::messages.form_configure_store_instructions'),
+    //                 ],
+    //             ],
+    //         ],
+    //         'email' => [
+    //             'display' => __('Email'),
+    //             'fields' => [
+    //                 'email' => [
+    //                     'type' => 'grid',
+    //                     'mode' => 'stacked',
+    //                     'add_row' => __('Add Email'),
+    //                     'instructions' => __('statamic::messages.form_configure_email_instructions'),
+    //                     'fields' => [
+    //                         [
+    //                             'handle' => 'to',
+    //                             'field' => [
+    //                                 'type' => 'text',
+    //                                 'display' => __('Recipient(s)'),
+    //                                 'validate' => ['required'],
+    //                                 'instructions' => __('statamic::messages.form_configure_email_to_instructions'),
+    //                             ],
+    //                         ],
+    //                         [
+    //                             'handle' => 'cc',
+    //                             'field' => [
+    //                                 'type' => 'text',
+    //                                 'display' => __('CC Recipient(s)'),
+    //                                 'instructions' => __('statamic::messages.form_configure_email_cc_instructions'),
+    //                             ],
+    //                         ],
+    //                         [
+    //                             'handle' => 'bcc',
+    //                             'field' => [
+    //                                 'type' => 'text',
+    //                                 'display' => __('BCC Recipient(s)'),
+    //                                 'instructions' => __('statamic::messages.form_configure_email_bcc_instructions'),
+    //                             ],
+    //                         ],
+    //                         [
+    //                             'handle' => 'from',
+    //                             'field' => [
+    //                                 'type' => 'text',
+    //                                 'display' => __('Sender'),
+    //                                 'instructions' => __('statamic::messages.form_configure_email_from_instructions').' ('.config('mail.from.address').').',
+    //                             ],
+    //                         ],
+    //                         [
+    //                             'handle' => 'reply_to',
+    //                             'field' => [
+    //                                 'type' => 'text',
+    //                                 'display' => __('Reply To'),
+    //                                 'instructions' => __('statamic::messages.form_configure_email_reply_to_instructions'),
+    //                             ],
+    //                         ],
+    //                         [
+    //                             'handle' => 'subject',
+    //                             'field' => [
+    //                                 'type' => 'text',
+    //                                 'display' => __('Subject'),
+    //                                 'instructions' => __('statamic::messages.form_configure_email_subject_instructions'),
+    //                             ],
+    //                         ],
+    //                         [
+    //                             'handle' => 'html',
+    //                             'field' => [
+    //                                 'type' => 'template',
+    //                                 'display' => __('HTML view'),
+    //                                 'instructions' => __('statamic::messages.form_configure_email_html_instructions'),
+    //                                 'folder' => config('statamic.forms.email_view_folder'),
+    //                             ],
+    //                         ],
+    //                         [
+    //                             'handle' => 'text',
+    //                             'field' => [
+    //                                 'type' => 'template',
+    //                                 'display' => __('Text view'),
+    //                                 'instructions' => __('statamic::messages.form_configure_email_text_instructions'),
+    //                                 'folder' => config('statamic.forms.email_view_folder'),
+    //                             ],
+    //                         ],
+    //                         [
+    //                             'handle' => 'markdown',
+    //                             'field' => [
+    //                                 'type' => 'toggle',
+    //                                 'display' => __('Markdown'),
+    //                                 'instructions' => __('statamic::messages.form_configure_email_markdown_instructions'),
+    //                             ],
+    //                         ],
+    //                         [
+    //                             'handle' => 'attachments',
+    //                             'field' => [
+    //                                 'type' => 'toggle',
+    //                                 'display' => __('Attachments'),
+    //                                 'instructions' => __('statamic::messages.form_configure_email_attachments_instructions'),
+    //                             ],
+    //                         ],
+    //                         [
+    //                             'handle' => 'mailer',
+    //                             'field' => [
+    //                                 'type' => 'select',
+    //                                 'instructions' => __('statamic::messages.form_configure_mailer_instructions'),
+    //                                 'options' => array_keys(config('mail.mailers')),
+    //                                 'clearable' => true,
+    //                             ],
+    //                         ],
+    //                     ],
+    //                 ],
+    //             ],
+    //         ],
+    //     ]);
+    // }
+
 
 }

@@ -11,6 +11,12 @@ Route::prefix('flexible-forms')->name('flexible-forms.')->group(function () {
   // return form list
   Route::get('/forms', [FormController::class, 'forms'])->name('forms');
 
+  // update a form
+  Route::patch('{form}/update', [FormController::class, 'update'])->name('update');
+
+  // update form settings
+  Route::patch('{form}/settings', [FormController::class, 'settings'])->name('settings');
+
   // delete a form
   Route::post('{formHandle}/delete', [FormController::class, 'delete'])->name('delete');
 
@@ -27,17 +33,25 @@ Route::prefix('flexible-forms')->name('flexible-forms.')->group(function () {
   Route::get('{form}/build', [FormController::class, 'build'])->name('build');
     
   // return form submissions
-  Route::get('{formHandle}/submissions', [FormController::class, 'submissions'])->name('submissions');
+  Route::get('{form}/submissions', [FormController::class, 'submissions'])->name('submissions');
+
+  // return form submission data
+  Route::get('{form}/submissions/data', [FormController::class, 'submissionData'])->name('submissionData');
 
   // return single form submission
   Route::get('{form}/submissions/{submission}', [FormController::class, 'submission'])->name('submission');
 
-  // form listing page
-  Route::get('{form}/test', [FormController::class, 'tests'])->name('tests');
+  // form submission actions
+  // Route::post('{form}/submissions/actions', [FormController::class, 'getSelectedItems'])->name('submissionAction');
+
+  // Route::post('flexible-forms/{form}/submissions/actions', function ($form) {
+  //   return app(ActionController::class)->run(request());
+  // })->name('flexible-forms.submissions.actions');
 
   // delete form submission
-
   Route::post('{form}/submissions/{submission}/delete', [FormController::class, 'submissionDelete'])->name('submissionDelete');
-    
+   
+  // export forms submissions
+  Route::get('{form}/export/{type}', [FormController::class, 'export'])->name('export');
 
 });
