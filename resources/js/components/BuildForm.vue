@@ -50,15 +50,15 @@
               <p class="text-lg font-semibold">Available Fields</p>
               <p class="text-12 text-gray-600 mt-0.5 mb-5">Drag form fields into the form to start building.</p>
               <template v-if="availableFields" v-for="field in availableFields">
-                <div v-if="!excludeFields || !excludeFields.length > 0 || !excludeFields.includes(field.fieldtype)" class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" :data-field="field.fieldtype">
+                <div v-if="!excludeFields || !excludeFields.length > 0 || !excludeFields.includes(field.handle)" class="blueprint-section-field blueprint-section-field-w-full draggable mb-3" draggable="true" @dragstart="dragStart" :data-field="field.handle">
                   <div class="blueprint-section-field-inner custom-background-grey">
                     <div class="flex flex-1 items-center justify-between">
                       <div class="flex items-center flex-1 pr-4 py-1 pl-1">
                         <svg-icon class="text-gray-800 dark:text-dark-150 rtl:ml-2 ltr:mr-2 h-4 w-4 flex-none" :name="field.icon.startsWith('<svg') ? field.icon : `light/${field.icon}`" v-tooltip="tooltipText" default="light/generic-field" />
-                        <p class="break-all text-12 font-semibold ml-1">{{ field.name }}</p>
+                        <p class="break-all text-12 font-semibold ml-1">{{ field.title }}</p>
                       </div>
                     </div>
-                    <div class="flex items-center mr-1 bg-handle px-0.5" @click="addField(field.fieldtype)" v-tooltip="'Add ' + field.fieldtype + ' field'">
+                    <div class="flex items-center mr-1 bg-handle px-0.5" @click="addField(field.handle)" v-tooltip="'Add ' + field.handle + ' field'">
                       <svg class="h-3" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M5.75 11.5C5.33579 11.5 5 11.1642 5 10.75L5 0.75C5 0.335787 5.33579 -1.46777e-08 5.75 -3.27835e-08C6.16421 -5.08894e-08 6.5 0.335787 6.5 0.75L6.5 10.75C6.5 11.1642 6.16421 11.5 5.75 11.5Z" fill="#999"/>
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M-6.55671e-08 5.75C-2.93554e-08 5.33579 0.335786 5 0.75 5L10.75 5C11.1642 5 11.5 5.33579 11.5 5.75C11.5 6.16421 11.1642 6.5 10.75 6.5L0.75 6.5C0.335786 6.5 -1.01779e-07 6.16421 -6.55671e-08 5.75Z" fill="#999"/>
@@ -90,6 +90,7 @@
       showTitle: Boolean,
       isFormBlueprint: { type: Boolean, default: false },
       showHidden: { type: Boolean, default: true },
+      availableFields: Array,
       excludeFields: Array,
     },
     components: {
@@ -107,53 +108,6 @@
         pageUrl: null,
         isEditing: false,
         currentField: null,     
-        availableFields: [
-          {
-            name: "Text",
-            fieldtype: "text",
-            icon: "text",
-          },
-          {
-            name: "Textarea",
-            fieldtype: "textarea",
-            icon: "textarea",
-          },
-          {
-            name: "Select",
-            fieldtype: "select",
-            icon: "select",
-          },
-          {
-            name: "Checkboxes",
-            fieldtype: "checkboxes",
-            icon: "checkboxes",
-          },
-          {
-            name: "Radio",
-            fieldtype: "radio",
-            icon: "radio",
-          },
-          {
-            name: "Toggle",
-            fieldtype: "toggle",
-            icon: "toggle",
-          },
-          {
-            name: "Integer",
-            fieldtype: "integer",
-            icon: "integer",
-          },
-          {
-            name: "Assets",
-            fieldtype: "assets",
-            icon: "assets",
-          },
-          {
-            name: "Spacer",
-            fieldtype: "spacer",
-            icon: "width",
-          },
-        ]
       }
     },
     created() {
@@ -167,7 +121,9 @@
       this.fields = this.blueprint.tabs[0].sections[0].fields;
       this.$events.$on('event.close-stack', this.editorClosed);
 
-      console.log(this.fields);
+      //console.log(this.fields);
+
+      this.getAvailableFields();
 
     },
     mounted() {
@@ -320,3 +276,40 @@
   }
 
   </script>
+
+
+<!--
+
+improve create field above with Statamic approach
+
+createField(handle) {
+    const fieldtype = _.findWhere(this.fieldtypes, { handle });
+
+    // Build the initial empty field. The event listener will assign display, handle,
+    // and id keys. This will be 'field_n' etc, where n would be the total root
+    // level, grid, or set fields depending on the event listener location.
+    let field = {
+        type: fieldtype.handle,
+        display: __(':title Field', {title: fieldtype.title}),
+        handle: null, // The handle will be generated from the display by the "slug" fieldtype.
+        icon: fieldtype.icon,
+        instructions: null,
+        localizable: false,
+        width: 100,
+        listable: 'hidden',
+        isNew: true
+    };
+
+    // Vue's reactivity works best when an object already has the appropriate values.
+    // We'll set up the default values for each config option. Each option might
+    // have a default value defined, otherwise will just set it to null.
+    let defaults = {};
+    _.each(fieldtype.config, configField => {
+        defaults[configField.handle] = configField.default || null;
+    });
+
+    // Smoosh the field together with the defaults.
+    return Object.assign(defaults, field);
+},
+
+-->

@@ -111,11 +111,49 @@ class FormController extends CpController
 
         $blueprint = $form->blueprint();
 
+        // Get fieldtypes
+        $fieldtypes = app('statamic.fieldtypes')
+        ->unique() // Remove any dupes in the case of aliases. Aliases are defined later so they will win.
+        ->map(function ($class) {
+            return app($class);
+        });
+
+        $selectableMethod = 'selectableInForms';
+        $fieldtypes = $fieldtypes->filter->$selectableMethod();
+
+        // Define the desired order of categories
+        $categoryOrder = [
+        'text' => 0,
+        'controls' => 1,
+        'media' => 2,
+        'number' => 3,
+        'relationship' => 4,
+        'special' => 5,
+        ];
+
+        // Sorting function for fieldtypes
+        $sortedFieldtypes = $fieldtypes->sortBy(function ($fieldtype) use ($categoryOrder) {
+        // Assuming there's a method or accessor for retrieving categories
+        $categories = $fieldtype->categories(); // or $fieldtype->getCategories()
+
+        // Find the first matching category from the order list
+        foreach ($categories as $category) {
+            if (isset($categoryOrder[$category])) {
+                return $categoryOrder[$category];
+            }
+        }
+
+        // Default to a high number if no matching category is found
+        return 999;
+        })->values();
+
         return view('flexible-forms::build', [
-            'form' => $form,
-            'blueprint' => $blueprint,
-            'blueprintVueObject' => $this->toVueObject($blueprint),
+        'form' => $form,
+        'blueprint' => $blueprint,
+        'blueprintVueObject' => $this->toVueObject($blueprint),
+        'availableFieldtypes' => $sortedFieldtypes,
         ]);
+
     }
 
     public function update($form, Request $request)

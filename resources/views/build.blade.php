@@ -13,6 +13,7 @@
       :initial-blueprint="{{ json_encode($blueprintVueObject) }}"
       :use-tabs="false"
       :is-form-blueprint="true"
+      :available-fields="{{ json_encode($availableFieldtypes) }}"
       :exclude-fields="{{ json_encode( config('flexible_forms.exclude_fields') ) }}"
       >
    </build-flexible-form>

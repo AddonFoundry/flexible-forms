@@ -3,18 +3,20 @@
 return [
   
   /**
-  * Fields to exclude from all Flexible Forms
+  * Exclude field from the Available Forms list in all Flexible Forms
   * Note: this won't remove fields already added to a form
   */
   'exclude_fields' => [
     // 'text',
     // 'textarea',
-    // 'select',
     // 'checkboxes',
+    'dictionary',
     // 'radio',
+    // 'select',
     // 'toggle',
-    // 'integer',
     // 'assets',
+    'files',
+    // 'integer',
     // 'spacer',
   ],
 
