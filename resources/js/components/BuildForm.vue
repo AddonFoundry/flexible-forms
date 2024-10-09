@@ -123,8 +123,6 @@
 
       //console.log(this.fields);
 
-      this.getAvailableFields();
-
     },
     mounted() {
       this.makeFieldsSortable();  
@@ -160,25 +158,25 @@
         let index = this.blueprint.tabs[0].sections[0].fields.findIndex(field => field._id === updatedField._id);
         this.blueprint.tabs[0].sections[0].fields[index] = updatedField;
       },
-      addField(type) {  
-        const typeUpper = type.charAt(0).toUpperCase() + type.slice(1);
+      addField(handle) {  
+        const fieldtype = _.findWhere(this.availableFields, { handle });
         const newId = this.fields.length;
         const newData = {
-          handle: type + "_field",
+          handle: fieldtype.handle  + "_field",
           type: "inline",
           config: {
-            input_type: type,
-            type: type,
-            display: typeUpper,
+            input_type: fieldtype.handle,
+            type: fieldtype.handle,
+            display: __(':title Field', {title: fieldtype.title}),
             width: 100,
           },
-          fieldtype: type,
-          icon: type,
+          fieldtype: fieldtype.handle,
+          icon: fieldtype.icon,
           _id: "main-0-" + newId
         };
+        console.log(newData);
         this.fields.push(newData);
         this.$toast.success(__('Field added'));
-
       },
       editField(index) {
         this.currentField = this.blueprint.tabs[0].sections[0].fields[index];
@@ -237,38 +235,23 @@
       },
       drop(event) {
         event.preventDefault();
-        const data = event.dataTransfer.getData('text/plain');
+        const handle = event.dataTransfer.getData('text/plain');
+        const fieldtype = _.findWhere(this.availableFields, { handle });
         const newId = this.fields.length;
-        const dataUpper = data.charAt(0).toUpperCase() + data.slice(1);
-        let inputType = null;
-        if(dataUpper == 'Text') {
-          inputType = 'text';
-        }
-        let icon = data;
-        if(data == 'spacer') {
-          icon = 'width'
-        }
-
         const newData = {
-          handle: data + "_field",
+          handle: fieldtype.handle  + "_field",
           type: "inline",
           config: {
-            input_type: inputType,
-            //antlers: false,
-            type: data,
-            display: dataUpper,
-            //listable: "hidden",
-            //instructions_position: "above",
-            //visibility: "visible",
-            //replicator_preview: true,
-            //hide_display: false,
+            input_type: fieldtype.handle,
+            type: fieldtype.handle,
+            display: __(':title Field', {title: fieldtype.title}),
             width: 100,
-            //localizable: false
           },
-          fieldtype: data,
-          icon: icon,
+          fieldtype: fieldtype.handle,
+          icon: fieldtype.icon,
           _id: "main-0-" + newId
         };
+        console.log(newData);
         this.fields.push(newData);
         this.$toast.success(__('Field added'));
       }
@@ -276,40 +259,4 @@
   }
 
   </script>
-
-
-<!--
-
-improve create field above with Statamic approach
-
-createField(handle) {
-    const fieldtype = _.findWhere(this.fieldtypes, { handle });
-
-    // Build the initial empty field. The event listener will assign display, handle,
-    // and id keys. This will be 'field_n' etc, where n would be the total root
-    // level, grid, or set fields depending on the event listener location.
-    let field = {
-        type: fieldtype.handle,
-        display: __(':title Field', {title: fieldtype.title}),
-        handle: null, // The handle will be generated from the display by the "slug" fieldtype.
-        icon: fieldtype.icon,
-        instructions: null,
-        localizable: false,
-        width: 100,
-        listable: 'hidden',
-        isNew: true
-    };
-
-    // Vue's reactivity works best when an object already has the appropriate values.
-    // We'll set up the default values for each config option. Each option might
-    // have a default value defined, otherwise will just set it to null.
-    let defaults = {};
-    _.each(fieldtype.config, configField => {
-        defaults[configField.handle] = configField.default || null;
-    });
-
-    // Smoosh the field together with the defaults.
-    return Object.assign(defaults, field);
-},
-
--->
+  
