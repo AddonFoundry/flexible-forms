@@ -7,7 +7,7 @@
 
       <div class="flex items-center mb-6">
         <h1 class="flex-1">{{ __('Flexible Forms') }}</h1>
-        @if (Statamic::pro() && $user->hasPermission('create flexible forms'))
+        @if (Statamic::pro() && $user->hasPermission('create flexible forms') || Statamic::pro() && $user->isSuper())
           <a href="/cp/flexible-forms/create" class="btn-primary">{{ __('Create Form') }}</a>
         @endif
       </div>

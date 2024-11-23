@@ -23,28 +23,73 @@
           </a>
         </section>
         <section class="flex justify-between flex-wrap">
-          <div class="card w-63 bg-white pt-8 pb-6 px-8 rounded-md">
-            <p class="text-lg font-semibold">{{ slugToTitleCase(blueprint.handle) }}</p>
-            <p class="text-12 text-gray-600 mt-0.5 mb-5">Drag form fields to reorder them or click on a field to edit it.</p>
-            <div class="blueprint-section-draggable-zone -mx-1 flex flex-wrap flex-1">
-              <div v-if="fields" v-for="(field, index) in fields" class="blueprint-section-field orderable mb-3" :class="widthClass(field)" :key="field._id">
-                <div class="blueprint-section-field-inner custom-background-grey">
-                  <div class="flex flex-1 items-center justify-between">
-                    <div class="flex items-center flex-1 pr-4 py-1 pl-1">
-                      <svg-icon class="text-gray-800 dark:text-dark-150 rtl:ml-2 ltr:mr-2 h-4 w-4 flex-none" :name="field.icon.startsWith('<svg') ? field.icon : `light/${field.icon}`" v-tooltip="field.handle" default="light/generic-field" />
-                      <a @click="editField(index, $event)" class="break-all text-12 font-semibold ml-1">{{ field.config.display }}<span v-if="field.config.validate && field.config.validate.includes('required')" class="required">*</span></a>
-                    </div>
-                  </div>
-                  <width-selector v-if="!isHidden" v-model="field.config.width" class="rtl:ml-2 ltr:mr-2" />
-                  <div class="blueprint-drag-handle w-5"></div>
-                  <button class="text-gray-600 hover:text-gray-950 flex items-center v-popper--has-tooltip ml-2" @click="removeField(index)"><svg viewBox="0 0 16 16" class="h-3.5 w-3.5"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M1 3h14M9.5 1h-3a1 1 0 0 0-1 1v1h5V2a1 1 0 0 0-1-1zm-3 10.5v-5m3 5v-5m3.077 7.583a1 1 0 0 1-.997.917H4.42a1 1 0 0 1-.996-.917L2.5 3h11l-.923 11.083z"></path></svg></button>
-                </div>
-              </div>  
-            </div>  
-            <div data-tab="main" data-section="main-0" class="-mx-1 mt-2 mb-10" tabindex="0" @dragover="dragOver" @drop="drop">
-              <div class="text-2xs text-gray-600 text-center border border-dashed rounded mb-2 p-6">Drag form fields here</div>
+
+          <div class="w-63 card bg-white rounded-md p-6 sortable-sections">
+
+            <div class="mb-5">
+              <p class="text-lg font-semibold">{{ slugToTitleCase(blueprint.handle) }}</p>
+              <p class="text-12 text-gray-600 mt-0.5 mb-0">Drag form fields to reorder them or click on a field name to edit it.</p>
             </div>
+
+            <template v-if="sections">
+              <div v-for="(section, sectionIndex) in sections" :key="sectionIndex" class="card bg-white rounded-md mt-3 p-0 sortable-section">
+                <div class="flex justify-between items-center mb-2 border-b border-gray-300 dark:border-dark-400 py-3 px-4 section-header-background">
+                  <p class="text-sm font-semibold">{{ section.display }}</p>
+                  <div class="flex justify-center items-center">
+                    <button @click="editSection(sectionIndex)" class="text-gray-600 hover:text-gray-950 flex items-center v-popper--has-tooltip ml-2" v-tooltip="'Edit Section'">
+                      <svg xmlns="http://www.w3.org/2000/svg" stroke-width="1.5" viewBox="0 0 24 24" class="h-4 w-4">
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M22.19 1.81a3.638 3.638 0 0 0-5.169.035l-14.5 14.5L.75 23.25l6.905-1.771 14.5-14.5a3.638 3.638 0 0 0 .035-5.169ZM16.606 2.26l5.134 5.134M14.512 4.354l5.134 5.134M2.521 16.345l5.139 5.129"></path>
+                      </svg>
+                    </button>
+                    <button class="text-gray-600 hover:text-gray-950 flex items-center v-popper--has-tooltip ml-2" 
+                            v-tooltip="'Delete Section'"
+                            @click="deleteSection(sectionIndex)">
+                      <svg viewBox="0 0 16 16" class="h-4 w-4">
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M1 3h14M9.5 1h-3a1 1 0 0 0-1 1v1h5V2a1 1 0 0 0-1-1zm-3 10.5v-5m3 5v-5m3.077 7.583a1 1 0 0 1-.997.917H4.42a1 1 0 0 1-.996-.917L2.5 3h11l-.923 11.083z"></path>
+                      </svg>
+                    </button>
+                    <div class="blueprint-drag-handle w-5 h-6 ml-2 sortable-section-handle"></div>
+                  </div>
+                </div>
+                <div class="blueprint-section-draggable-zone flex flex-wrap flex-1 px-2 py-2">
+                  <template v-if="section.fields">
+                    <div v-for="(field, fieldIndex) in section.fields" 
+                         :key="field._id"
+                         class="blueprint-section-field orderable mb-3" 
+                         :class="widthClass(field)">
+                      <div class="blueprint-section-field-inner custom-background-grey">
+                        <div class="flex flex-1 items-center justify-between">
+                          <div class="flex items-center flex-1 pr-4 py-1 pl-1">
+                            <svg-icon class="text-gray-800 dark:text-dark-150 rtl:ml-2 ltr:mr-2 h-4 w-4 flex-none" :name="field.icon.startsWith('<svg') ? field.icon : `light/${field.icon}`" v-tooltip="field.handle" default="light/generic-field" />
+                            <a @click="editField(sectionIndex, fieldIndex, $event)" class="break-all text-12 font-semibold ml-1">{{ field.config.display }}<span v-if="field.config.validate && field.config.validate.includes('required')" class="required">*</span></a>
+                          </div>
+                        </div>
+                        <width-selector v-if="!isHidden" v-model="field.config.width" class="rtl:ml-2 ltr:mr-2" />
+                        <div class="blueprint-drag-handle w-5"></div>
+                        <button class="text-gray-600 hover:text-gray-950 flex items-center v-popper--has-tooltip ml-2" @click="removeField(sectionIndex, fieldIndex)"><svg viewBox="0 0 16 16" class="h-3.5 w-3.5"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M1 3h14M9.5 1h-3a1 1 0 0 0-1 1v1h5V2a1 1 0 0 0-1-1zm-3 10.5v-5m3 5v-5m3.077 7.583a1 1 0 0 1-.997.917H4.42a1 1 0 0 1-.996-.917L2.5 3h11l-.923 11.083z"></path></svg></button>
+                      </div>
+                    </div>
+                  </template>
+                </div>
+                <div :data-tab="'main'" :data-section="`main-${sectionIndex}`" 
+                     class="mt-0 pb-4 px-4" 
+                     tabindex="0" 
+                     @dragover="dragOver" 
+                     @drop="drop">
+                  <div class="text-2xs text-gray-600 text-center border border-dashed rounded p-4">
+                    Drag and drop new form fields here
+                  </div>
+                </div>
+              </div>
+            </template>
+
+            <div class="text-2xs text-gray-600 text-center border border-dashed rounded mb-2 p-4 mt-4 cursor-pointer hover:bg-gray-50"
+                 @click="addSection">
+              + Add section
+            </div>
+
           </div>
+
           <div class="w-35">
             <div class="card bg-white p-6 rounded-md sticky top-sticky">
               <p class="text-lg font-semibold">Available Fields</p>
@@ -64,7 +109,7 @@
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M-6.55671e-08 5.75C-2.93554e-08 5.33579 0.335786 5 0.75 5L10.75 5C11.1642 5 11.5 5.33579 11.5 5.75C11.5 6.16421 11.1642 6.5 10.75 6.5L0.75 6.5C0.335786 6.5 -1.01779e-07 6.16421 -6.55671e-08 5.75Z" fill="#999"/>
                       </svg>
                     </div>
-                    <div class="blueprint-drag-handle w-6"></div>
+                    <div class="blueprint-drag-handle w-5"></div>
                   </div>
                 </div>
               </template>
@@ -74,6 +119,27 @@
       </div>
     </publish-container>
     <field-stack :blueprint="blueprint" :currentField="currentField" :isEditing="isEditing" @fieldModified="updateField"></field-stack>
+  
+    <modal v-if="isEditingSection" @closed="isEditingSection = false" :currentSection="currentSection">
+      <div slot-scope="{ close }">
+        <header class="text-lg font-semibold px-5 py-3 bg-gray-200 dark:bg-dark-550 rounded-t-lg flex items-center justify-between border-b dark:border-dark-900">
+          {{ isAddingNewSection ? 'Add Section' : 'Edit Section' }}
+        </header>
+        <div class="flex-1 px-5 py-6 text-gray dark:text-dark-150">
+          <div class="publish-fields">
+            <div class="form-group w-full">
+              <label>Display</label>
+              <input type="text" class="input-text" v-model="newSection.display">
+            </div>
+          </div>
+        </div>
+        <div class="px-5 py-3 bg-gray-200 dark:bg-dark-550 rounded-b-lg border-t dark:border-dark-900 flex items-center justify-end text-sm">
+          <button @click="close" class="btn-flat">Cancel</button>
+          <button @click="saveSection" class="rtl:mr-4 ltr:ml-4 btn-primary">Confirm</button>
+        </div>
+      </div>
+    </modal>
+    
   </section>  
 </template>
 
@@ -100,6 +166,7 @@
     data() {
       return {
         blueprint: this.initializeBlueprint(),
+        sections: null,
         errors: {},
         fields: [],
         sortableFields: null,
@@ -107,7 +174,14 @@
         pendingCreatedField: null,
         pageUrl: null,
         isEditing: false,
+        isEditingSection: false,
         currentField: null,     
+        currentSection: null,
+        newSection: {
+          display: ''
+        },
+        editingSectionIndex: null,
+        isAddingNewSection: false,
       }
     },
     created() {
@@ -118,17 +192,29 @@
       if (this.isFormBlueprint) {
         Statamic.$config.set('isFormBlueprint', true);
       }
-      this.fields = this.blueprint.tabs[0].sections[0].fields;
+
+      this.sections = this.blueprint.tabs[0].sections;
+
+      // this.fields = this.blueprint.tabs[0].sections[0].fields;
       this.$events.$on('event.close-stack', this.editorClosed);
 
       //console.log(this.fields);
 
     },
     mounted() {
+      this.makeSectionsSortable();
       this.makeFieldsSortable();  
       this.pageUrl = window.location.href.replace(/\/[^/]*$/, '');
     },
     computed: {
+      sections: {
+        get() {
+          return this.blueprint.tabs[0].sections;
+        },
+        set(newSections) {
+          this.$set(this.blueprint.tabs[0], 'sections', newSections);
+        }
+      },
       widthClass() {
         return (field) => {
           if (field && field.config && field.config.width) {
@@ -151,35 +237,58 @@
       },
     },
     methods: {
+      addSection() {
+        this.isAddingNewSection = true;
+        this.isEditingSection = true;
+        this.newSection.display = '';
+      },
+      editSection(sectionIndex) {
+        this.isAddingNewSection = false;
+        this.currentSection = this.sections[sectionIndex];
+        this.editingSectionIndex = sectionIndex;
+        this.newSection.display = this.currentSection.display;
+        this.isEditingSection = true;
+      },
       editorClosed() {
         this.isEditing = false;
       },
       updateField(updatedField) {
-        let index = this.blueprint.tabs[0].sections[0].fields.findIndex(field => field._id === updatedField._id);
-        this.blueprint.tabs[0].sections[0].fields[index] = updatedField;
+        // Extract section index from the field's _id (format: "main-{sectionIndex}-{fieldIndex}")
+        const sectionIndex = parseInt(updatedField._id.split('-')[1]);
+        
+        // Find the field in the correct section and update it
+        const section = this.blueprint.tabs[0].sections[sectionIndex];
+        const fieldIndex = section.fields.findIndex(field => field._id === updatedField._id);
+        
+        if (fieldIndex !== -1) {
+          this.blueprint.tabs[0].sections[sectionIndex].fields[fieldIndex] = updatedField;
+        }
       },
-      addField(handle) {  
+      addField(handle) {
         const fieldtype = _.findWhere(this.availableFields, { handle });
-        const newId = this.fields.length;
+
+        const sectionIndex = this.blueprint.tabs[0].sections.length - 1;
+        const newId = this.blueprint.tabs[0].sections[sectionIndex].fields.length;
+
         const newData = {
-          handle: fieldtype.handle  + "_field",
+          handle: fieldtype.handle + "_field",
           type: "inline",
           config: {
-            input_type: fieldtype.handle,
+            input_type: 'text',
             type: fieldtype.handle,
-            display: __(':title Field', {title: fieldtype.title}),
+            display: __(':title Field', { title: fieldtype.title }),
             width: 100,
           },
           fieldtype: fieldtype.handle,
           icon: fieldtype.icon,
-          _id: "main-0-" + newId
+          _id: `main-${sectionIndex}-${newId}`
         };
-        console.log(newData);
-        this.fields.push(newData);
+
+        this.blueprint.tabs[0].sections[sectionIndex].fields.push(newData);
         this.$toast.success(__('Field added'));
       },
-      editField(index) {
-        this.currentField = this.blueprint.tabs[0].sections[0].fields[index];
+      editField(sectionIndex, fieldIndex) {
+        this.currentField = this.blueprint.tabs[0].sections[sectionIndex].fields[fieldIndex];
         this.isEditing = true;
       },
       makeFieldsSortable() {
@@ -192,9 +301,22 @@
         .on('sortable:stop', e => this.fieldHasBeenDropped(e));
       },
       fieldHasBeenDropped(e) {
-        let newIndex = e.newIndex;  
-        const field = this.fields.splice(e.oldIndex, 1)[0];
-        this.fields.splice(newIndex, 0, field);
+        // Get the section elements from the draggable container
+        const sectionElements = Array.from(this.$el.querySelectorAll('.blueprint-section-draggable-zone'));
+        
+        // Find source and target section indexes
+        const oldSectionEl = e.oldContainer;
+        const newSectionEl = e.newContainer;
+        const oldSectionIndex = sectionElements.indexOf(oldSectionEl);
+        const newSectionIndex = sectionElements.indexOf(newSectionEl);
+
+        // Get the field from the source section
+        const field = this.blueprint.tabs[0].sections[oldSectionIndex].fields.splice(e.oldIndex, 1)[0];
+        
+        // Add the field to the target section
+        this.blueprint.tabs[0].sections[newSectionIndex].fields.splice(e.newIndex, 0, field);
+
+        // Reinitialize sortable after the update
         this.$nextTick(() => this.makeFieldsSortable());
       },
       initializeBlueprint() {
@@ -213,12 +335,15 @@
         })
       },
       saved(response) {
+        console.log('Before save update:', this.sections.map(s => s.display));
         this.$toast.success(__('Saved'));
         this.errors = {};
         this.$dirty.remove('blueprints');
+        this.sections = this.blueprint.tabs[0].sections;
+        console.log('After save update:', this.sections.map(s => s.display));
       },
-      removeField(index) {
-          this.blueprint.tabs[0].sections[0].fields.splice(index, 1);
+      removeField(sectionIndex, fieldIndex) {
+          this.blueprint.tabs[0].sections[sectionIndex].fields.splice(fieldIndex, 1);
           this.$toast.success(__('Field removed'));
           this.errors = {};
       },
@@ -238,23 +363,108 @@
         const handle = event.dataTransfer.getData('text/plain');
         const fieldtype = _.findWhere(this.availableFields, { handle });
         const newId = this.fields.length;
+        
+        // Extract section index from the drop target's data-section attribute
+        const sectionId = event.currentTarget.dataset.section;
+        const sectionIndex = sectionId.split('-')[1];
+
         const newData = {
-          handle: fieldtype.handle  + "_field",
+          handle: fieldtype.handle + "_field",
           type: "inline",
           config: {
-            input_type: fieldtype.handle,
+            input_type: 'text',
             type: fieldtype.handle,
             display: __(':title Field', {title: fieldtype.title}),
             width: 100,
           },
           fieldtype: fieldtype.handle,
           icon: fieldtype.icon,
-          _id: "main-0-" + newId
+          _id: `main-${sectionIndex}-${newId}`  // Use the correct section index
         };
-        console.log(newData);
-        this.fields.push(newData);
+
+        // Add to the correct section's fields array
+        this.blueprint.tabs[0].sections[sectionIndex].fields.push(newData);
         this.$toast.success(__('Field added'));
-      }
+      },
+      slugify(text) {
+        return text.toString().toLowerCase()
+          .replace(/\s+/g, '_')           // Replace spaces with _
+          .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+          .replace(/\-\-+/g, '_')         // Replace multiple - with single _
+          .replace(/^-+/, '')             // Trim - from start of text
+          .replace(/-+$/, '');            // Trim - from end of text
+      },
+      deleteSection(sectionIndex) {
+        this.blueprint.tabs[0].sections.splice(sectionIndex, 1);
+        this.sections = [...this.blueprint.tabs[0].sections];
+        this.$toast.success(__('Section deleted'));
+      },
+      makeSectionsSortable() {
+        if (this.sortableSections) this.sortableSections.destroy();
+        
+        this.sortableSections = new Sortable(this.$el.querySelector('.sortable-sections'), {
+          draggable: '.sortable-section',
+          handle: '.sortable-section-handle',
+          mirror: { constrainDimensions: true, appendTo: 'body' },
+          animation: 150,
+        }).on('sortable:stop', e => this.sectionHasBeenDropped(e));
+      },
+      sectionHasBeenDropped(e) {
+        const movedSection = this.sections[e.oldIndex];
+        let newSections = this.sections.filter((_, index) => index !== e.oldIndex);
+        newSections.splice(e.newIndex, 0, movedSection);
+        this.sections = [];
+        this.$nextTick(() => {
+          // Update all field IDs to match their new section positions
+          newSections.forEach((section, sectionIndex) => {
+            if (section.fields) {
+              section.fields.forEach((field, fieldIndex) => {
+                field._id = `main-${sectionIndex}-${fieldIndex}`;
+              });
+            }
+          });
+          
+          this.$set(this.blueprint.tabs[0], 'sections', newSections);
+          this.sections = newSections;
+          this.$nextTick(() => {
+            this.makeFieldsSortable();
+            this.makeSectionsSortable();
+          });
+        });
+      },
+      saveSection() {
+        // if (!this.newSection.display.trim()) {
+        //   this.$toast.error(__('Section name cannot be empty'));
+        //   return;
+        // }
+
+        if (this.isAddingNewSection) {
+          // Add new section
+          const newSection = {
+            display: this.newSection.display,
+            handle: `section_${this.slugify(this.newSection.display)}_${Date.now()}`,
+            fields: []
+          };
+          
+          this.blueprint.tabs[0].sections.push(newSection);
+          this.sections = [...this.blueprint.tabs[0].sections];
+          
+          this.$nextTick(() => this.makeFieldsSortable());
+          this.$toast.success(__('Section added'));
+        } else {
+          // Update existing section
+          this.blueprint.tabs[0].sections[this.editingSectionIndex].display = this.newSection.display;
+          
+          this.$toast.success(__('Section updated'));
+        }
+        
+        // Reset the modal state
+        this.isEditingSection = false;
+        this.currentSection = null;
+        this.editingSectionIndex = null;
+        this.newSection.display = '';
+        this.isAddingNewSection = false;
+      },
     }
   }
 
