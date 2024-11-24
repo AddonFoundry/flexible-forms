@@ -1,10 +1,9 @@
-/* Dark Mode */
 .dark .flexible-forms.no-results svg {
   opacity: 0.5;
 }
 
 .dark .flexible-forms .form-options svg {
-  filter: invert(0.8);
+  filter: invert(0.75);
 }
 
 .dark .flexible-forms .form-options .delete svg {
@@ -12,7 +11,7 @@
 }
 
 .dark .flexible-forms .nav-card svg:not(.active) {
-  filter: invert(0.8);
+  filter: invert(0.75);
 }
 
 .dark .sortable-section {
@@ -61,21 +60,11 @@
   background-color: #383b40 !important;
 }
 
-/* Flexible Forms */
 .flexible-forms .section-header-background .blueprint-drag-handle,
 .flexible-forms .blueprint-section-field .blueprint-section-field-inner .blueprint-drag-handle {
   border-right: none !important;
   background-color: #eaf1f7 !important;
 }
-
-/* .flexible-forms .sortable-section .section-header-background {
-  background-color: #f5f8fc;
-  border-radius: 5px 5px 0 0;
-}
-
-.dark .flexible-forms .section-header-background {
-  background-color: #2b2d30;
-} */
 
 .sortable-section .section-header-background {
   background-color: #f5f8fc;
@@ -86,7 +75,10 @@
   background-color: #2b2d30;
 }
 
-/* Form List */
+.dark .sortable-section .section-header-background svg {
+  filter: invert(0.75);
+}
+
 .bg-handle:hover {
   cursor: pointer !important;
 }
