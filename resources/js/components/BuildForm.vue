@@ -362,24 +362,25 @@
         event.preventDefault();
         const handle = event.dataTransfer.getData('text/plain');
         const fieldtype = _.findWhere(this.availableFields, { handle });
-        const newId = this.fields.length;
         
         // Extract section index from the drop target's data-section attribute
         const sectionId = event.currentTarget.dataset.section;
         const sectionIndex = sectionId.split('-')[1];
+        
+        // Get the correct length from the target section's fields array
+        const newId = this.blueprint.tabs[0].sections[sectionIndex].fields.length;
 
         const newData = {
-          handle: fieldtype.handle + "_field",
-          type: "inline",
-          config: {
-            input_type: 'text',
-            type: fieldtype.handle,
-            display: __(':title Field', {title: fieldtype.title}),
-            width: 100,
-          },
-          fieldtype: fieldtype.handle,
-          icon: fieldtype.icon,
-          _id: `main-${sectionIndex}-${newId}`
+            handle: fieldtype.handle + "_field",
+            type: "inline",
+            config: {
+                type: fieldtype.handle,
+                display: __(':title Field', {title: fieldtype.title}),
+                width: 100,
+            },
+            fieldtype: fieldtype.handle,
+            icon: fieldtype.icon,
+            _id: `main-${sectionIndex}-${newId}`
         };
 
         // Add to the correct section's fields array

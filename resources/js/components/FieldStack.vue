@@ -436,12 +436,12 @@ export default {
   },
   props: ['blueprint', 'currentField', 'isEditing'],
   mounted() {
-    console.log(JSON.parse(JSON.stringify(this.currentField)));
+    // console.log(JSON.parse(JSON.stringify(this.currentField)));
   },
   watch: {
     currentField() {
       this.dirtyField = JSON.parse(JSON.stringify(this.currentField));
-      console.log(this.dirtyField);
+      // console.log(this.dirtyField);
       if(this.dirtyField.fieldtype == 'assets') {
         this.assetData();  
       }
