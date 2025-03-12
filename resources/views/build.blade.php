@@ -1,6 +1,7 @@
 @extends('statamic::layout')
 @section('title', __('Forms'))
 
+@section('wrapper_class', 'max-w-3xl')
 @section('content')
 
   @include('statamic::partials.breadcrumb', [
