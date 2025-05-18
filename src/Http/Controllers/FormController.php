@@ -15,19 +15,16 @@ use Statamic\Http\Requests\FilteredRequest;
 use Statamic\Http\Resources\CP\Submissions\Submissions;
 use Statamic\Query\Scopes\Filters\Concerns\QueriesFilters;
 
-
 use Statamic\Facades\Action;
 use Facades\Statamic\Fields\FieldtypeRepository;
 use Statamic\Exceptions\NotFoundHttpException;
-
-//use Statamic\Support\Str;
-// use Statamic\Facades\Scope;
-// use Statamic\Rules\Handle;
 
 class FormController extends CpController
 {
     use ManagesBlueprints;
     use QueriesFilters;
+
+    protected $configs = [];
 
     public function index(Request $request)
     {
@@ -170,6 +167,8 @@ class FormController extends CpController
     {
         $this->authorize('edit flexible forms', $form);
 
+        $this->extraConfigFor($form->handle());
+
         $fields = $this->editFormBlueprint($form)->fields()->addValues($request->all());
 
         $fields->validate();
@@ -190,17 +189,51 @@ class FormController extends CpController
         $this->success(__('Saved'));
     }
 
+    // Add custom fields to the form config
+    public function appendConfigFields($handles, string $display, array $fields)
+    {
+        $this->configs[] = [
+            'display' => $display,
+            'handles' => Arr::wrap($handles),
+            'fields' => $fields,
+        ];
+    }
+
+    // // Get custom fields for the form config
+    public function extraConfigFor($handle)
+    {
+        $reserved = ['title', 'honeypot', 'store', 'email'];
+
+        return collect($this->configs)
+            ->filter(function ($config) use ($handle) {
+                return in_array('*', $config['handles']) || in_array($handle, $config['handles']);
+            })
+            ->flatMap(function ($config) use ($reserved) {
+
+                return [
+                    Str::snake($config['display']) => [
+                        'display' => $config['display'],
+                        'fields' => collect($config['fields'])
+                            ->filter(fn ($field, $index) => ! in_array($field['handle'] ?? $index, $reserved))
+                            ->all(),
+                    ],
+                ];
+            })
+            ->all();
+    }
+
+
     public function edit($form)
     {
-        $this->authorize('edit flexible forms', $form);
-        
-        $values = [
+        $this->authorize('edit', $form);
+
+        $values = array_merge($form->data()->all(), [
             'handle' => $form->handle(),
             'title' => __($form->title()),
             'honeypot' => $form->honeypot(),
             'store' => $form->store(),
             'email' => $form->email(),
-        ];
+        ]);
 
         $fields = ($blueprint = $this->editFormBlueprint($form))
             ->fields()
@@ -214,6 +247,31 @@ class FormController extends CpController
             'form' => $form,
         ]);
     }
+
+    // public function edit($form)
+    // {
+    //     $this->authorize('edit flexible forms', $form);
+        
+    //     $values = [
+    //         'handle' => $form->handle(),
+    //         'title' => __($form->title()),
+    //         'honeypot' => $form->honeypot(),
+    //         'store' => $form->store(),
+    //         'email' => $form->email(),
+    //     ];
+
+    //     $fields = ($blueprint = $this->editFormBlueprint($form))
+    //         ->fields()
+    //         ->addValues($values)
+    //         ->preProcess();
+
+    //     return view('flexible-forms::edit', [
+    //         'blueprint' => $blueprint->toPublishArray(),
+    //         'values' => $fields->values(),
+    //         'meta' => $fields->meta(),
+    //         'form' => $form,
+    //     ]);
+    // }
 
     public function forms()
     {
@@ -598,167 +656,21 @@ class FormController extends CpController
 
         ];
 
-        // foreach (Form::extraConfigFor($form->handle()) as $handle => $config) {
-        //     $merged = false;
-        //     foreach ($fields as $sectionHandle => $section) {
-        //         if ($section['display'] == $config['display']) {
-        //             $fields[$sectionHandle]['fields'] += $config['fields'];
-        //             $merged = true;
-        //         }
-        //     }
+        foreach (Form::extraConfigFor($form->handle()) as $handle => $config) {
+            $merged = false;
+            foreach ($fields as $sectionHandle => $section) {
+                if ($section['display'] == __($config['display'])) {
+                    $fields[$sectionHandle]['fields'] += $config['fields'];
+                    $merged = true;
+                }
+            }
 
-        //     if (! $merged) {
-        //         $fields[$handle] = $config;
-        //     }
-        // }
+            if (! $merged) {
+                $fields[$handle] = $config;
+            }
+        }
 
         return Blueprint::makeFromTabs($fields);
     }
-
-    // protected function editFormBlueprint($form)
-    // {
-    //     return Blueprint::makeFromTabs([
-    //         'name' => [
-    //             'display' => __('Name'),
-    //             'fields' => [
-    //                 'title' => [
-    //                     'type' => 'text',
-    //                     'validate' => 'required',
-    //                     'instructions' => __('statamic::messages.form_configure_title_instructions'),
-    //                 ],
-    //             ],
-    //         ],
-    //         'fields' => [
-    //             'display' => __('Fields'),
-    //             'fields' => [
-    //                 'blueprint' => [
-    //                     'type' => 'html',
-    //                     'instructions' => __('statamic::messages.form_configure_blueprint_instructions'),
-    //                     'html' => '<div class="text-xs"><a href="'.cp_route('forms.blueprint.edit', $form->handle()).'" class="text-blue">'.__('Edit').'</a></div>',
-    //                 ],
-    //                 'honeypot' => [
-    //                     'type' => 'text',
-    //                     'instructions' => __('statamic::messages.form_configure_honeypot_instructions'),
-    //                 ],
-    //             ],
-    //         ],
-    //         'submissions' => [
-    //             'display' => __('Submissions'),
-    //             'fields' => [
-    //                 'store' => [
-    //                     'display' => __('Store Submissions'),
-    //                     'type' => 'toggle',
-    //                     'instructions' => __('statamic::messages.form_configure_store_instructions'),
-    //                 ],
-    //             ],
-    //         ],
-    //         'email' => [
-    //             'display' => __('Email'),
-    //             'fields' => [
-    //                 'email' => [
-    //                     'type' => 'grid',
-    //                     'mode' => 'stacked',
-    //                     'add_row' => __('Add Email'),
-    //                     'instructions' => __('statamic::messages.form_configure_email_instructions'),
-    //                     'fields' => [
-    //                         [
-    //                             'handle' => 'to',
-    //                             'field' => [
-    //                                 'type' => 'text',
-    //                                 'display' => __('Recipient(s)'),
-    //                                 'validate' => ['required'],
-    //                                 'instructions' => __('statamic::messages.form_configure_email_to_instructions'),
-    //                             ],
-    //                         ],
-    //                         [
-    //                             'handle' => 'cc',
-    //                             'field' => [
-    //                                 'type' => 'text',
-    //                                 'display' => __('CC Recipient(s)'),
-    //                                 'instructions' => __('statamic::messages.form_configure_email_cc_instructions'),
-    //                             ],
-    //                         ],
-    //                         [
-    //                             'handle' => 'bcc',
-    //                             'field' => [
-    //                                 'type' => 'text',
-    //                                 'display' => __('BCC Recipient(s)'),
-    //                                 'instructions' => __('statamic::messages.form_configure_email_bcc_instructions'),
-    //                             ],
-    //                         ],
-    //                         [
-    //                             'handle' => 'from',
-    //                             'field' => [
-    //                                 'type' => 'text',
-    //                                 'display' => __('Sender'),
-    //                                 'instructions' => __('statamic::messages.form_configure_email_from_instructions').' ('.config('mail.from.address').').',
-    //                             ],
-    //                         ],
-    //                         [
-    //                             'handle' => 'reply_to',
-    //                             'field' => [
-    //                                 'type' => 'text',
-    //                                 'display' => __('Reply To'),
-    //                                 'instructions' => __('statamic::messages.form_configure_email_reply_to_instructions'),
-    //                             ],
-    //                         ],
-    //                         [
-    //                             'handle' => 'subject',
-    //                             'field' => [
-    //                                 'type' => 'text',
-    //                                 'display' => __('Subject'),
-    //                                 'instructions' => __('statamic::messages.form_configure_email_subject_instructions'),
-    //                             ],
-    //                         ],
-    //                         [
-    //                             'handle' => 'html',
-    //                             'field' => [
-    //                                 'type' => 'template',
-    //                                 'display' => __('HTML view'),
-    //                                 'instructions' => __('statamic::messages.form_configure_email_html_instructions'),
-    //                                 'folder' => config('statamic.forms.email_view_folder'),
-    //                             ],
-    //                         ],
-    //                         [
-    //                             'handle' => 'text',
-    //                             'field' => [
-    //                                 'type' => 'template',
-    //                                 'display' => __('Text view'),
-    //                                 'instructions' => __('statamic::messages.form_configure_email_text_instructions'),
-    //                                 'folder' => config('statamic.forms.email_view_folder'),
-    //                             ],
-    //                         ],
-    //                         [
-    //                             'handle' => 'markdown',
-    //                             'field' => [
-    //                                 'type' => 'toggle',
-    //                                 'display' => __('Markdown'),
-    //                                 'instructions' => __('statamic::messages.form_configure_email_markdown_instructions'),
-    //                             ],
-    //                         ],
-    //                         [
-    //                             'handle' => 'attachments',
-    //                             'field' => [
-    //                                 'type' => 'toggle',
-    //                                 'display' => __('Attachments'),
-    //                                 'instructions' => __('statamic::messages.form_configure_email_attachments_instructions'),
-    //                             ],
-    //                         ],
-    //                         [
-    //                             'handle' => 'mailer',
-    //                             'field' => [
-    //                                 'type' => 'select',
-    //                                 'instructions' => __('statamic::messages.form_configure_mailer_instructions'),
-    //                                 'options' => array_keys(config('mail.mailers')),
-    //                                 'clearable' => true,
-    //                             ],
-    //                         ],
-    //                     ],
-    //                 ],
-    //             ],
-    //         ],
-    //     ]);
-    // }
-
 
 }
